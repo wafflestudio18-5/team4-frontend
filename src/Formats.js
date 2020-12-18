@@ -1,4 +1,4 @@
-//this file './Formats' maps objects into objects that can be used as data in axos requests/responses
+//this file './Formats' maps elements into objects that can be used as data in axos requests/responses
 //however notice that some functions return the same object, and is technically unnecessary
 //I added them just to match formats of other datas
 
