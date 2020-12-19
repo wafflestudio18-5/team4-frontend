@@ -306,9 +306,22 @@ export const getCommentbyQuestion = async (id, page = -1) => {
         })
 }
 
-//TODO: API wrong somewhere + content = ""?
-export const postComment = async (content) => {
-    await axios.get(`comment/answer/${id}`, {params:{'page':page}})
+//TODO: id of question Question에 Comment달기
+export const postCommentQuestion = async (id, content) => {
+    await axios.post(`comment/question/${id}`, {data:{'content':content}})
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error => {
+            alertError(error)
+        })
+}
+
+
+//TODO: id of answer Answer에 Comment 달기
+export const postCommentAnswer = async (id, content) => {
+    await axios.post(`comment/answer/${id}`, {data:{'content':content}})
         .then(response => {
             console.log(response.data);
             return response.data
