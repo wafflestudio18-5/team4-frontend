@@ -131,7 +131,7 @@ export const getQuestionbyUser = async (user_id, sort_by, page_number = -1) => {
         .catch(error => {
             alertError(error)
             //FIXME: how to handle status code 301?
-            if error.response.status == 301 {return error.response.data}
+            if (error.response.status == 301) {return error.response.data}
         })
 }
 
@@ -148,7 +148,7 @@ export const getQuestionbyTag = async (filter_by, tags, sort_by, page_number = -
         .catch(error => {
             alertError(error)
             //FIXME: how to handle status code 301?
-            if error.response.status == 301 {return error.response.data}
+            if (error.response.status == 301) {return error.response.data}
         })
 }
 
@@ -166,7 +166,7 @@ export const getQuestionbyKwds = async (keywords, filter_by, sort_by, page_numbe
         .catch(error => {
             alertError(error)
             //FIXME: how to handle status code 301?
-            if error.response.status == 301 {return error.response.data}
+            if (error.response.status == 301) {return error.response.data}
         })
 }
 
