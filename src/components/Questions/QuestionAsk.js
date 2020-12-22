@@ -1,7 +1,7 @@
 import {Fragment, React} from 'react'
 import QuestionAskBox from './QuestionAskBox'
 import QuestionAskGuide from './QuestionAskGuide'
-import postQuestion from '../../axios.ts'
+import {postQuestion} from '../../axios.ts'
 
 
 const QuestionAsk = () => {
