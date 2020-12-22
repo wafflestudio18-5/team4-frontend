@@ -1,22 +1,22 @@
 import axios from 'axios'
-import User from './Formats'
-import UserEdit from './Formats'
-import Login_info from './Formats'
+import { StringLiteral } from 'typescript';
+import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
+
 
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
-baseUrl = BASEURL
-token = AUTH_TOKEN
+var baseUrl: string = "BASEURL"
+var token: string = "AUTH_TOKEN"
 
 axios.defaults.headers.common['Authorization'] = token;
 axios.defaults.baseURL = baseUrl;
 //alertError: function to show info about errors for all requests/responses
-function alertError(error) {
+function alertError (error : Error) {
     //put the error status code as log
-    console.log('error at ' + error.response.status);
-    //error message
-    console.log("message" in error.response.data? error.response.data.message : "no error message");
+    console.log('error at ' + error);
+    //throw error
+    throw(error)
     //mainly used logs, and tried not to use alerts in this file 
 }
 
@@ -30,10 +30,10 @@ export const getUserMe = async () => {
             console.log(response.data)
             return response.data
         })
-        .catch(alertError(error))
+        .catch(error=>alertError(error))
     }
 
-export const getUser = async id => {
+export const getUser = async (id: number) => {
     await axios.get(`http://localhost:4000/user/${id}`)
         .then((response) => {
             //show response data in log
@@ -41,11 +41,11 @@ export const getUser = async id => {
             console.log(response.data)
             return response.data
         })
-        .catch(alertError(error))
+        .catch(error=>alertError(error))
     }
 
 //user: User
-export const postUser = async (user) => {
+export const postUser = async (user: UserInterface) => {
     await axios.post(`user`, user)
         .then((response) => {
             //show response data in log
@@ -59,7 +59,7 @@ export const postUser = async (user) => {
             alertError(error)})
     }
 //user: UserEdit
-export const editUserME = async (user) => {
+export const editUserME = async (user : UserEditInterface) => {
     //FIXME: is it safe (or recommended) to give this warning here?)
     if (!user) {alert("No information is new")}
     else {
@@ -85,9 +85,9 @@ export const deleteUser = async () => {
         .catch(error => {
             alertError(error)
         })
-}
+}       
 //login_info: Login_info
-export const signin = async (login_info) => {
+export const signin = async (login_info: LoginInfoInterface) => {
     await axios.put('user/login', login_info)
         .then(response => {
             console.log(response.data);
@@ -111,7 +111,7 @@ export const signout = async () => {
 
 //Question APIs
 
-export const getQuestionbyId = async (question_id) => {
+export const getQuestionbyId = async (question_id: number) => {
     await axios.get(`question/${question_id}`)
         .then(response => {
             console.log(response.data);
@@ -122,8 +122,8 @@ export const getQuestionbyId = async (question_id) => {
         })
 }
 
-export const getQuestionbyUser = async (user_id, sort_by, page_number = -1) => {
-    await axios.get(`question/user/${user_id}?sorted_by=${sort_by}` + page_number === -1? `` : `&page=${page_number}`)
+export const getQuestionbyUser = async (user_id: string, sort_by: string, page_number = 1) => {
+    await axios.get(`question/user/${user_id}?sorted_by=${sort_by}` + (page_number === 1? "" : `&page=${page_number}`))
         .then(response => {
             console.log(response.data);
             return response.data
@@ -136,7 +136,7 @@ export const getQuestionbyUser = async (user_id, sort_by, page_number = -1) => {
 }
 
 //tags must be in the right format: etc) "react+js+axios"
-export const getQuestionbyTag = async (filter_by, tags, sort_by, page_number = -1) => {
+export const getQuestionbyTag = async (filter_by: string, tags: string[], sort_by: string, page_number = 1) => {
     await axios.get(`question/tagged/${tags}`,
         {params:{'filter_by' : filter_by,
                  'sorted_by' : sort_by,
@@ -154,7 +154,7 @@ export const getQuestionbyTag = async (filter_by, tags, sort_by, page_number = -
 
 //getQuestionbyKwds: get by keywords
 //keywords must be in the right format: etc) "react+js+axios"
-export const getQuestionbyKwds = async (keywords, filter_by, sort_by, page_number = -1) => {
+export const getQuestionbyKwds = async (keywords: string[], filter_by: string, sort_by: string, page_number = 1) => {
     await axios.get(`question/search/${keywords}`,
         {params:{'filter_by' : filter_by,
                  'sorted_by' : sort_by,
@@ -171,7 +171,7 @@ export const getQuestionbyKwds = async (keywords, filter_by, sort_by, page_numbe
 }
 
 //question : Question
-export const postQuestion = async (question) => {
+export const postQuestion = async (question: QuestionInterface) => {
     await axios.post('question/',
         {data:question})
         .then(response => {
@@ -184,7 +184,7 @@ export const postQuestion = async (question) => {
 }
 
 //question : QuestionEdit
-export const editQuestion = async (id, question) => {
+export const editQuestion = async (id: number, question: QuestionEditInterface) => {
     await axios.post(`question/${id}`,
         {data:question})
         .then(response => {
@@ -199,7 +199,7 @@ export const editQuestion = async (id, question) => {
 
 //Answer APIs
 
-export const getAnswerbyUser = async (id, page = -1, sorted_by) => {
+export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) => {
     await axios.post(`answer/user/${id}`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}})
@@ -212,7 +212,7 @@ export const getAnswerbyUser = async (id, page = -1, sorted_by) => {
         })
 }
 
-export const getAnswerbyRating = async (id, page = -1, sorted_by) => {
+export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) => {
     await axios.post(`answer/question/${id}`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}})
@@ -225,7 +225,7 @@ export const getAnswerbyRating = async (id, page = -1, sorted_by) => {
         })
 }
 
-export const getAnswerbyId = async (id) => {
+export const getAnswerbyId = async (id: number) => {
     await axios.post(`answer/${id}`)
         .then(response => {
             console.log(response.data);
@@ -236,7 +236,7 @@ export const getAnswerbyId = async (id) => {
         })
 }
 
-export const postAnswer = async (id, answer) => {
+export const postAnswer = async (id: number, answer: string) => {
     await axios.post(`answer/question/${id}`,
     {data:{'content': answer}})
         .then(response => {
@@ -248,7 +248,7 @@ export const postAnswer = async (id, answer) => {
         })
 }
 
-export const editAnswer = async (id, answer) => {
+export const editAnswer = async (id: number, answer: string) => {
     await axios.put(`answer/${id}`,
     {data:{content: answer}})
         .then(response => {
@@ -260,7 +260,7 @@ export const editAnswer = async (id, answer) => {
         })
 }
 
-export const deleteAnswer = async (id, answer) => {
+export const deleteAnswer = async (id: number, answer: string) => {
     await axios.delete(`answer/${id}`)
         .then(response => {
             console.log(response.data);
@@ -273,7 +273,7 @@ export const deleteAnswer = async (id, answer) => {
 
 //Comment APIs
 
-export const getCommentbyId = async (id) => {
+export const getCommentbyId = async (id: number) => {
     await axios.get(`comment/${id}`)
         .then(response => {
             console.log(response.data);
@@ -284,7 +284,7 @@ export const getCommentbyId = async (id) => {
         })
 }
 
-export const getCommentbyAnswer = async (id, page = -1) => {
+export const getCommentbyAnswer = async (id: number, page = 1) => {
     await axios.get(`comment/answer/${id}`, {params:{'page':page}})
         .then(response => {
             console.log(response.data);
@@ -295,7 +295,7 @@ export const getCommentbyAnswer = async (id, page = -1) => {
         })
 }
 
-export const getCommentbyQuestion = async (id, page = -1) => {
+export const getCommentbyQuestion = async (id: number, page = 1) => {
     await axios.get(`comment/question/${id}`, {params:{'page':page}})
         .then(response => {
             console.log(response.data);
@@ -307,7 +307,7 @@ export const getCommentbyQuestion = async (id, page = -1) => {
 }
 
 //TODO: id of question Question에 Comment달기
-export const postCommentQuestion = async (id, content) => {
+export const postCommentQuestion = async (id: number, content: String) => {
     await axios.post(`comment/question/${id}`, {data:{'content':content}})
         .then(response => {
             console.log(response.data);
@@ -320,7 +320,7 @@ export const postCommentQuestion = async (id, content) => {
 
 
 //TODO: id of answer Answer에 Comment 달기
-export const postCommentAnswer = async (id, content) => {
+export const postCommentAnswer = async (id: number, content: string) => {
     await axios.post(`comment/answer/${id}`, {data:{'content':content}})
         .then(response => {
             console.log(response.data);
@@ -332,7 +332,7 @@ export const postCommentAnswer = async (id, content) => {
 }
 
 //TODO: content = ""?
-export const editComment = async (id, comment) => {
+export const editComment = async (id: number, comment: string) => {
     await axios.put(`comment/${id}`, {data:{'comment' : comment}})
         .then(response => {
             console.log(response.data);
@@ -343,7 +343,7 @@ export const editComment = async (id, comment) => {
         })
 }
 
-export const deleteComment = async (id) => {
+export const deleteComment = async (id:number) => {
     await axios.delete(`comment/${id}`)
         .then(response => {
             console.log(response.data);
@@ -354,7 +354,7 @@ export const deleteComment = async (id) => {
         })
 }
 
-export const rateQuestion = async (id, rate) => {
+export const rateQuestion = async (id: number, rate: number) => {
     await axios.put(`rate/question/${id}`, {data:{'rate' : rate}})
         .then(response => {
             console.log(response.data);
@@ -365,7 +365,7 @@ export const rateQuestion = async (id, rate) => {
         })
 }
 
-export const rateAnswer = async (id, rate) => {
+export const rateAnswer = async (id: number, rate: number) => {
     await axios.put(`rate/answer/${id}`, {data:{'rate' : rate}})
         .then(response => {
             console.log(response.data);
@@ -376,7 +376,7 @@ export const rateAnswer = async (id, rate) => {
         })
 }
 
-export const rateComment = async (id, rate) => {
+export const rateComment = async (id: number, rate: number) => {
     await axios.put(`rate/comment/${id}`, {data:{'rate' : rate}})
         .then(response => {
             console.log(response.data);
@@ -387,7 +387,7 @@ export const rateComment = async (id, rate) => {
         })
 }
 
-export const postBookmark = async (id) => {
+export const postBookmark = async (id: number) => {
     await axios.post(`bookmark/question/${id}`)
         .then(response => {
             console.log(response.data);
@@ -398,7 +398,7 @@ export const postBookmark = async (id) => {
         })
 }
 
-export const deleteBookmark = async (id) => {
+export const deleteBookmark = async (id: number) => {
     await axios.delete(`bookmark/question/${id}`)
         .then(response => {
             console.log(response.data);
