@@ -66,3 +66,5 @@ const QuestionAskGuide = () => {
         </div>
     )
 }
+
+export default QuestionAskGuide
