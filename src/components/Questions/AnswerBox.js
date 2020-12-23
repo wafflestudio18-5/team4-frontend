@@ -3,9 +3,9 @@ import MDEditor from '@uiw/react-md-editor';
 import ResponderProfile from './ResponderProfile'
 import {getCommentbyAnswer} from '../../axios.ts'
 import {CommentList} from './Comments'
-import {PostCommentAns} from './CommentPost'
+import {CommentPostAns} from './CommentPost'
 
-const AnswerBox = (Answer) => {
+const AnswerBox = (Answer, accept) => {
     const comments = getCommentbyAnswer()
     return(
        <Fragment>
@@ -24,6 +24,9 @@ const AnswerBox = (Answer) => {
                 <div className="ansbox-accepted-box">
                     {Answer.is_accepted && "Accepted!"}
                 </div>
+                <div className="ans-accepted-box">
+                    {accept? "Accepted a Question" : "" }
+                </div>
            </div>
            <div className="ansbox-right-box">
                <div className="ansbox-content-box">
@@ -41,7 +44,7 @@ const AnswerBox = (Answer) => {
                     <CommentList comments={comments}/>
                 </div>  
                 <div className="comment-post-box-ans">
-                    <PostCommentAns id={Answer.id}/>
+                    <CommentPostAns id={Answer.id}/>
                 </div>
            </div>
        </Fragment>

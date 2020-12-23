@@ -54,7 +54,7 @@ const QuestionDetailBox = (id) => {
                     <button onChange={set_answer_sort("activity")}>activity</button>
                     <button onChange={set_answer_sort("newest")}>newest</button>
                 </div>
-                <AnswerList answers={answers}/>
+                <AnswerList Answers={answers} is_accepted={question.has_accepted}/>
                 <div className="ans-page-btn">
                     <button onChange={set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)} >next page</button>
                     <button onChange={set_answer_page(answer_page===1? 1 : answer_page-1)}>prev page</button>
