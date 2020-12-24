@@ -42,6 +42,7 @@ const Activity = () => {
                 if(name===category) { 
                     return (<Section key={name} activity={name} data={data}/>
                 )}
+                else {return null}
             })
         }
         </div>
