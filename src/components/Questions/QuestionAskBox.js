@@ -1,6 +1,6 @@
 import {useState, Fragment} from 'react'
 import MDEditor from '@uiw/react-md-editor';
-import TagEditor from '../dist/TagEditor.js'
+import TagEditor from 'react-tageditor'
 
 const QuestionAskBox = () => {
     const [title, setTitle] = useState("")
@@ -8,28 +8,30 @@ const QuestionAskBox = () => {
     const [tags, setTags] = useState([])
   
     return(
-        <Fragment class="qask-box">
-            <div class="qask-title-box">
-                <div class="qask-title">Title</div>
-                <div class="qask-title-sub">Be specific and imagine you’re asking a question to another person</div>
-                <div class="qask-title-input-box">
-                    <input class="qask-title-input" value={title} onChange={({target:{title}}) => setTitle(title)}/>
+        <Fragment className="qask-box">
+            <div className="qask-title-box">
+                <div className="qask-title">Title</div>
+                <div className="qask-title-sub">Be specific and imagine you’re asking a question to another person</div>
+                <div className="qask-title-input-box">
+                    <input className="qask-title-input" value={title} onChange={setTitle}/>
+
                 </div>
             </div>
-            <div className="qask-body-box">
-                <div class="qask-body">Body</div>
-                <div class="qask-body-sub">Include all the information someone would need to answer your question</div>
-                <MDEditor class="qask-body-editor"
+            <div classNameName="qask-body-box">
+                <div className="qask-body">Body</div>
+                <div className="qask-body-sub">Include all the information someone would need to answer your question</div>
+                <MDEditor className="qask-body-editor"
                     value={body}
                     onChange={({target:{body}}) => setBody(body)}/>
                 <MDEditor.Markdown source={body} />
             </div>
-          <div class="qask-tags-box">
-                <div class="qask-tags">Tags</div>
-                <div class="qask-tags-sub">Add up to 5 tags to describe what your question is about</div>
-                <div class="qask-tags-input-box">
-                    <TagEditor class="qask-tags-editor" tags={tags} delimiters={[' ']} 
-                    onChange={({target:{tags}}) => setTags(tags)} placeholder="Input tags, split by space" />
+
+          <div className="qask-tags-box">
+                <div className="qask-tags">Tags</div>
+                <div className="qask-tags-sub">Add up to 5 tags to describe what your question is about</div>
+                <div className="qask-tags-input-box">
+                    <TagEditor className="qask-tags-editor" tags={tags} delimiters={[' ']} 
+                    onChange={setTags} placeholder="Input tags, split by space" />
                 </div>
             </div>
         </Fragment>
