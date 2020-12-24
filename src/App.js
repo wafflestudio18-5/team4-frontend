@@ -1,8 +1,11 @@
+import { Route } from 'react-router-dom'
+import Main from './components/Main'
+
 
 function App() {
   return (
     <div>
-      Hello World
+      <Route exact path="/" component={Main}/>
     </div>
   );
 }
