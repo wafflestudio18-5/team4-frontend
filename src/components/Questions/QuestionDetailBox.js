@@ -4,7 +4,7 @@ import QdetailBox from './QdetailBox'
 import {CommentList} from './Comments'
 import AnswerList from './AnswerList'
 import AnswerPost from './AnswerPost'
-import {CommentPostQ} from './CommentPost'
+import {CommentPostQuestion} from './CommentPost'
 
 const QuestionDetailBox = (id) => {
     const question = getQuestionbyId(id)
@@ -38,11 +38,11 @@ const QuestionDetailBox = (id) => {
             <div className="q-main-comment-box">
                     <CommentList comments={q_comments}/>
                 <div className="comments-page-btn">
-                        <button onChange={set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)} >next page</button>
-                        <button onChange={set_comment_page(comment_page===1? 1 : comment_page-1)}>prev page</button>
+                        <button onClick={set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)} >next page</button>
+                        <button onClick={set_comment_page(comment_page===1? 1 : comment_page-1)}>prev page</button>
                 </div>
                 <div className="comment-post-box-q">
-                    <CommentPostQ id={id}/>
+                    <CommentPostQuestion id={id}/>
                 </div>
             </div>
             <div className="ans-box">
@@ -50,20 +50,19 @@ const QuestionDetailBox = (id) => {
                     {question.answer_count} Answers
                 </div>
                 <div className="sort-by-btn">
-                    <button onChange={set_answer_sort("votes")} >votes</button>
-                    <button onChange={set_answer_sort("activity")}>activity</button>
-                    <button onChange={set_answer_sort("newest")}>newest</button>
+                    <button onClick={set_answer_sort("votes")} >votes</button>
+                    <button onClick={set_answer_sort("activity")}>activity</button>
+                    <button onClick={set_answer_sort("newest")}>newest</button>
                 </div>
                 <AnswerList Answers={answers} is_accepted={question.has_accepted}/>
                 <div className="ans-page-btn">
-                    <button onChange={set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)} >next page</button>
-                    <button onChange={set_answer_page(answer_page===1? 1 : answer_page-1)}>prev page</button>
+                    <button onClick={set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)} >next page</button>
+                    <button onClick={set_answer_page(answer_page===1? 1 : answer_page-1)}>prev page</button>
                 </div>
                 <AnswerPost id={id}/>
             </div>
         </Fragment>
     )
-    //TODO: comment 입역창
 }
 
 export default QuestionDetailBox
