@@ -20,7 +20,7 @@ const AnswerPost = (id) => {
             <div className="ans-content-box">
                 <MDEditor class="qask-body-editor"
                     value={Content}
-                    onChange={setContent}/>
+                    onChange={({target:{Content}}) => setContent(Content)}/>
                 <MDEditor.Markdown source={Content} />
             </div>
             <div className="ans-post-btn-box">

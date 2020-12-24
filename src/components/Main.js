@@ -1,4 +1,5 @@
 import {Fragment} from 'react'
+import {Link} from 'react-router-dom'
 
 //The Main Page needs many Components : TopBar, List of Questions, ...etc
 const Main = () => {
@@ -18,6 +19,7 @@ const Main = () => {
             <h3 style={{'text-align':'center'}}>
                 지금 Wafflow와 함께히세요
             </h3> 
+            <Link to="/">to Main Page</Link>
         </Fragment>
     )
 }

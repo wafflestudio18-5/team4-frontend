@@ -1,12 +1,14 @@
 import {useState, Fragment} from 'react'
 import {getQuestionbyId, getCommentbyQuestion, getAnswerbyQuestion} from '../../axios.ts'
 import QdetailBox from './QdetailBox'
-import {CommentList} from './Comments'
-import AnswerList from './AnswerList'
-import AnswerPost from './AnswerPost'
-import {CommentPostQuestion} from './CommentPost'
+import {CommentList} from '../Comment/Comments'
+import AnswerList from '../Answer/AnswerList'
+import AnswerPost from '../Answer/AnswerPost'
+import {CommentPostQuestion} from '../Comment/CommentPost'
 
-const QuestionDetailBox = (id) => {
+const QuestionDetailBox = (match) => {
+    console.log(match);
+    const id = match.match.params.question_id
     const question = getQuestionbyId(id)
     const [comment_page, set_comment_page] = useState(1) //TODO: page 이동 버튼 만들기
     const [answer_sort, set_answer_sort] = useState("votes")

@@ -1,9 +1,9 @@
 import {Fragment} from 'react'
 import MDEditor from '@uiw/react-md-editor';
-import ResponderProfile from './ResponderProfile'
+import ResponderProfile from '../Profile/ResponderProfile'
 import {getCommentbyAnswer} from '../../axios.ts'
-import {CommentList} from './Comments'
-import {CommentPostAns} from './CommentPost'
+import {CommentList} from '../Comment/Comments'
+import {CommentPostAnswer} from '../Comment/CommentPost'
 
 const AnswerBox = (Answer, accept) => {
     const comments = getCommentbyAnswer()
@@ -44,7 +44,7 @@ const AnswerBox = (Answer, accept) => {
                     <CommentList comments={comments}/>
                 </div>  
                 <div className="comment-post-box-ans">
-                    <CommentPostAns id={Answer.id}/>
+                    <CommentPostAnswer id={Answer.id}/>
                 </div>
            </div>
        </Fragment>
