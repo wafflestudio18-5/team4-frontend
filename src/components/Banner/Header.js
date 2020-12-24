@@ -10,7 +10,7 @@ const Header = () => {
     }
     return (
         <div>
-            <a>wafflow</a>
+            <a /*TODO: provide href*/>wafflow</a>
         <form role="search" action="/search">
             <input onChange={(e)=>{setCommand(e.target.value)}} name="q" type="text" value={command} maxLength="200" placeholder="Search..."/>
             <button onClick={()=>{console.log("click");search();}}>Search</button>
