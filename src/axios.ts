@@ -407,3 +407,25 @@ export const deleteBookmark = async (id: number) => {
             alertError(error)
         })
 }
+
+export const acceptAnswer = async (id: number) => {
+    await axios.post(`answer/${id}/acception`)
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error=>{
+            alertError(error)
+        })
+}
+
+export const deleteacceptAnswer = async (id: number) => {
+    await axios.delete(`answer/${id}/acception`)
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error=>{
+            alertError(error)
+        })
+}
