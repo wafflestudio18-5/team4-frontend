@@ -10,7 +10,7 @@ export const SearchResultTags = ({location}) => {
     });
     console.log(query);
     const [sort, setSort] = useState(query.sorted_by)
-    const [page, setPage] = useState(query.page)
+    const [page, setPage] = useState(parseInt(query.page))
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
     const tags_form = query.tags
     let result = filter_by === null? getQuestionbyTag(tags_form, sort, page) : getQuestionbyTag(filter_by,tags_form, sort, page)
