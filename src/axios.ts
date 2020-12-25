@@ -211,6 +211,19 @@ export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) =
         })
 }
 
+export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: string) => {
+    await axios.post(`answer/question/${id}`,
+        {params:{'page': page, 
+                 'sorted_by' : sorted_by}})
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error => {
+            alertError(error)
+        })
+}
+
 export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) => {
     await axios.post(`answer/question/${id}`,
         {params:{'page': page, 
