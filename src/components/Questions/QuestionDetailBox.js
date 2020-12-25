@@ -7,6 +7,7 @@ import AnswerPost from '../Answer/AnswerPost'
 import {CommentPostQuestion} from '../Comment/CommentPost'
 
 const QuestionDetailBox = (match) => {
+    console.log("component : Q detail");
     console.log(match);
     const id = match.match.params.question_id
     const question = getQuestionbyId(id)

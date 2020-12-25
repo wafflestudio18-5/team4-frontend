@@ -19,7 +19,24 @@ const Main = () => {
             <h3 style={{'text-align':'center'}}>
                 지금 Wafflow와 함께히세요
             </h3> 
-            <Link to="/">to Main Page</Link>
+            <div style={{'text-align':'center'}}>
+                <ul>
+                    <li>
+                        <Link to="/">to Main Page</Link>
+                    </li>
+                    <li>
+                        <Link to="/question/1">to Question Page id : 1</Link>
+                    </li>
+                    <li>
+                        <Link to="/question/user/123">Questions : User (id: 123)</Link>
+                    </li>
+                    <li>
+                        <Link to="/question/tagged?tags=python+django&page=1&filter_by=no_answer">Questions : Tags python+django, page 1, filter by no_answer</Link>
+                    </li>
+                </ul>
+                
+            </div>
+            
         </Fragment>
     )
 }
