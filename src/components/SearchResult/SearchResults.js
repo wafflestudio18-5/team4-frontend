@@ -52,7 +52,7 @@ export const SearchResultTags = ({location}) => {
 
     
     return (
-        <Fragement className="search-result-tags-box">
+        <Fragement>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -167,7 +167,7 @@ export const    SearchResultKwds = ({location}) => {
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        <Fragement>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -274,7 +274,7 @@ export const SearchResultUser = (match) => {
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        <Fragement>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">

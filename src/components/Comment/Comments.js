@@ -2,7 +2,7 @@ import {Fragment, Button} from 'react'
 
 export const CommentBox = (comment) => {
     return(
-       <Fragment className="comment-box">
+       <Fragment>
         <div className="comment-vote-box">
             <Button //Add Buttons to upvote / downvote
             ></Button> 

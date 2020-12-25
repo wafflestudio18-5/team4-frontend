@@ -125,6 +125,7 @@ export const getQuestionbyId = async (question_id: number) => {
         })
         .catch(error => {
             alertError(error)
+            return error.response.status //return status?
         })
 }
 

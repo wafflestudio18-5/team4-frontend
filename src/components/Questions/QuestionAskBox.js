@@ -8,7 +8,7 @@ const QuestionAskBox = () => {
     const [tags, setTags] = useState([])
   
     return(
-        <Fragment className="qask-box">
+        <Fragment>
             <div className="qask-title-box">
                 <div className="qask-title">Title</div>
                 <div className="qask-title-sub">Be specific and imagine you’re asking a question to another person</div>
