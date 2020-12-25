@@ -80,6 +80,17 @@ export const SearchResultTags = ({location}) => {
                                     <button className="view-btn" onClick = {() => changeSort("most_frequent")}>views</button>
                                 </div>
                             </div>
+                            <div className="filter_select-box">
+                                <div className="filter-no-answer">
+                                    <button onClick={() => {setFilter("no_answer")}}>no answer</button>
+                                </div>
+                                <div className="filter-no_accepted_answer">
+                                    <button onClick={() => {setFilter("no_accepted_answer")}}>no accepted answer</button>
+                                </div>
+                                <div className="filter-none">
+                                    <button onClick={() => {setFilter(null)}}>no filters</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
             </div>
@@ -99,18 +110,19 @@ export const SearchResultTags = ({location}) => {
 }
 
 //kwds: list of keywords
-export const SearchResultKwds = ({location}) => {
+export const    SearchResultKwds = ({location}) => {
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true
     });
-    const [sort, setSort] = useState("newest")
-    const [page, setPage] = useState(1)
+    const [sort, setSort] = query.sorted_by
+    const [page, setPage] = query.page
     const keywords_form = query.kwds
     const [result, setResult] = useState(getQuestionbyKwds(keywords_form, sort, page))
+    const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
     const max_page = result.questions.count()/30
 
     const Refresh = () => {
-        setResult(getQuestionbyKwds(keywords_form, sort, page))
+        setResult(getQuestionbyKwds(keywords_form, filter_by, sort, page))
     }
     
     const changeSort = (n_sort) => {
