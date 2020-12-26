@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { StringLiteral } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
 
 
@@ -131,7 +130,7 @@ export const getQuestionbyUser = async (user_id: string, sort_by: string, page_n
         .catch(error => {
             alertError(error)
             //FIXME: how to handle status code 301?
-            if (error.response.status == 301) {return error.response.data}
+            if (error.response.status === 301) {return error.response.data}
         })
 }
 
@@ -148,7 +147,7 @@ export const getQuestionbyTag = async (filter_by: string, tags: string[], sort_b
         .catch(error => {
             alertError(error)
             //FIXME: how to handle status code 301?
-            if (error.response.status == 301) {return error.response.data}
+            if (error.response.status === 301) {return error.response.data}
         })
 }
 
@@ -166,7 +165,7 @@ export const getQuestionbyKwds = async (keywords: string[], filter_by: string, s
         .catch(error => {
             alertError(error)
             //FIXME: how to handle status code 301?
-            if (error.response.status == 301) {return error.response.data}
+            if (error.response.status === 301) {return error.response.data}
         })
 }
 
@@ -201,6 +200,19 @@ export const editQuestion = async (id: number, question: QuestionEditInterface) 
 
 export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) => {
     await axios.post(`answer/user/${id}`,
+        {params:{'page': page, 
+                 'sorted_by' : sorted_by}})
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error => {
+            alertError(error)
+        })
+}
+
+export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: string) => {
+    await axios.post(`answer/question/${id}`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}})
         .then(response => {
@@ -405,6 +417,28 @@ export const deleteBookmark = async (id: number) => {
             return response.data
         })
         .catch(error => {
+            alertError(error)
+        })
+}
+
+export const acceptAnswer = async (id: number) => {
+    await axios.post(`answer/${id}/acception`)
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error=>{
+            alertError(error)
+        })
+}
+
+export const deleteacceptAnswer = async (id: number) => {
+    await axios.delete(`answer/${id}/acception`)
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error=>{
             alertError(error)
         })
 }

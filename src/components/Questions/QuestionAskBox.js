@@ -6,7 +6,7 @@ const QuestionAskBox = () => {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [tags, setTags] = useState([])
-
+  
     return(
         <Fragment className="qask-box">
             <div className="qask-title-box">
@@ -14,6 +14,7 @@ const QuestionAskBox = () => {
                 <div className="qask-title-sub">Be specific and imagine you’re asking a question to another person</div>
                 <div className="qask-title-input-box">
                     <input className="qask-title-input" value={title} onChange={setTitle}/>
+
                 </div>
             </div>
             <div classNameName="qask-body-box">
@@ -21,9 +22,10 @@ const QuestionAskBox = () => {
                 <div className="qask-body-sub">Include all the information someone would need to answer your question</div>
                 <MDEditor className="qask-body-editor"
                     value={body}
-                    onChange={setBody}/>
+                    onChange={({target:{body}}) => setBody(body)}/>
                 <MDEditor.Markdown source={body} />
             </div>
+
           <div className="qask-tags-box">
                 <div className="qask-tags">Tags</div>
                 <div className="qask-tags-sub">Add up to 5 tags to describe what your question is about</div>

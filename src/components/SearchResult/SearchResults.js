@@ -14,8 +14,7 @@ export const SearchResultTags = ({location}) => {
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
     const tags_form = query.tags
     let result = filter_by === null? getQuestionbyTag(tags_form, sort, page) : getQuestionbyTag(filter_by,tags_form, sort, page)
-    const max_page = Math.ceil(result.questions.count()/30)
-
+    const max_page = result.questions.count()/30
     const Refresh = () => {
         //TODO: 값 확인하기 (refresh 필요 있나)
         result = getQuestionbyTag(tags_form, sort, page)

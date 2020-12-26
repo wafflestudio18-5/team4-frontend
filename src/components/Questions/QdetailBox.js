@@ -1,5 +1,5 @@
 import { Link, Button, Fragment } from 'react'
-import AuthorProfile from './AuthorProfile'
+import AuthorProfile from '../Profile/AuthorProfile'
 
 const QdetailBox = (Question) => {
     return(
