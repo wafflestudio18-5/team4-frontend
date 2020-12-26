@@ -12,6 +12,7 @@ const Main = () => {
                 풍부한 가능성, 신뢰할 수 있는 네트워크
             </h3>
             <div style={{'text-align':'center'}}>
+    //TODO: use Components
                  <img src="https://www.cuisinart.com/globalassets/recipes/recipe_6135_13606779" alt="waffle" align="center"/>
             </div>
             <br></br>

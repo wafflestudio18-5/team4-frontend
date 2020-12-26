@@ -9,11 +9,13 @@ import Users from './components/User/Users';
 import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
+import Header from './components/Banner/Header';
 
 function App() {
   return (
     <div>
     <Router>
+      <Header/>
       <Switch>
       <Route exact path="/" component={Main}/>
       <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
