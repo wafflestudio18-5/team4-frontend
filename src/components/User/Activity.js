@@ -1,16 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {getUserMe} from '../../axios';
 import {useHistory} from 'react-router-dom';
 //Answers, Questions, Tags, Badges, Bookmarks, Follwing, Bounties, Reputation, All actions, Responses, Votes
-
-const activities = ["Answers", "Questions", "Tags", "Followed", "Bookmarks"];
+const user = { 
+    "id": 0,
+    "username": "waffle",
+    "created_at": 0,
+    "updated_at": 0,
+    "email": "waffle@wafflestudio.com",
+    "last_login": 0,
+    "nickname": "waffl-e",
+    "picture": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1280px-Waffles_with_Strawberries.jpg",
+    "reputation": 0,
+    "question_count": 1,
+    "answer_count":2,
+    "bookmark_count":3
+  };
+const activities = ["Answers", "Questions", "Tags","Bookmarks"];
 const data = activities.map((activity) => {
-    return {name: activity, data: {number:0}};
+    return {name: activity, data: {}};
 })
-const Section = ({activity, data}) => {
+const Section = ({activity,data}) => {
+    let key = activity.substring(0,activity.length-1).toLowerCase()+'_count'
     return(
     <>
-    <h3 className="activity-section-activity">{activity} ({data.number})</h3>
+    <h3 className="activity-section-activity">{activity} ({user[key]})</h3>
     <hr/>
     <div className="activity-section-content">
     blah blah blah
@@ -39,10 +52,9 @@ const Activity = () => {
             ))
             :
             data.map(({name, data}) => {
-                if(name===category) { 
+                if(name===category) {
                     return (<Section key={name} activity={name} data={data}/>
                 )}
-                else {return null}
             })
         }
         </div>

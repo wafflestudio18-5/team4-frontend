@@ -10,6 +10,8 @@ import {
   } from "react-router-dom";
 import Activity from './Activity';
 import Profile from './Profile';
+import EditProfile from './EditProfile';
+//user는 나중에 context로 바꾸기
 const Me = () => {
     let history = useHistory();
     let {tab} = useParams();
@@ -23,7 +25,10 @@ const Me = () => {
         "last_login": 0,
         "nickname": "waffl-e",
         "picture": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1280px-Waffles_with_Strawberries.jpg",
-        "reputation": 0
+        "reputation": 0,
+        "question_count": 1,
+        "answer_count":2,
+        "bookmark_count":3
       });
     useEffect(()=> {
         //const userData = getUserMe()
@@ -38,7 +43,7 @@ const Me = () => {
         <div>
         <button onClick={()=>{history.push('/users/me/profile')}}>Profile</button>
         <button onClick={()=>{history.push('/users/me/activity')}}>Activity</button>
-        <button onClick={()=>{history.push('/users/edit')}}>Edit</button>
+        <button onClick={()=>{history.push('/users/me/edit')}}>Edit</button>
         </div>
         <div>
         {user.nickname}
@@ -47,8 +52,19 @@ const Me = () => {
         <hr/>
         </div>
         <Switch>
-        <Route path={`${match.path}/profile`} component={Profile}/>
-        <Route path={`${match.path}/activity`} component={Activity}/>
+        {console.log(`${match.path}`)}
+        <Route exact path={`${match.path}`}>
+            <Activity user={user}/>
+        </Route>
+        <Route exact path={`${match.path}/profile`}>
+            <Profile user={user}/>
+        </Route>
+        <Route path={`${match.path}/activity`}>
+            <Activity user={user}/>
+        </Route>
+        <Route path={`${match.path}/edit`}>
+            <EditProfile user={user}/>
+        </Route>
         {/*default*/} 
         </Switch>
         </>
