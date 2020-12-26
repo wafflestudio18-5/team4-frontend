@@ -45,10 +45,6 @@ const Me = () => {
         <button onClick={()=>{history.push('/users/me/activity')}}>Activity</button>
         <button onClick={()=>{history.push('/users/me/edit')}}>Edit</button>
         </div>
-        <div>
-        {user.nickname}
-        <img width="50px" src={user.picture} alt="user img"/>
-        </div>
         <hr/>
         </div>
         <Switch>
