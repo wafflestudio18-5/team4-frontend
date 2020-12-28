@@ -5,6 +5,7 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
+const timeout_set = 1000 
 var baseUrl: string = "http://localhost:8000"
 var token: string = "AUTH_TOKEN"
 
@@ -14,6 +15,12 @@ axios.defaults.baseURL = baseUrl;
 function alertError (error : Error) {
     //put the error status code as log
     console.log('error at ' + error);
+    console.log(error.name);
+    console.log(error.message);
+    
+    console.log(error.stack);
+    
+    
     //throw error
     throw(error)
     //mainly used logs, and tried not to use alerts in this file 
@@ -21,13 +28,14 @@ function alertError (error : Error) {
 
 //User APIs
 
+
 export const getUserMe = async (token: string) => {
     return axios.get('user/me/',{headers: {Authorization: `Token ${token}`}})
         .then((response) => {
             //show response data in log
             console.log("getUserMe Response data: ")
             console.log(response.data)
-            return response.data
+            func(response)
         })
         .catch(error=>alertError(error))
     }
@@ -38,31 +46,31 @@ export const getUser = (id: number) => {
             //show response data in log
             console.log("getUserbyId Request data: ")
             console.log(response.data)
-            return response.data
+            func(response)
         })
         .catch(error=>alertError(error))
     }
 
 //user: User
-export const postUser = async (user: UserInterface) => {
-    await axios.post(`user`, user)
+export const postUser = async (func : Function, user: UserInterface) => {
+    await axios.post(`user`, {user, timeout:timeout_set})
         .then((response) => {
             //show response data in log
             console.log("postUser Request data: ")
             console.log(user)
             //TODO: get and sotre token by redux
             //response.data.token
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)})
     }
 //user: UserEdit
-export const editUserME = async (user : UserEditInterface) => {
+export const editUserME = async (func : Function, user : UserEditInterface) => {
     //FIXME: is it safe (or recommended) to give this warning here?)
     if (!user) {alert("No information is new")}
     else {
-        await axios.put('user/me', user)
+        await axios.put('user/me', {user, timeout:timeout_set})
             .then(response => {
                 console.log(response.data);
                 //TODO: update reputation, last_login, ... etc
@@ -75,19 +83,19 @@ export const editUserME = async (user : UserEditInterface) => {
     }
 
 
-export const deleteUser = async () => { 
-    await axios.delete('user/me')
+export const deleteUser = async (func : Function) => { 
+    await axios.delete('user/me', {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }       
 //login_info: Login_info
-export const signin = async (login_info: LoginInfoInterface) => {
-    await axios.put('user/login', login_info)
+export const signin = async (func : Function, login_info: LoginInfoInterface) => {
+    await axios.put('user/login', login_info, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
             return response
@@ -97,11 +105,11 @@ export const signin = async (login_info: LoginInfoInterface) => {
         })
 }
 
-export const signout = async () => {
-    await axios.post('user/logout')
+export const signout = async (func : Function) => {
+    await axios.post('user/logout', {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -110,14 +118,15 @@ export const signout = async () => {
 
 //Question APIs
 
-export const getQuestionbyId = async (question_id: number) => {
-    await axios.get(`question/${question_id}`)
+export const getQuestionbyId = async (func : Function, question_id: number) => {
+    await axios.get(`question/${question_id}`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
+            return error.response.status //return status?
         })
 }
 
@@ -125,7 +134,7 @@ export const getQuestionbyUser = async (user_id: string, sort_by: string, page_n
     return axios.get(`question/user/${user_id}/?sorted_by=${sort_by}&page=${page_number}`)
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -135,32 +144,37 @@ export const getQuestionbyUser = async (user_id: string, sort_by: string, page_n
 }
 
 //tags must be in the right format: etc) "react+js+axios"
-export const getQuestionbyTag = async (filter_by: string, tags: string[], sort_by: string, page_number = 1) => {
+export const getQuestionbyTag = async (func : Function, filter_by: string, tags: string[], sort_by: string, page_number = 1) => {
     await axios.get(`question/tagged/${tags}`,
         {params:{'filter_by' : filter_by,
                  'sorted_by' : sort_by,
-                 'page': page_number}})
+                 'page': page_number},
+        timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
-            alertError(error)
+            //alertError(error)
             //FIXME: how to handle status code 301?
-            if (error.response.status === 301) {return error.response.data}
+            console.log("response data");
+            console.log(error.response.status);
+            return error.response
+
         })
 }
 
 //getQuestionbyKwds: get by keywords
 //keywords must be in the right format: etc) "react+js+axios"
-export const getQuestionbyKwds = async (keywords: string[], filter_by: string, sort_by: string, page_number = 1) => {
+export const getQuestionbyKwds = async (func : Function, keywords: string[], filter_by: string, sort_by: string, page_number = 1) => {
     await axios.get(`question/search/${keywords}`,
         {params:{'filter_by' : filter_by,
                  'sorted_by' : sort_by,
-                 'page': page_number}})
+                 'page': page_number},
+                 timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -170,12 +184,12 @@ export const getQuestionbyKwds = async (keywords: string[], filter_by: string, s
 }
 
 //question : Question
-export const postQuestion = async (question: QuestionInterface) => {
+export const postQuestion = async (func : Function, question: QuestionInterface) => {
     await axios.post('question/',
-        {data:question})
+        {data:question, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -183,12 +197,12 @@ export const postQuestion = async (question: QuestionInterface) => {
 }
 
 //question : QuestionEdit
-export const editQuestion = async (id: number, question: QuestionEditInterface) => {
+export const editQuestion = async (func : Function, id: number, question: QuestionEditInterface) => {
     await axios.post(`question/${id}`,
-        {data:question})
+        {data:question, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -201,10 +215,10 @@ export const editQuestion = async (id: number, question: QuestionEditInterface) 
 export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) => {
     return axios.get(`answer/user/${id}/`,
         {params:{'page': page, 
-                 'sorted_by' : sorted_by}})
+                 'sorted_by' : sorted_by}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -214,10 +228,10 @@ export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) =
 export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: string) => {
     await axios.get(`answer/question/${id}/`,
         {params:{'page': page, 
-                 'sorted_by' : sorted_by}})
+                 'sorted_by' : sorted_by}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -227,56 +241,55 @@ export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: strin
 export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) => {
     await axios.get(`answer/question/${id}/`,
         {params:{'page': page, 
-                 'sorted_by' : sorted_by}})
+                 'sorted_by' : sorted_by}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
-
 export const getAnswerbyId = async (id: number) => {
     await axios.get(`answer/${id}/`)
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const postAnswer = async (id: number, answer: string) => {
+export const postAnswer = async (func : Function, id: number, answer: string) => {
     await axios.post(`answer/question/${id}`,
-    {data:{'content': answer}})
+    {data:{'content': answer}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const editAnswer = async (id: number, answer: string) => {
+export const editAnswer = async (func : Function, id: number, answer: string) => {
     await axios.put(`answer/${id}`,
-    {data:{content: answer}})
+    {data:{content: answer}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const deleteAnswer = async (id: number, answer: string) => {
-    await axios.delete(`answer/${id}`)
+export const deleteAnswer = async (func : Function, id: number, answer: string) => {
+    await axios.delete(`answer/${id}`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -285,33 +298,33 @@ export const deleteAnswer = async (id: number, answer: string) => {
 
 //Comment APIs
 
-export const getCommentbyId = async (id: number) => {
-    await axios.get(`comment/${id}`)
+export const getCommentbyId = async (func : Function, id: number) => {
+    await axios.get(`comment/${id}`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const getCommentbyAnswer = async (id: number, page = 1) => {
-    await axios.get(`comment/answer/${id}`, {params:{'page':page}})
+export const getCommentbyAnswer = async (func : Function, id: number, page = 1) => {
+    await axios.get(`comment/answer/${id}`, {params:{'page':page}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const getCommentbyQuestion = async (id: number, page = 1) => {
-    await axios.get(`comment/question/${id}`, {params:{'page':page}})
+export const getCommentbyQuestion = async (func : Function, id: number, page = 1) => {
+    await axios.get(`comment/question/${id}`, {params:{'page':page}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -319,11 +332,11 @@ export const getCommentbyQuestion = async (id: number, page = 1) => {
 }
 
 //TODO: id of question Question에 Comment달기
-export const postCommentQuestion = async (id: number, content: String) => {
-    await axios.post(`comment/question/${id}`, {data:{'content':content}})
+export const postCommentQuestion = async (func : Function, id: number, content: String) => {
+    await axios.post(`comment/question/${id}`, {data:{'content':content}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -332,11 +345,11 @@ export const postCommentQuestion = async (id: number, content: String) => {
 
 
 //TODO: id of answer Answer에 Comment 달기
-export const postCommentAnswer = async (id: number, content: string) => {
-    await axios.post(`comment/answer/${id}`, {data:{'content':content}})
+export const postCommentAnswer = async (func : Function, id: number, content: string) => {
+    await axios.post(`comment/answer/${id}`, {data:{'content':content}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
@@ -344,60 +357,61 @@ export const postCommentAnswer = async (id: number, content: string) => {
 }
 
 //TODO: content = ""?
-export const editComment = async (id: number, comment: string) => {
-    await axios.put(`comment/${id}`, {data:{'comment' : comment}})
+export const editComment = async (func : Function, id: number, comment: string) => {
+    await axios.put(`comment/${id}`, {data:{'comment' : comment}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const deleteComment = async (id:number) => {
-    await axios.delete(`comment/${id}`)
+export const deleteComment = async (func : Function, id:number) => {
+    await axios.delete(`comment/${id}`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const rateQuestion = async (id: number, rate: number) => {
-    await axios.put(`rate/question/${id}`, {data:{'rate' : rate}})
+export const rateQuestion = async (func : Function, id: number, rate: number) => {
+    await axios.put(`rate/question/${id}`, {data:{'rate' : rate}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const rateAnswer = async (id: number, rate: number) => {
-    await axios.put(`rate/answer/${id}`, {data:{'rate' : rate}})
+export const rateAnswer = async (func : Function, id: number, rate: number) => {
+    await axios.put(`rate/answer/${id}`, {data:{'rate' : rate}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const rateComment = async (id: number, rate: number) => {
-    await axios.put(`rate/comment/${id}`, {data:{'rate' : rate}})
+export const rateComment = async (func : Function, id: number, rate: number) => {
+    await axios.put(`rate/comment/${id}`, {data:{'rate' : rate}, timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
+
 export const getBookmark = async (token: string, sorted_by: string, page = 1) => {
     await axios.get(`bookmark/user/me/?sorted_by=${sorted_by}&page=${page}`,{headers: {Authorization: `Token ${token}`}})
         .then(response => {
@@ -412,40 +426,40 @@ export const postBookmark = async (id: number) => {
     await axios.post(`bookmark/question/${id}`)
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const deleteBookmark = async (id: number) => {
-    await axios.delete(`bookmark/question/${id}`)
+export const deleteBookmark = async (func : Function, id: number) => {
+    await axios.delete(`bookmark/question/${id}`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error => {
             alertError(error)
         })
 }
 
-export const acceptAnswer = async (id: number) => {
-    await axios.post(`answer/${id}/acception`)
+export const acceptAnswer = async (func : Function, id: number) => {
+    await axios.post(`answer/${id}/acception`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error=>{
             alertError(error)
         })
 }
 
-export const deleteacceptAnswer = async (id: number) => {
-    await axios.delete(`answer/${id}/acception`)
+export const deleteacceptAnswer = async (func : Function, id: number) => {
+    await axios.delete(`answer/${id}/acception`, {timeout:timeout_set})
         .then(response => {
             console.log(response.data);
-            return response.data
+            func(response)
         })
         .catch(error=>{
             alertError(error)

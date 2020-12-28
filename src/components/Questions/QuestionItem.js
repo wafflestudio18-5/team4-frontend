@@ -4,7 +4,7 @@ import AuthorProfile from '../Profile/AuthorProfile'
 const QuestionItem= (Question_info) => {
     var ContentPeak = Question_info.content.substring(200) //TODO: show 200 texts? 
     return(
-        <Fragment className="QuestionItemBox">
+        <Fragment>
             <Link /*TODO: use Redux to determine path*/>
                 <div className ="QuestionItemLeft">
                     <div className="answerCountBox">

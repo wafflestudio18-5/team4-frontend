@@ -1,19 +1,38 @@
 import {useState, Fragement} from 'react'
 import {getQuestionbyTag, getQuestionbyKwds, getUser} from '../../axios.ts'
 import QuestionList from '../Questions/QuestionList'
+import {useHistory} from 'react-router-dom'
 import qs from 'qs';
 
 //tags: list of tags
 export const SearchResultTags = ({location}) => {
+    const history = useHistory();
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true
     });
+    let max_page=1.5;
+    console.log("query")
     console.log(query);
     const [sort, setSort] = useState(query.sorted_by)
     const [page, setPage] = useState(parseInt(query.page))
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
     const tags_form = query.tags
     let result = filter_by === null? getQuestionbyTag(tags_form, sort, page) : getQuestionbyTag(filter_by,tags_form, sort, page)
+    const error = result.hasOwnProperty("status")
+    if (error) {
+        console.log(result.status);
+    }
+    console.log("result came out");
+    try {max_page = result.questions.count()/30
+    } catch {
+        history.push('/error/404')
+        history.go(0);
+    }
+    
+    if (max_page !== parseInt(max_page, 10)) {
+        history.push('/error/404')
+        history.go(0);
+    }
     const max_page = result.questions.count()/30
     const Refresh = () => {
         //TODO: 값 확인하기 (refresh 필요 있나)
@@ -32,7 +51,7 @@ export const SearchResultTags = ({location}) => {
 
     
     return (
-        <Fragement className="search-result-tags-box">
+        <Fragement>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -110,6 +129,7 @@ export const SearchResultTags = ({location}) => {
 
 //kwds: list of keywords
 export const    SearchResultKwds = ({location}) => {
+    const history = useHistory();
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true
     });
@@ -118,12 +138,11 @@ export const    SearchResultKwds = ({location}) => {
     const keywords_form = query.kwds
     const [result, setResult] = useState(getQuestionbyKwds(keywords_form, sort, page))
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
-    const max_page = result.questions.count()/30
 
     const Refresh = () => {
         setResult(getQuestionbyKwds(keywords_form, filter_by, sort, page))
     }
-    
+    let max_page = 1.5;
     const changeSort = (n_sort) => {
         setSort(n_sort)
         Refresh()
@@ -133,12 +152,21 @@ export const    SearchResultKwds = ({location}) => {
         setPage(n_page)
         Refresh()
     }
-
+    try {max_page = result.questions.count()/30
+    } catch {
+        history.push('/error/404')
+        history.go(0);
+    }
+    
+    if (max_page !== parseInt(max_page, 10)) {
+        history.push('/error/404')
+        history.go(0);
+    }
 
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        <Fragement>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -205,6 +233,7 @@ export const    SearchResultKwds = ({location}) => {
 
 //user_id
 export const SearchResultUser = (match) => {
+    const history = useHistory();
     console.log(match);
     const {user_id} = match.match.params
     console.log("id :"+ user_id);
@@ -213,7 +242,18 @@ export const SearchResultUser = (match) => {
     const [page, setPage] = useState(1)
     const [result, setResult] = useState(getQuestionbyKwds(user_id, sort, page))
     console.log(result);
-    const max_page = result.questions.count()/30
+    let max_page = 1.5;
+
+    try {max_page = result.questions.count()/30
+    } catch {
+        history.push('/error/404')
+        history.go(0);
+    }
+    
+    if (max_page !== parseInt(max_page, 10)) {
+        history.push('/error/404')
+        history.go(0);
+    }
 
     const Refresh = () => {
         setResult(getQuestionbyKwds(user_id, sort, page))
@@ -233,7 +273,7 @@ export const SearchResultUser = (match) => {
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        <Fragement>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
