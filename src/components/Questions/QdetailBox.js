@@ -3,7 +3,7 @@ import AuthorProfile from '../Profile/AuthorProfile'
 
 const QdetailBox = (Question) => {
     return(
-    <Fragment>
+    <Fragment className = "QdetailBox">
         <div className = "QdetailBoxLeft">
             <div className="VoteBox">
             <Button //Add Buttons to upvote / downvote
