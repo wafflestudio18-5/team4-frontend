@@ -5,7 +5,7 @@ import {postCommentQuestion, postCommentAnswer} from '../../axios.ts'
 export const CommentPostQuestion = (id_q) => {
     const [content, setContent] = useState("")
     return(
-        <Fragment>
+        <Fragment className="question-comment-box">
             <div className="comment-content">
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
@@ -19,7 +19,7 @@ export const CommentPostQuestion = (id_q) => {
 export const CommentPostAnswer = (id_ans) => {
     const [content, setContent] = useState("")
     return(
-        <Fragment>
+        <Fragment className="question-comment-box">
             <div className="comment-content">
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>

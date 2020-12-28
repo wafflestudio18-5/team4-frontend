@@ -5,33 +5,22 @@ import {CommentList} from '../Comment/Comments'
 import AnswerList from '../Answer/AnswerList'
 import AnswerPost from '../Answer/AnswerPost'
 import {CommentPostQuestion} from '../Comment/CommentPost'
-import {useHistory} from 'react-router-dom'
 
 const QuestionDetailBox = (match) => {
-    let max_page = 1.5;
-    const [comment_page, set_comment_page] = useState(1) //TODO: page 이동 버튼 만들기
-    const [answer_sort, set_answer_sort] = useState("newest")
-    const [answer_page, set_answer_page] = useState(1)
-    const history = useHistory();
-    const id = parseInt(match.match.params.question_id, 10)
+    console.log(match);
+    const id = match.match.params.question_id
     const question = getQuestionbyId(id)
-    console.log(question);
-    console.log("error");
-        history.push('/error/404')
-        history.go(0)
-    try { max_page += question.answer_count/30
-    } catch(error) {
-        console.log("error");
-        history.push('/error/404')
-        history.go(0)
-    }
+    const [comment_page, set_comment_page] = useState(1) //TODO: page 이동 버튼 만들기
+    const [answer_sort, set_answer_sort] = useState("votes")
+    const [answer_page, set_answer_page] = useState(1)
+    const max_page = question.answer_count/30
     const max_comment = question.comment_count
 
     const q_comments = getCommentbyQuestion(id, comment_page)
     const answers = getAnswerbyQuestion(id, 1, answer_sort)
 
     return(
-        <Fragment>
+        <Fragment className="qdetail-main-box">
             <div className="qdetail-main-title-box">
                 <div className="qdetail-main-title">
                     {question.title}
