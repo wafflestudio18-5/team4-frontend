@@ -1,4 +1,4 @@
-subscribe 되는지 확인중
+Wafflow is a special Archieve Service made only for Waffle Studio, with rich Data and reliable Contributors!
 
 # Getting Started with Create React App
 
