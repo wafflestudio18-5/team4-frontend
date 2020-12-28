@@ -5,7 +5,7 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
-var baseUrl: string = "BASEURL"
+var baseUrl: string = "http://localhost:8000"
 var token: string = "AUTH_TOKEN"
 
 axios.defaults.headers.common['Authorization'] = token;
@@ -21,8 +21,8 @@ function alertError (error : Error) {
 
 //User APIs
 
-export const getUserMe = async () => {
-    await axios.get('user/me')
+export const getUserMe = async (token: string) => {
+    return axios.get('user/me/',{headers: {Authorization: `Token ${token}`}})
         .then((response) => {
             //show response data in log
             console.log("getUserMe Response data: ")
@@ -32,8 +32,8 @@ export const getUserMe = async () => {
         .catch(error=>alertError(error))
     }
 
-export const getUser = async (id: number) => {
-    await axios.get(`http://localhost:4000/user/${id}`)
+export const getUser = (id: number) => {
+    return axios.get(`user/${id}/`)
         .then((response) => {
             //show response data in log
             console.log("getUserbyId Request data: ")
@@ -122,7 +122,7 @@ export const getQuestionbyId = async (question_id: number) => {
 }
 
 export const getQuestionbyUser = async (user_id: string, sort_by: string, page_number = 1) => {
-    await axios.get(`question/user/${user_id}?sorted_by=${sort_by}` + (page_number === 1? "" : `&page=${page_number}`))
+    return axios.get(`question/user/${user_id}/?sorted_by=${sort_by}&page=${page_number}`)
         .then(response => {
             console.log(response.data);
             return response.data
@@ -199,7 +199,7 @@ export const editQuestion = async (id: number, question: QuestionEditInterface) 
 //Answer APIs
 
 export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) => {
-    await axios.post(`answer/user/${id}`,
+    return axios.get(`answer/user/${id}/`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}})
         .then(response => {
@@ -212,7 +212,7 @@ export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) =
 }
 
 export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: string) => {
-    await axios.post(`answer/question/${id}`,
+    await axios.get(`answer/question/${id}/`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}})
         .then(response => {
@@ -225,7 +225,7 @@ export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: strin
 }
 
 export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) => {
-    await axios.post(`answer/question/${id}`,
+    await axios.get(`answer/question/${id}/`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}})
         .then(response => {
@@ -238,7 +238,7 @@ export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) 
 }
 
 export const getAnswerbyId = async (id: number) => {
-    await axios.post(`answer/${id}`)
+    await axios.get(`answer/${id}/`)
         .then(response => {
             console.log(response.data);
             return response.data
@@ -398,7 +398,16 @@ export const rateComment = async (id: number, rate: number) => {
             alertError(error)
         })
 }
-
+export const getBookmark = async (token: string, sorted_by: string, page = 1) => {
+    await axios.get(`bookmark/user/me/?sorted_by=${sorted_by}&page=${page}`,{headers: {Authorization: `Token ${token}`}})
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error => {
+            alertError(error)
+        })
+}
 export const postBookmark = async (id: number) => {
     await axios.post(`bookmark/question/${id}`)
         .then(response => {

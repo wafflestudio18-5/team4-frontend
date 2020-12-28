@@ -20,6 +20,7 @@
     box-sizing: border-box;
     height: 100%;
     width: 15%;
+    min-width: fit-content;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -27,6 +28,7 @@
   }
   .menus {
     width: 66%;
+    margin-right: 18px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -36,6 +38,7 @@
   .menuItem {
     @include roboto-16-regular;
     width: fit-content;
+    min-width:fit-content;
     color: $text-black;
     &:not(:last-of-type) {
       margin-right: 18px;
