@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {getQuestionbyKwds} from '../../axios'
+import React, {useState, useEffect} from 'react'
+import {getUserMe, getQuestionbyKwds} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
@@ -8,21 +8,14 @@ import styles from "./Header.module.scss";
 import Button from '../Button';
 
 export const Header = () => {
-    const [user, setUser] = useState({ 
-        "id": 0,
-        "username": "waffle",
-        "created_at": 0,
-        "updated_at": 0,
-        "email": "waffle@wafflestudio.com",
-        "last_login": 0,
-        "nickname": "waffl-e",
-        "picture": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1280px-Waffles_with_Strawberries.jpg",
-        "reputation": 0,
-        "question_count": 1,
-        "answer_count":2,
-        "bookmark_count":3
-      });
-
+  const [user, setUser] = useState(undefined);
+      useEffect(()=> {
+          if(user !== undefined) return;
+          getUserMe('04cbda9c006d6a987f08d2b87faa80b9982c37cf')
+              .then((user) => {
+                setUser(()=>user)
+          })
+      },[user]);
     let history = useHistory();
     const [command, setCommand] = useState('');
     const search = () => {
@@ -32,18 +25,24 @@ export const Header = () => {
   return (
       
     <div className={styles.header}>
-      <a href="/"><img alt="logo" className={styles.logo} src={logo} /></a>
+      <img alt="logo" className={styles.logo} src={logo} onClick={()=>{history.push('/')}}/>
       <form className={styles.inputWithButton}  name="search-form" role="search" action="/questions" method="get">
         <input className={styles.input} onChange={(e)=>{setCommand(e.target.value)}} name="q" type="text" value={command} maxLength="200" placeholder="Search your..."/>
         <Button title="WAFFLE!"></Button>
       </form>
       <div className={styles.rightNav}>
+        {user===undefined?
+        <></>
+        :
+        <>
         <div className={styles.menus}>
-          <img className="profile-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1280px-Waffles_with_Strawberries.jpg" alt="user"/>
-          <p className={styles.menuItem}>코린이</p>
-          <p className={styles.menuItem}>100</p>
+          <img className="profile-image" src={user.picture} alt="user"/>
+          <p className={styles.menuItem}>{user.nickname}</p>
+          <p className={styles.menuItem}>{user.reputation}</p>
         </div>
-        <Button title="Profile"></Button>
+        <Button title="Profile" onClick={()=>{history.push("/users/me")}}></Button>
+        </>
+        }
       </div>
     </div>
   );

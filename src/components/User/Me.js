@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {getUserMe} from '../../axios';
+import {getUserMe, getUser} from '../../axios';
 import {useHistory} from 'react-router-dom';
+import axios from 'axios';
 import {
     BrowserRouter as Router,
     Switch,
@@ -16,26 +17,15 @@ const Me = () => {
     let history = useHistory();
     let {tab} = useParams();
     let match = useRouteMatch();
-    const [user, setUser] = useState({ 
-        "id": 0,
-        "username": "waffle",
-        "created_at": 0,
-        "updated_at": 0,
-        "email": "waffle@wafflestudio.com",
-        "last_login": 0,
-        "nickname": "waffl-e",
-        "picture": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/1280px-Waffles_with_Strawberries.jpg",
-        "reputation": 0,
-        "question_count": 1,
-        "answer_count":2,
-        "bookmark_count":3
-      });
+    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(undefined);
     useEffect(()=> {
-        //const userData = getUserMe()
-        //setUser(()=>userData)
-
-    })
-
+        if(user !== undefined) return;
+        getUserMe('04cbda9c006d6a987f08d2b87faa80b9982c37cf')
+            .then((user) => {
+                setUser(()=>user)
+        })
+    },[user]);
     return (
         <>
         <h1>My page</h1>
@@ -48,8 +38,7 @@ const Me = () => {
         <hr/>
         </div>
         <Switch>
-        {console.log(`${match.path}`)}
-        <Route exact path={`${match.path}`}>
+        <Route exact path={match.path}>
             <Activity user={user}/>
         </Route>
         <Route exact path={`${match.path}/profile`}>
