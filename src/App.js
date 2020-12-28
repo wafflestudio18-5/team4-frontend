@@ -10,11 +10,13 @@ import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
 import {Error404} from './components/Error'
+import Header from './components/Banner/Header';
 
 function App() {
   return (
     <div>
     <Router>
+      <Header/>
       <Switch>
       <Route exact path="/" component={Main}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>

@@ -33,8 +33,7 @@ export const SearchResultTags = ({location}) => {
         history.push('/error/404')
         history.go(0);
     }
-    
-
+    const max_page = result.questions.count()/30
     const Refresh = () => {
         //TODO: 값 확인하기 (refresh 필요 있나)
         result = getQuestionbyTag(tags_form, sort, page)

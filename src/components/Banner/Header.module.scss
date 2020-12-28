@@ -1,0 +1,70 @@
+@import "../project.scss";
+.header {
+    background-color: $white;
+    padding: 2px 30px 10px;
+    height:52px;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    flex-flow: row nowrap;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $light-grey;
+  }
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+  .rightNav {
+    box-sizing: border-box;
+    height: 100%;
+    width: 15%;
+    min-width: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .menus {
+    width: 66%;
+    margin-right: 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:flex-start ;
+    
+  }
+  .menuItem {
+    @include roboto-16-regular;
+    width: fit-content;
+    min-width:fit-content;
+    color: $text-black;
+    &:not(:last-of-type) {
+      margin-right: 18px;
+    }
+  }
+.inputWithButton {
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.input {
+  width: 80%;
+  background-color: $white;
+  margin-right: 4px;
+  border-radius: 2px 0 0 2px;
+  padding: 8px 25px 8px 15px;
+  box-shadow: 4px 0px 40px 0px rgba(0, 0, 0, 0.1);
+  border: 1px solid $light-grey;
+  @include roboto-16-regular;
+  color: $text-black;
+  &::placeholder {
+    width: 250px;
+    @include roboto-16-regular;
+    color: $text-grey;
+  }
+}

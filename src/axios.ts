@@ -6,7 +6,7 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 //TODO: use redux to store and use token
 
 const timeout_set = 1000 
-var baseUrl: string = "BASEURL"
+var baseUrl: string = "http://localhost:8000"
 var token: string = "AUTH_TOKEN"
 
 axios.defaults.headers.common['Authorization'] = token;
@@ -28,8 +28,9 @@ function alertError (error : Error) {
 
 //User APIs
 
-export const getUserMe = async (func : Function) => {
-    await axios.get('user/me', {timeout:timeout_set})
+
+export const getUserMe = async (token: string) => {
+    return axios.get('user/me/',{headers: {Authorization: `Token ${token}`}})
         .then((response) => {
             //show response data in log
             console.log("getUserMe Response data: ")
@@ -39,8 +40,8 @@ export const getUserMe = async (func : Function) => {
         .catch(error=>alertError(error))
     }
 
-export const getUser = async (func : Function, id: number) => {
-    await axios.get(`http://localhost:4000/user/${id}`, {timeout:timeout_set})
+export const getUser = (id: number) => {
+    return axios.get(`user/${id}/`)
         .then((response) => {
             //show response data in log
             console.log("getUserbyId Request data: ")
@@ -129,8 +130,8 @@ export const getQuestionbyId = async (func : Function, question_id: number) => {
         })
 }
 
-export const getQuestionbyUser = async (func : Function, user_id: string, sort_by: string, page_number = 1) => {
-    await axios.get(`question/user/${user_id}?sorted_by=${sort_by}` + (page_number === 1? "" : `&page=${page_number}`), {timeout:timeout_set}) 
+export const getQuestionbyUser = async (user_id: string, sort_by: string, page_number = 1) => {
+    return axios.get(`question/user/${user_id}/?sorted_by=${sort_by}&page=${page_number}`)
         .then(response => {
             console.log(response.data);
             func(response)
@@ -211,8 +212,8 @@ export const editQuestion = async (func : Function, id: number, question: Questi
 
 //Answer APIs
 
-export const getAnswerbyUser = async (func : Function, id: number, page = 1, sorted_by: string) => {
-    await axios.post(`answer/user/${id}`,
+export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) => {
+    return axios.get(`answer/user/${id}/`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}, timeout:timeout_set})
         .then(response => {
@@ -224,8 +225,8 @@ export const getAnswerbyUser = async (func : Function, id: number, page = 1, sor
         })
 }
 
-export const getAnswerbyQuestion = async (func : Function, id: number, page = 1, sorted_by: string) => {
-    await axios.post(`answer/question/${id}`,
+export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: string) => {
+    await axios.get(`answer/question/${id}/`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}, timeout:timeout_set})
         .then(response => {
@@ -237,8 +238,8 @@ export const getAnswerbyQuestion = async (func : Function, id: number, page = 1,
         })
 }
 
-export const getAnswerbyRating = async (func : Function, id:number, page = 1, sorted_by: string) => {
-    await axios.post(`answer/question/${id}`,
+export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) => {
+    await axios.get(`answer/question/${id}/`,
         {params:{'page': page, 
                  'sorted_by' : sorted_by}, timeout:timeout_set})
         .then(response => {
@@ -249,9 +250,8 @@ export const getAnswerbyRating = async (func : Function, id:number, page = 1, so
             alertError(error)
         })
 }
-
-export const getAnswerbyId = async (func : Function, id: number) => {
-    await axios.post(`answer/${id}`, {timeout:timeout_set})
+export const getAnswerbyId = async (id: number) => {
+    await axios.get(`answer/${id}/`)
         .then(response => {
             console.log(response.data);
             func(response)
@@ -412,8 +412,18 @@ export const rateComment = async (func : Function, id: number, rate: number) => 
         })
 }
 
-export const postBookmark = async (func : Function, id: number) => {
-    await axios.post(`bookmark/question/${id}`, {timeout:timeout_set})
+export const getBookmark = async (token: string, sorted_by: string, page = 1) => {
+    await axios.get(`bookmark/user/me/?sorted_by=${sorted_by}&page=${page}`,{headers: {Authorization: `Token ${token}`}})
+        .then(response => {
+            console.log(response.data);
+            return response.data
+        })
+        .catch(error => {
+            alertError(error)
+        })
+}
+export const postBookmark = async (id: number) => {
+    await axios.post(`bookmark/question/${id}`)
         .then(response => {
             console.log(response.data);
             func(response)
