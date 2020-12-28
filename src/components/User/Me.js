@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {getUserMe, getUser} from '../../axios';
+import {getUserMe} from '../../axios';
 import {useHistory} from 'react-router-dom';
-import axios from 'axios';
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
-    useParams,
     useRouteMatch
   } from "react-router-dom";
 import Activity from './Activity';
@@ -15,16 +12,14 @@ import EditProfile from './EditProfile';
 //user는 나중에 context로 바꾸기
 const Me = () => {
     let history = useHistory();
-    let {tab} = useParams();
     let match = useRouteMatch();
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(undefined);
     useEffect(()=> {
         if(user !== undefined) return;
-        getUserMe('04cbda9c006d6a987f08d2b87faa80b9982c37cf')
-            .then((user) => {
-                setUser(()=>user)
-        })
+        getUserMe()
+            .then(setUser)
+            .catch(console.log)
     },[user]);
     return (
         <>

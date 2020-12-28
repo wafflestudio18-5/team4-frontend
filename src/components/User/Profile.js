@@ -4,10 +4,9 @@ const Profile = () => {
     const [user, setUser] = useState(undefined);
     useEffect(()=> {
         if(user !== undefined) return;
-        getUserMe('04cbda9c006d6a987f08d2b87faa80b9982c37cf')
-            .then((user) => {
-                setUser(()=>user)
-        })
+        getUserMe()
+            .then(setUser)
+            .catch(console.log)
     },[user]);
     return (
         user===undefined? <></>:

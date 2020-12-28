@@ -22,13 +22,9 @@ const EditProfile = () => {
             setAboutMe(()=>user.intro)
             return;
         };
-        getUserMe('04cbda9c006d6a987f08d2b87faa80b9982c37cf')
-            .then((user) => {
-            //show response data in log
-            console.log("getUserbyId Request data: ")
-            console.log(user)
-            setUser(()=>user)
-        })
+        getUserMe()
+              .then(setUser)
+              .catch(console.log)
     },[user]);
 
     const saveChange = () => {

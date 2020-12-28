@@ -1,12 +1,13 @@
 import axios from 'axios'
+import { ObjectFlags, resolveModuleName } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
 
 
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
-var baseUrl: string = "http://localhost:8000"
-var token: string = "AUTH_TOKEN"
+var baseUrl: string = "http://localhost:8000"//test server
+var token: string = "Token "+"04cbda9c006d6a987f08d2b87faa80b9982c37cf"//test token
 
 axios.defaults.headers.common['Authorization'] = token;
 axios.defaults.baseURL = baseUrl;
@@ -20,434 +21,269 @@ function alertError (error : Error) {
 }
 
 //User APIs
+//GET user
+export const getUserMe = () => new Promise((resolve, reject) => {
+    axios.get('user/me/')
+        .then((response) => resolve(response.data))
+        .catch(reject)
+    })
 
-export const getUserMe = async (token: string) => {
-    return axios.get('user/me/',{headers: {Authorization: `Token ${token}`}})
-        .then((response) => {
-            //show response data in log
-            console.log("getUserMe Response data: ")
-            console.log(response.data)
-            return response.data
-        })
-        .catch(error=>alertError(error))
-    }
-
-export const getUser = (id: number) => {
-    return axios.get(`user/${id}/`)
-        .then((response) => {
-            //show response data in log
-            console.log("getUserbyId Request data: ")
-            console.log(response.data)
-            return response.data
-        })
-        .catch(error=>alertError(error))
-    }
-
-//user: User
-export const postUser = async (user: UserInterface) => {
-    await axios.post(`user`, user)
-        .then((response) => {
-            //show response data in log
-            console.log("postUser Request data: ")
-            console.log(user)
-            //TODO: get and sotre token by redux
-            //response.data.token
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)})
-    }
-//user: UserEdit
-export const editUserME = async (user : UserEditInterface) => {
-    //FIXME: is it safe (or recommended) to give this warning here?)
-    if (!user) {alert("No information is new")}
-    else {
-        await axios.put('user/me', user)
-            .then(response => {
-                console.log(response.data);
-                //TODO: update reputation, last_login, ... etc
-            })
-            .catch(error => {
-                alert(error.response.data.message);
-                alertError(error);
-            })
-        }
-    }
-
-
-export const deleteUser = async () => { 
-    await axios.delete('user/me')
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}       
-//login_info: Login_info
-export const signin = async (login_info: LoginInfoInterface) => {
-    await axios.put('user/login', login_info)
-        .then(response => {
-            console.log(response.data);
-            return response
-        })
-        .catch(error => {
-            alertError(error);
-        })
-}
-
-export const signout = async () => {
-    await axios.post('user/logout')
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
+export const getUser = (id: number) => new Promise((resolve,reject) => {
+    axios.get(`user/${id}/`)
+        .then((response) => resolve(response.data))
+        .catch(reject)
+})
+//POST user
+export const postUser = (user: UserInterface, github_token: String) => new Promise((resolve,reject) => {
+    axios.post(`user/`, {data: Object.assign(user, github_token)})
+        .then((response) => resolve(response.data))
+        .catch(reject)
+})
+//PUT user
+export const editUserMe = (user: UserInterface) => new Promise((resolve,reject) => {
+    axios.put(`user/me/`, {data: user})
+        .then((response) => resolve(response.data))
+        .catch(reject)//response.data.message?
+})
+//DELETE user
+export const deleteUserMe = () => new Promise((resolve,reject) => {
+    axios.delete(`user/me/`)
+        .then((response) => resolve(response.data))
+        .catch(reject)//response.data.message?
+})
+//login
+export const login = (username: string, password: string, github_token: string) => new Promise((resolve,reject) => {
+    axios.put(`user/login/`,{data:{username, password, github_token}})
+        .then((response) => resolve(response.data))
+        .catch(reject)//response.data.message?
+})
+//logout
+export const logout = () => new Promise((resolve,reject) => {
+    axios.post(`user/logout/`)
+        .then((response) => resolve(response.data))
+        .catch(reject)//response.data.message?
+})
 
 //Question APIs
+//GET question
+export const getQuestion = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.get(`question/${id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
 
-export const getQuestionbyId = async (question_id: number) => {
-    await axios.get(`question/${question_id}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
+export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`question/user/${id}/`, {params:{sorted_by, page}})
+            .then(response => resolve(response.data.questions))
+            .catch(reject)//FIXME: how to handle status code 301?
+    }
+)
 
-export const getQuestionbyUser = async (user_id: string, sort_by: string, page_number = 1) => {
-    return axios.get(`question/user/${user_id}/?sorted_by=${sort_by}&page=${page_number}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-            //FIXME: how to handle status code 301?
-            if (error.response.status === 301) {return error.response.data}
-        })
-}
+export const getQuestionsWithTags = (tags: string[], filter_by: string, sorted_by: string, page=1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`question/tagged/}`,
+                    {params:{'tags':tags.join('+'), filter_by, sorted_by, page}})
+            .then(response => resolve(response.data.questions))
+            .catch(reject)//FIXME: how to handle status code 301?
+    }
+)
 
-//tags must be in the right format: etc) "react+js+axios"
-export const getQuestionbyTag = async (filter_by: string, tags: string[], sort_by: string, page_number = 1) => {
-    await axios.get(`question/tagged/${tags}`,
-        {params:{'filter_by' : filter_by,
-                 'sorted_by' : sort_by,
-                 'page': page_number}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-            //FIXME: how to handle status code 301?
-            if (error.response.status === 301) {return error.response.data}
-        })
-}
+export const getQuestionsWithKeywords = (keywords: string[], filter_by: string, sorted_by: string, page=1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`question/search/keywords/}`,
+                    {params:{'keywords':keywords.join('+'), filter_by, sorted_by, page}})
+            .then(response => resolve(response.data.questions))
+            .catch(reject)//FIXME: how to handle status code 301?
+    }
+)
 
-//getQuestionbyKwds: get by keywords
-//keywords must be in the right format: etc) "react+js+axios"
-export const getQuestionbyKwds = async (keywords: string[], filter_by: string, sort_by: string, page_number = 1) => {
-    await axios.get(`question/search/${keywords}`,
-        {params:{'filter_by' : filter_by,
-                 'sorted_by' : sort_by,
-                 'page': page_number}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-            //FIXME: how to handle status code 301?
-            if (error.response.status === 301) {return error.response.data}
-        })
-}
+//POST question
+export const postQuestion = (question: QuestionInterface) => 
+    new Promise((resolve,reject) => {
+        axios.post(`question/`, {data:{question}})
+            .then(response => resolve(response.data))
+            .catch(reject)//FIXME: how to handle status code 301?
+    }
+)
 
-//question : Question
-export const postQuestion = async (question: QuestionInterface) => {
-    await axios.post('question/',
-        {data:question})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-//question : QuestionEdit
-export const editQuestion = async (id: number, question: QuestionEditInterface) => {
-    await axios.post(`question/${id}`,
-        {data:question})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
+//PUT question
+export const editQuestion = (id: number, question: QuestionEditInterface) => 
+    new Promise((resolve,reject) => {
+        axios.put(`question/${id}/`, {data:{question}})
+            .then(response => resolve(response.data))
+            .catch(reject)//FIXME: how to handle status code 301?
+    }
+)
 
 //Answer APIs
+//GET answer
+export const getAnswersOfUser = (id: number, sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`answer/user/${id}/`, {params:{page, sorted_by}})
+            .then(response => resolve(response.data.answers))
+            .catch(reject)
+    }
+)
 
-export const getAnswerbyUser = async (id: number, page = 1, sorted_by: string) => {
-    return axios.get(`answer/user/${id}/`,
-        {params:{'page': page, 
-                 'sorted_by' : sorted_by}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
+export const getAnswersOfQuestion = (id: number, sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`answer/question/${id}/`, {params:{page, sorted_by}})
+            .then(response => resolve(response.data.answers))
+            .catch(reject)
+    }
+)
 
-export const getAnswerbyQuestion = async (id: number, page = 1, sorted_by: string) => {
-    await axios.get(`answer/question/${id}/`,
-        {params:{'page': page, 
-                 'sorted_by' : sorted_by}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
+export const getAnswer = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.get(`answer/${id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//POST answer
+export const postAnswer = (id: number, content: string) => 
+    new Promise((resolve,reject) => {
+        axios.post(`answer/question/${id}/`, {data:{content}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
 
-export const getAnswerbyRating = async (id:number, page = 1, sorted_by: string) => {
-    await axios.get(`answer/question/${id}/`,
-        {params:{'page': page, 
-                 'sorted_by' : sorted_by}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
+export const postAnswerAcceptance = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.post(`answer/${id}/acception/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//PUT answer
+export const editAnswer = (id: number, content: string) => 
+    new Promise((resolve,reject) => {
+        axios.put(`answer/${id}/`,{data:{content}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//DELETE answer
+export const deleteAnswer = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.delete(`answer/${id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
 
-export const getAnswerbyId = async (id: number) => {
-    await axios.get(`answer/${id}/`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const postAnswer = async (id: number, answer: string) => {
-    await axios.post(`answer/question/${id}`,
-    {data:{'content': answer}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const editAnswer = async (id: number, answer: string) => {
-    await axios.put(`answer/${id}`,
-    {data:{content: answer}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const deleteAnswer = async (id: number, answer: string) => {
-    await axios.delete(`answer/${id}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
+export const deleteAnswerAcceptance = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.delete(`answer/${id}/acception/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
 
 //Comment APIs
+//GET comment
+export const getComment = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.get(`comment/${id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+export const getCommentsOfAnswer = (id: number, page=1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`comment/answer/${id}/`)
+            .then(response => resolve(response.data.comments))
+            .catch(reject)
+    }
+)
+export const getCommentsOfQuestion = (id: number, page=1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`comment/question/${id}/`)
+            .then(response => resolve(response.data.comments))
+            .catch(reject)
+    }
+)
+//POST comment
+export const commentOnQuestion = (question_id: number, content: String) => 
+    new Promise((resolve,reject) => {
+        axios.post(`comment/question/${question_id}/`, {data:{content}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+export const commentOnAnswer = (answer_id: number, content: String) => 
+    new Promise((resolve,reject) => {
+        axios.post(`comment/answer/${answer_id}/`, {data:{content}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//PUT comment
+export const editComment = (id: number, comment: string) => 
+    new Promise((resolve,reject) => {
+        axios.put(`comment/${id}/`, {data:{comment}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//DELETE comment
+export const deleteComment = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.delete(`comment/${id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//Rate APIs
+//PUT rate
+export const rateQuestion = (id: number, rating: number) => 
+    new Promise((resolve,reject) => {
+        axios.put(`rate/question/${id}/`, {data:{rating}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+export const rateAnswer = (id: number, rating: number) => 
+    new Promise((resolve,reject) => {
+        axios.put(`rate/answer/${id}/`, {data:{rating}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+export const rateComment = (id: number, rating: number) => 
+    new Promise((resolve,reject) => {
+        axios.put(`rate/comment/${id}/`, {data:{rating}})
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
 
-export const getCommentbyId = async (id: number) => {
-    await axios.get(`comment/${id}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const getCommentbyAnswer = async (id: number, page = 1) => {
-    await axios.get(`comment/answer/${id}`, {params:{'page':page}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const getCommentbyQuestion = async (id: number, page = 1) => {
-    await axios.get(`comment/question/${id}`, {params:{'page':page}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-//TODO: id of question Question에 Comment달기
-export const postCommentQuestion = async (id: number, content: String) => {
-    await axios.post(`comment/question/${id}`, {data:{'content':content}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-
-//TODO: id of answer Answer에 Comment 달기
-export const postCommentAnswer = async (id: number, content: string) => {
-    await axios.post(`comment/answer/${id}`, {data:{'content':content}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-//TODO: content = ""?
-export const editComment = async (id: number, comment: string) => {
-    await axios.put(`comment/${id}`, {data:{'comment' : comment}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const deleteComment = async (id:number) => {
-    await axios.delete(`comment/${id}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const rateQuestion = async (id: number, rate: number) => {
-    await axios.put(`rate/question/${id}`, {data:{'rate' : rate}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const rateAnswer = async (id: number, rate: number) => {
-    await axios.put(`rate/answer/${id}`, {data:{'rate' : rate}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const rateComment = async (id: number, rate: number) => {
-    await axios.put(`rate/comment/${id}`, {data:{'rate' : rate}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-export const getBookmark = async (token: string, sorted_by: string, page = 1) => {
-    await axios.get(`bookmark/user/me/?sorted_by=${sorted_by}&page=${page}`,{headers: {Authorization: `Token ${token}`}})
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-export const postBookmark = async (id: number) => {
-    await axios.post(`bookmark/question/${id}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const deleteBookmark = async (id: number) => {
-    await axios.delete(`bookmark/question/${id}`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            alertError(error)
-        })
-}
-
-export const acceptAnswer = async (id: number) => {
-    await axios.post(`answer/${id}/acception`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error=>{
-            alertError(error)
-        })
-}
-
-export const deleteacceptAnswer = async (id: number) => {
-    await axios.delete(`answer/${id}/acception`)
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error=>{
-            alertError(error)
-        })
-}
+//Bookmark APIs
+//GET bookmark
+export const getBookmarks = (sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`bookmark/user/me/`, {params:{sorted_by, page}})
+            .then(response => resolve(response.data.questions))
+            .catch(reject)
+    }
+)
+//POST bookmark
+export const addBookmark = (question_id: number) => 
+    new Promise((resolve,reject) => {
+        axios.post(`bookmark/question/${question_id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
+//DELETE bookmark
+export const deleteBookmark = (id: number) => 
+    new Promise((resolve,reject) => {
+        axios.delete(`bookmark/question/${id}/`)
+            .then(response => resolve(response.data))
+            .catch(reject)
+    }
+)
