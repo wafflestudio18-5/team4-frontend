@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {getUserMe, getQuestionsWithKeywords} from '../../axios'
+import {getUserMe, getQuestionsWithKeywords, logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
@@ -21,6 +21,14 @@ export const Header = () => {
     /*GET /question/search/keywords*/
         history.push("/users/me")
     }
+  const signout = () => {
+    logout()
+      .then(() => {
+        setUser(()=>undefined)
+        //Redirect?
+      })
+
+  }
   return (
       
     <div className={styles.header}>
@@ -37,11 +45,11 @@ export const Header = () => {
         :
         <>
         <div className={styles.menus}>
-          <img className="profile-image" src={user.picture} alt="user"/>
+          <img className="profile-image" src={user.picture} alt="user" onClick={()=>{history.push("/users/me")}}/>
           <p className={styles.menuItem}>{user.nickname}</p>
           <p className={styles.menuItem}>{user.reputation}</p>
         </div>
-        <Button title="Profile" onClick={()=>{history.push("/users/me")}}></Button>
+        <Button title="logout" onClick={()=>signout()}></Button>
         </>
         }
       </div>

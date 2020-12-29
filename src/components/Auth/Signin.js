@@ -1,6 +1,8 @@
-import {useState, Fragment, useHistory} from 'react'
+import React, {useState, Fragment} from 'react'
+import {useHistory} from 'react-router-dom'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
+import {login, logout} from '../../axios'
 import * as config from '../../config'
 
 
@@ -14,9 +16,9 @@ const Signin = () => {
     const [password, setPassword] = useState("")
     const [warn, setWarn] = useState("")
 
-    const usernameOnChange = (usrname) => {
+    const usernameOnChange = (username) => {
         setWarn("")
-        setUsername(usrname)
+        setUsername(username)
     }
 
     const passwordOnChange = (password) => {
@@ -25,17 +27,16 @@ const Signin = () => {
     }
 
     const loginwthUsername = async () => {
-        const username_in = username
-        const password_in = password
-        await axios.put('https://api.cakes.com/user/login', {params:{'username': username_in, 'password' : password_in}})
-                .then(res => {
-                    //res 는 user info이므로 redux에 저장하기
-                    history.push('/') //go to main
-                })
-                .catch(e => {
-                    console.log(e);
-                    setWarn("Authentication failed")
-                })
+        login(username, password)
+            .then(response => {
+                //res 는 user info이므로 redux에 저장하기
+                
+                history.push('/') //go to main
+            })
+            .catch(error => {
+                console.log(error);
+                setWarn("Authentication failed")
+            })
     }
     
     const onSuccess = async({code}) => {
@@ -95,5 +96,5 @@ const Signin = () => {
     )
 }
 
-export default Signin
+export default Signin;
 

@@ -53,14 +53,20 @@ export const deleteUserMe = () => new Promise((resolve,reject) => {
 })
 //login
 export const login = (username: string, password: string, github_token: string) => new Promise((resolve,reject) => {
-    axios.put(`user/login/`,{data:{username, password, github_token}})
-        .then((response) => resolve(response.data))
+    axios.put(`user/login/`,{data:github_token?{username, password, github_token}:{username, password}})
+        .then((response) => {
+            localStorage.setItem("token", response.data.token)
+            localStorage.setItem("logged_in", "true")
+            resolve(response.data)})
         .catch(reject)//response.data.message?
 })
 //logout
 export const logout = () => new Promise((resolve,reject) => {
     axios.post(`user/logout/`)
-        .then((response) => resolve(response.data))
+        .then((response) => {
+            localStorage.removeItem('token')
+            localStorage.removeItem('logged_in')
+            resolve(response.data)})
         .catch(reject)//response.data.message?
 })
 
