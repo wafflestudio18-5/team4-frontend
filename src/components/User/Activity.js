@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {getAnswerbyUser, getQuestionbyUser,getBookmark} from '../../axios'
+import {getAnswersOfUser, getQuestionsOfUser,getBookmarks} from '../../axios'
 //Answers, Questions, Tags, Badges, Bookmarks, Follwing, Bounties, Reputation, All actions, Responses, Votes
 const user = { 
     "id": 0,
@@ -51,17 +51,17 @@ const Section = ({activity,user,data}) => {
         //console.log(user)
         switch(activity) {
             case 'Answers':
-                getAnswerbyUser(user.id,1,sortedBy)
-                    .then(response => setList(()=>response.answers));
+                getAnswersOfUser(user.id,sortedBy)
+                    .then(response => {setList(()=>response);console.log(response)});
                 break;
             case 'Questions':
-                getQuestionbyUser(user.id,sortedBy)
-                    .then(response => setList(()=>response.questions));
+                getQuestionsOfUser(user.id,sortedBy)
+                    .then(response => setList(()=>response));
                 break;
                 case 'Tags':break;//to be implemented
             case 'Bookmarks'://server not implemented
-            getBookmark('04cbda9c006d6a987f08d2b87faa80b9982c37cf',sortedBy,1)
-                .then(response => setList(()=>response.questions));//add author, tags later
+            getBookmarks(sortedBy)
+                .then(response => setList(()=>response));//add author, tags later
             break;
             
         }

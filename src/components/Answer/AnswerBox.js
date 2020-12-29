@@ -1,12 +1,12 @@
 import {Fragment} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import ResponderProfile from '../Profile/ResponderProfile'
-import {getCommentbyAnswer} from '../../axios.ts'
+import {getCommentsOfAnswer} from '../../axios.ts'
 import {CommentList} from '../Comment/Comments'
 import {CommentPostAnswer} from '../Comment/CommentPost'
 
 const AnswerBox = (Answer, accept) => {
-    const comments = getCommentbyAnswer()
+    const comments = getCommentsOfAnswer()
     return(
        <Fragment>
            <div className="ansbox-left-box">

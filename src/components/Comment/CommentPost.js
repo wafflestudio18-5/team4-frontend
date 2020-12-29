@@ -1,5 +1,5 @@
 import {useState, Fragment} from 'react'
-import {postCommentQuestion, postCommentAnswer} from '../../axios.ts'
+import {commentOnQuestion, commentOnAnswer} from '../../axios.ts'
 
 
 export const CommentPostQuestion = (id_q) => {
@@ -9,7 +9,7 @@ export const CommentPostQuestion = (id_q) => {
             <div className="comment-content">
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-            <button className="comment-submit-btn" onClick={postCommentQuestion(id_q, content)}>
+            <button className="comment-submit-btn" onClick={commentOnQuestion(id_q, content)}>
                 POST Comment
             </button>
         </Fragment>
@@ -23,7 +23,7 @@ export const CommentPostAnswer = (id_ans) => {
             <div className="comment-content">
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-            <button className="comment-submit-btn" onClick={postCommentAnswer(id_ans, content)}>
+            <button className="comment-submit-btn" onClick={commentOnAnswer(id_ans, content)}>
                 POST Comment
             </button>
         </Fragment>

@@ -15,11 +15,13 @@ export const User = (picture:string = "", nickname : string, email : string, pas
 }
 
 export interface UserInterface {
-    "picture": string
-    "nickname": string
+    "picture": string,
+    "nickname": string,
     "email" : string,
     "password": string,
-    "username": string
+    "username": string,
+    "title": string,
+    "intro": string
 }
 
 export const UserEdit = (picture:string="", nickname:string="", password:string="") => {

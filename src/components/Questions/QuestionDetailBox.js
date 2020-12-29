@@ -1,5 +1,5 @@
 import {useState, Fragment} from 'react'
-import {getQuestionbyId, getCommentbyQuestion, getAnswerbyQuestion} from '../../axios.ts'
+import {getQuestion, getCommentsOfQuestion, getAnswersOfQuestion} from '../../axios.ts'
 import QdetailBox from './QdetailBox'
 import {CommentList} from '../Comment/Comments'
 import AnswerList from '../Answer/AnswerList'
@@ -9,15 +9,15 @@ import {CommentPostQuestion} from '../Comment/CommentPost'
 const QuestionDetailBox = (match) => {
     console.log(match);
     const id = match.match.params.question_id
-    const question = getQuestionbyId(id)
+    const question = getQuestion(id)
     const [comment_page, set_comment_page] = useState(1) //TODO: page 이동 버튼 만들기
     const [answer_sort, set_answer_sort] = useState("votes")
     const [answer_page, set_answer_page] = useState(1)
     const max_page = question.answer_count/30
     const max_comment = question.comment_count
 
-    const q_comments = getCommentbyQuestion(id, comment_page)
-    const answers = getAnswerbyQuestion(id, 1, answer_sort)
+    const q_comments = getCommentsOfQuestion(id, comment_page)
+    const answers = getAnswersOfQuestion(id, 1, answer_sort)
 
     return(
         <Fragment className="qdetail-main-box">

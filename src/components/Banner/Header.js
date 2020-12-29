@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {getUserMe, getQuestionbyKwds} from '../../axios'
+import {getUserMe, getQuestionsWithKeywords} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
@@ -11,10 +11,9 @@ export const Header = () => {
   const [user, setUser] = useState(undefined);
       useEffect(()=> {
           if(user !== undefined) return;
-          getUserMe('04cbda9c006d6a987f08d2b87faa80b9982c37cf')
-              .then((user) => {
-                setUser(()=>user)
-          })
+          getUserMe()
+              .then(setUser)
+              .catch(console.log)
       },[user]);
     let history = useHistory();
     const [command, setCommand] = useState('');

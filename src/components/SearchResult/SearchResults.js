@@ -1,5 +1,5 @@
 import {useState, Fragement} from 'react'
-import {getQuestionbyTag, getQuestionbyKwds, getUser} from '../../axios.ts'
+import {getQuestionsWithTags, getQuestionsWithKeywords, getUser} from '../../axios.ts'
 import QuestionList from '../Questions/QuestionList'
 import qs from 'qs';
 
@@ -13,11 +13,11 @@ export const SearchResultTags = ({location}) => {
     const [page, setPage] = useState(parseInt(query.page))
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
     const tags_form = query.tags
-    let result = filter_by === null? getQuestionbyTag(tags_form, sort, page) : getQuestionbyTag(filter_by,tags_form, sort, page)
+    let result = filter_by === null? getQuestionsWithTags(tags_form, sort, page) : getQuestionsWithTags(filter_by,tags_form, sort, page)
     const max_page = result.questions.count()/30
     const Refresh = () => {
         //TODO: 값 확인하기 (refresh 필요 있나)
-        result = getQuestionbyTag(tags_form, sort, page)
+        result = getQuestionsWithTags(tags_form, sort, page)
     }
     
     const changeSort = (n_sort) => {
@@ -116,12 +116,12 @@ export const    SearchResultKwds = ({location}) => {
     const [sort, setSort] = query.sorted_by
     const [page, setPage] = query.page
     const keywords_form = query.kwds
-    const [result, setResult] = useState(getQuestionbyKwds(keywords_form, sort, page))
+    const [result, setResult] = useState(getQuestionsWithKeywords(keywords_form, sort, page))
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
     const max_page = result.questions.count()/30
 
     const Refresh = () => {
-        setResult(getQuestionbyKwds(keywords_form, filter_by, sort, page))
+        setResult(getQuestionsWithKeywords(keywords_form, filter_by, sort, page))
     }
     
     const changeSort = (n_sort) => {
@@ -211,12 +211,12 @@ export const SearchResultUser = (match) => {
     const user = getUser(user_id)
     const [sort, setSort] = useState("newest")
     const [page, setPage] = useState(1)
-    const [result, setResult] = useState(getQuestionbyKwds(user_id, sort, page))
+    const [result, setResult] = useState(getQuestionsWithKeywords(user_id, sort, page))
     console.log(result);
     const max_page = result.questions.count()/30
 
     const Refresh = () => {
-        setResult(getQuestionbyKwds(user_id, sort, page))
+        setResult(getQuestionsWithKeywords(user_id, sort, page))
     }
     
     const changeSort = (n_sort) => {
