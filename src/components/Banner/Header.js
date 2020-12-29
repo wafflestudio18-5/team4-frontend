@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {getUserMe, getQuestionsWithKeywords, logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
+import {useAuth} from '../../context/auth'
 import './image.css'
 import logo from '../../logo.png'
 
@@ -9,12 +10,13 @@ import Button from '../Button';
 
 export const Header = () => {
   const [user, setUser] = useState(undefined);
+  const {authTokens, setAuthTokens} = useAuth()
       useEffect(()=> {
-          if(user !== undefined) return;
+          if(user !== undefined) return
           getUserMe()
               .then(setUser)
               .catch(console.log)
-      },[user]);
+      },[authTokens]);
     let history = useHistory();
     const [command, setCommand] = useState('');
     const search = () => {
@@ -25,6 +27,7 @@ export const Header = () => {
     logout()
       .then(() => {
         setUser(()=>undefined)
+        setAuthTokens()
         //Redirect?
       })
 

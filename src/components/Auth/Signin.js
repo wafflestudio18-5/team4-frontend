@@ -1,5 +1,6 @@
 import React, {useState, Fragment} from 'react'
 import {useHistory} from 'react-router-dom'
+import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
 import {login, logout} from '../../axios'
@@ -15,10 +16,10 @@ const Signin = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [warn, setWarn] = useState("")
-
+    const {setAuthTokens} = useAuth()
     const usernameOnChange = (username) => {
         setWarn("")
-        setUsername(username)
+        setUsername(()=>username)
     }
 
     const passwordOnChange = (password) => {
@@ -30,7 +31,9 @@ const Signin = () => {
         login(username, password)
             .then(response => {
                 //res 는 user info이므로 redux에 저장하기
-                
+                const token = `Token ${response.token}`
+                const logged_in = true
+                setAuthTokens({token, logged_in})
                 history.push('/') //go to main
             })
             .catch(error => {
@@ -83,11 +86,8 @@ const Signin = () => {
             buttonText="Login with Github"/>
 
             <div className="login-box">
-                <div>
-                    Login with username and Password
-                </div>
-                <input calassName="id-input"  value={username} placeholder="input yout username" onChange={usernameOnChange}/>
-                <input calassName="password-input" value={password} placeholder="inpur your Password" onChange={passwordOnChange}/> 
+                <label>Username</label><input type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
+                <label>Password</label><input type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
                 <button className="login-btn" onClick={loginwthUsername}>Login</button>
                 <div className="warn">{warn}</div>
             </div>
