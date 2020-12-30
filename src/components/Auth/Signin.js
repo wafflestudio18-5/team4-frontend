@@ -1,7 +1,9 @@
-import {useState, Fragment, useHistory} from 'react'
+import {useState, Fragment} from 'react'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
 import * as config from '../../config'
+import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
+import {useSelector, useDispatch} from 'react-redux'
 
 const token_instance = axios.create({
     baseURL: 'https://github.com/',
@@ -9,6 +11,8 @@ const token_instance = axios.create({
   });
 
 export const Signin = () => {
+    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const dispatch = useDispatch();
     const [username, setUsername] = useState("")
     const [pswd, setPswd] = useState("")
     const [warn, setWarn] = useState("")
@@ -28,7 +32,8 @@ export const Signin = () => {
         const pswd_in = pswd
         await axios.put('https://api.cakes.com/user/login', {params:{'username': username_in, 'password' : pswd_in}})
                 .then(res => {
-                    //res 는 user info이므로 redux에 저장하기
+                    dispatch(setUserInfo({payload: res}))
+                    dispatch(Login({token : res.token}))
                 })
                 .catch(e => {
                     console.log(e);
@@ -49,7 +54,8 @@ export const Signin = () => {
             console.log("github token acquired");
             await axios.put('https://api.cakes.com/user/login', {params:{'github_token' : token}})
                 .then(res => {
-                    //res 는 user info이므로 redux에 저장하기
+                    dispatch(setUserInfo({payload: res}))
+                    dispatch(Login({token : res.token}))
                 })
                 .catch(e => {
                     console.log(e);
@@ -65,10 +71,16 @@ export const Signin = () => {
     const onFailure = () => {
 
     }
-
+    if(isLoggedin) {
+        return (
+            <Fragment>
+                You are Already Logged in
+            </Fragment>
+        )
+    }
     return (
         <Fragment> 
-            <GitHubLogin clientusername="1bc89bcdb1f71159016b"
+            <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
             redirectUri="https://www.wafflow.com"

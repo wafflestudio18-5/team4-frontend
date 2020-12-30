@@ -22,6 +22,10 @@ export const Header = () => {
   let history = useHistory();
   const [command, setCommand] = useState('');
   const search = () => {
+      const searchStr = command
+      if ("user" in searchStr) {
+        
+      }
   /*GET /question/search/keywords*/
       history.push("/users/me")
   }
