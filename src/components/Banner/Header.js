@@ -3,24 +3,34 @@ import {getUserMe, getQuestionsWithKeywords} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
+import {Login, Logout} from '../../modules/AuthRedux'
+import {useSelector, useDispatch} from 'react-redux' 
 
 import styles from "./Header.module.scss";
 import Button from '../Button';
 
 export const Header = () => {
-  const [user, setUser] = useState(undefined);
+  const dispatch = useDispatch();
+  const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+  const [user, setUser] = useState("");
       useEffect(()=> {
-          if(user !== undefined) return;
+          if(!isLoggedin) return;
           getUserMe()
               .then(setUser)
               .catch(console.log)
       },[user]);
-    let history = useHistory();
-    const [command, setCommand] = useState('');
-    const search = () => {
-    /*GET /question/search/keywords*/
-        history.push("/users/me")
-    }
+  let history = useHistory();
+  const [command, setCommand] = useState('');
+  const search = () => {
+  /*GET /question/search/keywords*/
+      history.push("/users/me")
+  }
+  const onLogoutBtnClick = () => {
+    dispatch(Logout);
+    history.push('/')
+    history.go(0);
+  }
+
   return (
       
     <div className={styles.header}>
@@ -30,8 +40,10 @@ export const Header = () => {
         <Button title="WAFFLE!"></Button>
       </form>
       <div className={styles.rightNav}>
-        {user===undefined?
-        <></>
+        {!isLoggedin?
+        <>
+        <Button title="Signin" onClick={() => {history.push("/signin")}}>Signin</Button>
+        </>
         :
         <>
         <div className={styles.menus}>
@@ -40,6 +52,8 @@ export const Header = () => {
           <p className={styles.menuItem}>{user.reputation}</p>
         </div>
         <Button title="Profile" onClick={()=>{history.push("/users/me")}}></Button>
+        <></>
+        <Button title="Logout" onClick={()=>onLogoutBtnClick}></Button>
         </>
         }
       </div>

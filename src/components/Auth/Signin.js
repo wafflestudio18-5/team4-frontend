@@ -9,8 +9,6 @@ const token_instance = axios.create({
   });
 
 export const Signin = () => {
-    const history = useHistory();
-
     const [username, setUsername] = useState("")
     const [pswd, setPswd] = useState("")
     const [warn, setWarn] = useState("")
@@ -31,7 +29,6 @@ export const Signin = () => {
         await axios.put('https://api.cakes.com/user/login', {params:{'username': username_in, 'password' : pswd_in}})
                 .then(res => {
                     //res 는 user info이므로 redux에 저장하기
-                    history.push('/') //go to main
                 })
                 .catch(e => {
                     console.log(e);
@@ -53,7 +50,6 @@ export const Signin = () => {
             await axios.put('https://api.cakes.com/user/login', {params:{'github_token' : token}})
                 .then(res => {
                     //res 는 user info이므로 redux에 저장하기
-                    history.push('/') //go to main
                 })
                 .catch(e => {
                     console.log(e);
