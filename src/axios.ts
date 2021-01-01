@@ -6,10 +6,10 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
-var baseUrl: string = "http://localhost:8000"//test server
-var token: string = "Token "+"04cbda9c006d6a987f08d2b87faa80b9982c37cf"//test token
+var baseUrl: string = "http://localhost:8000/"//test server
+var token: string = "Token "+ localStorage.getItem("token")  //test token
 
-axios.defaults.headers.common['Authorization'] = token;
+//axios.defaults.headers.common['Authorization'] = token;
 axios.defaults.baseURL = baseUrl;
 //alertError: function to show info about errors for all requests/responses
 function alertError (error : Error) {

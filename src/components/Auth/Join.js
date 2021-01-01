@@ -10,12 +10,13 @@ const token_instance = axios.create({
     headers: { 'Accept': 'application/json' },
   });
 
-export const Signin = () => {
-    const token = localStorage.getItem("token")
+export const Join = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
+    const [nickname, setNickname] = useState("")
     const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const [pswd, setPswd] = useState("")
+    const [email, setEmail] = useState("")
     const [warn, setWarn] = useState("")
 
     const usernameOnChange = (usrname) => {
@@ -23,13 +24,18 @@ export const Signin = () => {
         setUsername(usrname)
     }
 
-    const passwordOnChange = (password) => {
+    const pswdOnChange = (pswd) => {
+        if (pswd.length() > 16) {
+            setWarn("password must be under 16")
+        }
         setWarn("")
-        setPassword(password)
+        setUsername(pswd)
     }
 
     const loginwthUsername = async () => {
-        await axios.put('http://localhost:8000/user/login/', {username: username, password : password}, null)
+        const username_in = username
+        const pswd_in = pswd
+        await axios.put('https://api.cakes.com/user/login', {username: username_in, password : pswd_in})
                 .then(res => {
                     dispatch(setUserInfo({payload: res}))
                     dispatch(Login({token : res.token}))
@@ -41,17 +47,17 @@ export const Signin = () => {
     }
     
     const onSuccess = async({code}) => {
-        await token_instance.post("https://github.com/login/oauth/access_token/", {params:{
-            client_username: config.GITHUB_CLIENT_USERNAME,
+        await token_instance.post("https://github.com/login/oauth/access_token", {params:{
+            client_username: config.GITHUB_CLIENT_username,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://localhost:8000/"
+            redirect_uri: "https://www.wafflow.com"
         }})
         .then(async res => {
             const token = res.access_token
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('http://localhost:8000/user/login', {params:{'github_token' : token}})
+            await axios.put('https://api.cakes.com/user/login', {params:{'github_token' : token}})
                 .then(res => {
                     dispatch(setUserInfo({payload: res}))
                     dispatch(Login({token : res.token}))
@@ -82,15 +88,15 @@ export const Signin = () => {
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://localhost:8000/"
+            redirectUri="https://www.wafflow.com"
             buttonText="Login with Github"/>
 
-            <div className="login-box">
+            <div className="join-box">
                 <div>
                     Login ith username and Password
                 </div>
-                <input className="id-input" value={username} placeholder="input yout username" onChange={(e)=>{usernameOnChange(e.target.value)}}/>
-                <input className="password-input" value={password} type="password" placeholder="inpur your Password" onChange={(e)=>{passwordOnChange(e.target.value)}}/> 
+                <input calassName="id-input"  value={username} placeholder="input yout username" onChange={usernameOnChange}/>
+                <input calassName="pswd-input" value={pswd} placeholder="inpur your Password" onChange={pswdOnChange}/> 
                 <button className="login-btn" onClick={loginwthUsername}>Login</button>
                 <div className="warn">{warn}</div>
             </div>
