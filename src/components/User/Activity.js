@@ -52,7 +52,7 @@ const Section = ({activity,user,data}) => {
         switch(activity) {
             case 'Answers':
                 getAnswersOfUser(user.id,sortedBy)
-                    .then(response => {setList(()=>response);console.log(response)});
+                    .then(response => setList(()=>response));
                 break;
             case 'Questions':
                 getQuestionsOfUser(user.id,sortedBy)
@@ -84,7 +84,6 @@ const Section = ({activity,user,data}) => {
 }
 
 const Activity = ({user}) => {
-    console.log(user)
     let history = useHistory();
     const [category, setCategory] = useState("Summary");
     return (

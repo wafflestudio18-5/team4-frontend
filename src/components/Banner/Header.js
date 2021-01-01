@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {getUserMe, getQuestionsWithKeywords} from '../../axios'
+import {getUserMe, getQuestionsWithKeywords, logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
+import {useAuth} from '../../context/auth'
 import './image.css'
 import logo from '../../logo.png'
 
@@ -9,18 +10,28 @@ import Button from '../Button';
 
 export const Header = () => {
   const [user, setUser] = useState(undefined);
+  const {authTokens, setAuthTokens} = useAuth()
       useEffect(()=> {
-          if(user !== undefined) return;
+          if(user !== undefined) return
           getUserMe()
               .then(setUser)
               .catch(console.log)
-      },[user]);
+      },[authTokens]);
     let history = useHistory();
     const [command, setCommand] = useState('');
     const search = () => {
     /*GET /question/search/keywords*/
         history.push("/users/me")
     }
+  const signout = () => {
+    logout()
+      .then(() => {
+        setUser(()=>undefined)
+        setAuthTokens()
+        //Redirect?
+      })
+
+  }
   return (
       
     <div className={styles.header}>
@@ -31,15 +42,17 @@ export const Header = () => {
       </form>
       <div className={styles.rightNav}>
         {user===undefined?
-        <></>
+        <>
+        <Button title="Signin" onClick={() => {history.push("/signin")}}>Signin</Button>
+        </>
         :
         <>
         <div className={styles.menus}>
-          <img className="profile-image" src={user.picture} alt="user"/>
+          <img className="profile-image" src={user.picture} alt="user" onClick={()=>{history.push("/users/me")}}/>
           <p className={styles.menuItem}>{user.nickname}</p>
           <p className={styles.menuItem}>{user.reputation}</p>
         </div>
-        <Button title="Profile" onClick={()=>{history.push("/users/me")}}></Button>
+        <Button title="logout" onClick={()=>signout()}></Button>
         </>
         }
       </div>
