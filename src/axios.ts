@@ -12,7 +12,6 @@ export const Config = () => {
 //TODO: use redux to store and use token
 axios.defaults.baseURL = "http://localhost:8000";
 
-
 //User APIs
 //GET user
 export const getUserMe = () => new Promise((resolve, reject) => {

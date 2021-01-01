@@ -7,10 +7,13 @@ import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
-import Signin from './components/Auth/Signin';
+
+import {Signin} from './components/Auth/Signin'
+import QuestionAsk from './components/Questions/QuestionAsk'
 import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
 import { Config } from './axios';
+
 function App() {
   const existingTokens = () => {
     let tokens = {}
@@ -38,6 +41,7 @@ function App() {
       <Switch>
       <Route exact path="/" component={Main}/>
       <Route exact path="/signin" component={Signin}/>
+      <Route exact path="/question/ask" component={QuestionAsk}/>
       <Route exact path="/signup" component={Signup}/>
       <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>

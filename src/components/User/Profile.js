@@ -1,8 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {getUserMe} from '../../axios'
+import axios from 'axios'
 import {getAnswersOfUser, getQuestionsOfUser} from '../../axios'
 //to be modified for all users
 const Profile = () => {
+    console.log("token");
+    console.log(localStorage.getItem("token"));
+    var token = "Token "+ localStorage.getItem("token") 
+    axios.defaults.headers.common['Authorization'] = token
     const [user, setUser] = useState(undefined);
     const [topPosts, setTopPosts] = useState(undefined)
 

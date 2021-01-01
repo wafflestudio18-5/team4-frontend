@@ -1,8 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {getUserMe, editUserMe} from '../../axios';
 import {useHistory} from 'react-router-dom';
+import axios from 'axios'
+
 //PUT /user/me
+
 const EditProfile = () => {
+    console.log("token");
+    console.log(localStorage.getItem("token"));
+    var token = "Token "+ localStorage.getItem("token") 
+    axios.defaults.headers.common['Authorization'] = token
     let history = useHistory();
     //default value -> user info
     const [picture, setPicture] = useState('');
