@@ -28,7 +28,8 @@ export const getUser = (id: number) => new Promise((resolve,reject) => {
 })
 //POST user
 export const postUser = (user: UserInterface, github_token: String) => new Promise((resolve,reject) => {
-    axios.post(`user/`, {data: Object.assign(user, github_token)})
+    const data = github_token? Object.assign(user, github_token): user;
+    axios.post(`user/`, data)
         .then((response) => resolve(response.data))
         .catch(reject)
 })

@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
-import {login, logout} from '../../axios'
+import {login} from '../../axios'
 import * as config from '../../config'
 
 
