@@ -26,6 +26,8 @@ const QuestionDetailBox = (match) => {
     const [max_page, setMaxPage] = useState(1)
     const [max_comment, setMaxComment] = useState(1)
 
+    
+
     useEffect(() => {
         instance.get(`question/${id}/`)
             .then((res) => {
@@ -55,6 +57,10 @@ const QuestionDetailBox = (match) => {
                 console.log(e);
             })
     }, [])
+
+    if (!id instanceof Number) {
+        return  (<Fragment>Wrong Question Id!</Fragment>)
+    }
 
     // instance.get(`question/${id}/`)
     //     .then((res) => {

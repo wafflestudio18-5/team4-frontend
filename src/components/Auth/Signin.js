@@ -5,9 +5,11 @@ import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
+import {useAuth} from '../../context/auth'
 
 
 export const Signin = () => {
+    const {authTokens, setAuthTokens} = useAuth()
     const token = localStorage.getItem("token")
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
@@ -16,7 +18,6 @@ export const Signin = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [warn, setWarn] = useState("")
-    const {setAuthTokens} = useAuth()
     const usernameOnChange = (username) => {
         setWarn("")
         setUsername(()=>username)
@@ -30,8 +31,13 @@ export const Signin = () => {
     const loginwthUsername = async () => {
         await axios.put('http://localhost:8000/user/login/', {username: username, password : password}, null)
                 .then(res => {
+                    setWarn("")
+                    console.log(res);
+                    console.log("token");
+                    console.log(res.data.token);
                     dispatch(setUserInfo({payload: res}))
-                    dispatch(Login({token : res.token}))
+                    dispatch(Login({token : res.data.token}))
+                    setAuthTokens(res.data.token, true) //FIXME: 이렇게 하는 게 맞는지 찾기
                 })
                 .catch(e => {
                     console.log(e);
@@ -40,22 +46,27 @@ export const Signin = () => {
     }
     
     const onSuccess = async({code}) => {
-        await token_instance.post("https://github.com/login/oauth/access_token/", {params:{
+        console.log('code');
+        console.log(code);
+        await axios.post("https://github.com/login/oauth/access_token/", {
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://localhost:8000/"
-        }})
+            redirect_uri: "http://localhost:3000/signup/"
+        })
         .then(async res => {
+            console.log("got a token");
             const token = res.access_token.substring(0,40)
+            console.log(token);
+            window.close();
             //redux에 토큰 저장
             console.log("github token acquired");
             await axios.put('http://localhost:8000/user/login', {params:{'github_token' : token}})
                 .then(res => {
-
+                    console.log("logging in with token");
                     dispatch(setUserInfo({payload: res}))
                     dispatch(Login({token : res.token}))
-
+                    setAuthTokens(res.data.token, true) //FIXME: 이렇게 하는 게 맞는지 찾기
                 })
                 .catch(e => {
                     console.log(e);
@@ -83,7 +94,7 @@ export const Signin = () => {
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://localhost:8000/"
+            redirectUri="http://localhost:3000/signup/"
             buttonText="Login with Github"/>
 
             <div className="login-box">

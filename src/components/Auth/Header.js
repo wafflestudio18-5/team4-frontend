@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {getUserMe, getQuestionsWithKeywords} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
+import axios from 'axios'
 import logo from '../../logo.png'
 import {Login, Logout} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
@@ -10,6 +11,13 @@ import styles from "./Header.module.scss";
 import Button from '../Button';
 
 export const Header = () => {
+  const instance = axios.create({
+    baseURL: 'https://some-domain.com/api/',
+    headers: { 'X-Custom-Header': 'foobar' },
+    timeout: 1000,
+  });
+
+
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
   const [user, setUser] = useState("");
