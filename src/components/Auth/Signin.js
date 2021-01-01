@@ -1,26 +1,25 @@
 import {useState, Fragment} from 'react'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
+import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
 
-const token_instance = axios.create({
-    baseURL: 'https://github.com/',
-    headers: { 'Accept': 'application/json' },
-  });
 
 export const Signin = () => {
     const token = localStorage.getItem("token")
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
+
+
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [warn, setWarn] = useState("")
-
-    const usernameOnChange = (usrname) => {
+    const {setAuthTokens} = useAuth()
+    const usernameOnChange = (username) => {
         setWarn("")
-        setUsername(usrname)
+        setUsername(()=>username)
     }
 
     const passwordOnChange = (password) => {
@@ -48,13 +47,15 @@ export const Signin = () => {
             redirect_uri: "http://localhost:8000/"
         }})
         .then(async res => {
-            const token = res.access_token
+            const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
             await axios.put('http://localhost:8000/user/login', {params:{'github_token' : token}})
                 .then(res => {
+
                     dispatch(setUserInfo({payload: res}))
                     dispatch(Login({token : res.token}))
+
                 })
                 .catch(e => {
                     console.log(e);
@@ -67,8 +68,8 @@ export const Signin = () => {
         })
     }
 
-    const onFailure = () => {
-
+    const onFailure = (e) => {
+        console.log(e);
     }
     if(isLoggedin) {
         return (
@@ -91,6 +92,7 @@ export const Signin = () => {
                 </div>
                 <input className="id-input" value={username} placeholder="input yout username" onChange={(e)=>{usernameOnChange(e.target.value)}}/>
                 <input className="password-input" value={password} type="password" placeholder="inpur your Password" onChange={(e)=>{passwordOnChange(e.target.value)}}/> 
+
                 <button className="login-btn" onClick={loginwthUsername}>Login</button>
                 <div className="warn">{warn}</div>
             </div>
@@ -98,3 +100,6 @@ export const Signin = () => {
        
     )
 }
+
+export default Signin;
+

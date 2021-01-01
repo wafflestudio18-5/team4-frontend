@@ -1,24 +1,16 @@
 import axios from 'axios'
 import { ObjectFlags, resolveModuleName } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
+import {useAuth} from './context/auth'
 
+export const Config = () => {
+    const {authTokens} = useAuth()
+    axios.defaults.headers.common['Authorization'] = authTokens;
+}
 
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
-
-var baseUrl: string = "http://localhost:8000/"//test server
-var token: string = "Token "+ localStorage.getItem("token")  //test token
-
-//axios.defaults.headers.common['Authorization'] = token;
-axios.defaults.baseURL = baseUrl;
-//alertError: function to show info about errors for all requests/responses
-function alertError (error : Error) {
-    //put the error status code as log
-    console.log('error at ' + error);
-    //throw error
-    throw(error)
-    //mainly used logs, and tried not to use alerts in this file 
-}
+axios.defaults.baseURL = "http://localhost:8000";
 
 //User APIs
 //GET user
@@ -35,14 +27,16 @@ export const getUser = (id: number) => new Promise((resolve,reject) => {
 })
 //POST user
 export const postUser = (user: UserInterface, github_token: String) => new Promise((resolve,reject) => {
-    axios.post(`user/`, {data: Object.assign(user, github_token)})
+    const data = github_token? Object.assign(user, github_token): user;
+    axios.post(`user/`, data)
         .then((response) => resolve(response.data))
         .catch(reject)
 })
 //PUT user
 export const editUserMe = (user: UserInterface) => new Promise((resolve,reject) => {
-    axios.put(`user/me/`, {data: user})
-        .then((response) => resolve(response.data))
+    console.log(user)
+    axios({method: 'put', url: `user/me/`, data:user})
+        .then((response) => {resolve(response.data);console.log(response.data)})
         .catch(reject)//response.data.message?
 })
 //DELETE user
@@ -53,14 +47,19 @@ export const deleteUserMe = () => new Promise((resolve,reject) => {
 })
 //login
 export const login = (username: string, password: string, github_token: string) => new Promise((resolve,reject) => {
-    axios.put(`user/login/`,{data:{username, password, github_token}})
-        .then((response) => resolve(response.data))
+    const data = github_token? {username, password, github_token}:{username, password}
+    axios({method: 'put', url: `user/login/`, data})
+        .then((response) => {
+            axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
+            resolve(response.data)})
         .catch(reject)//response.data.message?
 })
 //logout
 export const logout = () => new Promise((resolve,reject) => {
     axios.post(`user/logout/`)
-        .then((response) => resolve(response.data))
+        .then((response) => {
+            axios.defaults.headers.common['Authorization'] = "";
+            resolve(response.data)})
         .catch(reject)//response.data.message?
 })
 

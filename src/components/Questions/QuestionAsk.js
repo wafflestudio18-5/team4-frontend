@@ -1,3 +1,4 @@
+
 import {Fragment, useState} from 'react'
 import React from 'react'
 import QuestionAskBox from './QuestionAskBox'
@@ -11,8 +12,6 @@ const QuestionAsk = () =>  {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [tags, setTags] = useState([])
-  
-
 
 
     const submit = () => {
@@ -21,7 +20,7 @@ const QuestionAsk = () =>  {
             'constent': body,
             'tags': tags.join('+')
         })
-        //TODO: Router
+        history.replace('/questions')
     }
 
     return (
@@ -62,7 +61,7 @@ const QuestionAsk = () =>  {
             </div>
 
                     <div classnName="qask-body-left-buttonbox">
-                        <button onClick = {submit} class="qask-btn-submit" /*TODO: Review and Post are divided in the priginal site*/>
+                        <button onClick = {submit} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
                             Post Your Question
                         </button>
                     </div>
