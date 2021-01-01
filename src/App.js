@@ -8,6 +8,7 @@ import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
 import Signin from './components/Auth/Signin';
+import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
 import { Config } from './axios';
 function App() {
@@ -37,6 +38,7 @@ function App() {
       <Switch>
       <Route exact path="/" component={Main}/>
       <Route exact path="/signin" component={Signin}/>
+      <Route exact path="/signup" component={Signup}/>
       <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
       <Route exact path="/question/tagged" component={SearchResultTags}/>

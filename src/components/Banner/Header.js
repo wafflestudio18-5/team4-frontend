@@ -43,7 +43,8 @@ export const Header = () => {
       <div className={styles.rightNav}>
         {user===undefined?
         <>
-        <Button title="Signin" onClick={() => {history.push("/signin")}}>Signin</Button>
+        <Button title="Signin" onClick={() => {history.push("/signin")}}>Sign In</Button>
+        <Button title="Signup" onClick={() => {history.push("/signup")}}>Sign Up</Button>
         </>
         :
         <>
