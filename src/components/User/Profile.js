@@ -33,20 +33,20 @@ const Profile = ({user}) => {
     return (
         (user && topPosts && topTags)?
         <>
-        <div className="user-card">
+        <div class="user-card">
             <div>
                 <img width="100px" height="100px" src={user.picture} alt={`user:${user.nickname}`}/>
                 <span>{user.reputation}</span>
             </div>
         </div>
-        <div className="user-info">
+        <div class="user-info">
             <div>
-                <div className="user-info-nickname">{user.nickname}</div>
-                <div className="user-info-summary"><span>Answers: {user.answer_count} </span><span>Questions: {user.question_count}</span></div>
+                <div class="user-info-nickname">{user.nickname}</div>
+                <div class="user-info-summary"><span>Answers: {user.answer_count} </span><span>Questions: {user.question_count}</span></div>
             </div>
             <div>
-            <div className="user-info-title">{user.title}</div>
-            <div className="user-info-intro">{user.intro}</div>
+            <div class="user-info-title">{user.title}</div>
+            <div class="user-info-intro">{user.intro}</div>
             </div>
         </div>
         <div className="user-top-tags">
@@ -60,7 +60,6 @@ const Profile = ({user}) => {
         )}
         </div>
         </>
-        :<></>
     )
 }
 export default Profile;

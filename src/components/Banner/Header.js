@@ -1,41 +1,26 @@
 import React, {useState, useEffect} from 'react'
-import {getUserMe, getQuestionsWithKeywords, logout} from '../../axios'
+import {getUserMe, getQuestionsWithKeywords} from '../../axios'
 import {useHistory} from 'react-router-dom'
-import {useAuth} from '../../context/auth'
 import './image.css'
 import logo from '../../logo.png'
-import {Login, Logout} from '../../modules/AuthRedux'
-import {useSelector, useDispatch} from 'react-redux' 
 
 import styles from "./Header.module.scss";
 import Button from '../Button';
 
 export const Header = () => {
-
   const [user, setUser] = useState(undefined);
-  const {authTokens, setAuthTokens} = useAuth()
       useEffect(()=> {
-          if(user !== undefined) return
+          if(user !== undefined) return;
           getUserMe()
               .then(setUser)
               .catch(console.log)
-      },[authTokens]);
+      },[user]);
     let history = useHistory();
     const [command, setCommand] = useState('');
     const search = () => {
     /*GET /question/search/keywords*/
         history.push("/users/me")
     }
-  const signout = () => {
-    logout()
-      .then(() => {
-        setUser(()=>undefined)
-        setAuthTokens()
-        //Redirect?
-      })
-
-  }
-
   return (
       
     <div className={styles.header}>
@@ -45,21 +30,16 @@ export const Header = () => {
         <Button title="WAFFLE!"></Button>
       </form>
       <div className={styles.rightNav}>
-
         {user===undefined?
-        <>
-        <Button title="Signin" onClick={() => {history.push("/signin")}}>Sign In</Button>
-        <Button title="Signup" onClick={() => {history.push("/signup")}}>Sign Up</Button>
-        </>
+        <></>
         :
         <>
         <div className={styles.menus}>
-          <img className="profile-image" src={user.picture} alt="user" onClick={()=>{history.push("/users/me")}}/>
+          <img className="profile-image" src={user.picture} alt="user"/>
           <p className={styles.menuItem}>{user.nickname}</p>
           <p className={styles.menuItem}>{user.reputation}</p>
         </div>
-
-        <Button title="logout" onClick={()=>signout()}></Button>
+        <Button title="Profile" onClick={()=>{history.push("/users/me")}}></Button>
         </>
         }
       </div>

@@ -1,5 +1,5 @@
 
-const QuestionAskGuide =() => {
+const QuestionAskGuide = () => {
     return(
         <div className="qask-guide-box ">
             <div className="qask-guide-firstbox">
@@ -11,7 +11,7 @@ const QuestionAskGuide =() => {
                         Avoid asking opinion-based questions.
                     </div>
                 </div>
-                <div className="qask-guide-firstbox-first-title">Summarize the Problem</div>
+                <div className="qask-guide-firstbox-first-title">Summarize the Proiblem</div>
                 <div className="qask-guide-firstbox-first-body">
                     <ul>
                         <li className="qask-guide-firstbox-first-body-one">Include details about your goal</li>

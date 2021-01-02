@@ -34,7 +34,7 @@ const Section = ({activity,user,data}) => {
         switch(activity) {
             case 'Answers':
                 getAnswersOfUser(user.id,sortedBy)
-                    .then(response => setList(()=>response));
+                    .then(response => {setList(()=>response);console.log(response)});
                 break;
             case 'Questions':
                 getQuestionsOfUser(user.id,sortedBy)

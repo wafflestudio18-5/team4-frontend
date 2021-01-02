@@ -1,15 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {getUserMe, editUserMe} from '../../axios';
 import {useHistory} from 'react-router-dom';
-import axios from 'axios'
-
 //PUT /user/me
-
 const EditProfile = () => {
-    console.log("token");
-    console.log(localStorage.getItem("token"));
-    var token = "Token "+ localStorage.getItem("token") 
-    axios.defaults.headers.common['Authorization'] = token
     let history = useHistory();
     //default value -> user info
     const [picture, setPicture] = useState('');
@@ -17,7 +10,7 @@ const EditProfile = () => {
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
     const [title, setTitle] = useState('');
-    const [intro, setIntro] = useState('');
+    const [aboutMe, setAboutMe] = useState('');
 
     const [user, setUser] = useState(undefined);
     useEffect(()=> {
@@ -26,7 +19,7 @@ const EditProfile = () => {
             setEmail(()=>user.email)
             setNickname(()=>user.nickname)
             setTitle(()=>user.title)
-            setIntro(()=>user.intro)
+            setAboutMe(()=>user.intro)
             return;
         };
         getUserMe()
@@ -64,8 +57,7 @@ const EditProfile = () => {
         <div><label>Profile picture URL</label><input name="picture" type="text" value={picture} maxLength="1000" placeholder="이미지 주소를 입력하세요." onChange={e => setPicture(e.target.value)}/></div>
         </div>
         <div>
-        <div><label>Title</label><input name="title" type="text" value={title} maxLength="100" onChange={e => setTitle(e.target.value)}/></div>
-        <div><label>About Me</label><br/><textarea name="aboutMe" rows='10' cols='50' value={intro} onChange={e => setIntro(e.target.value)}/></div>
+        <div><label>Title</label><input name="Title" type="text" value={title} maxLength="100" onChange={e => setTitle(e.target.value)}/></div>
         </div>
         <button>Save</button><button type="button" onClick={()=>history.push("/users/me/activity")}>Cancel</button>
     </form>

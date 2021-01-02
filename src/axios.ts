@@ -1,12 +1,7 @@
 import axios from 'axios'
 import { ObjectFlags, resolveModuleName } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
-import {useAuth} from './context/auth'
 
-export const Config = () => {
-    const {authTokens} = useAuth()
-    axios.defaults.headers.common['Authorization'] = authTokens;
-}
 
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
@@ -17,7 +12,6 @@ const logError = (error: any) => {
     console.log(`${log.config.method} ${log.config.url}`)
     return log.data
 }
-axios.defaults.baseURL = "http://localhost:8000";
 
 //User APIs
 //GET user
@@ -39,8 +33,7 @@ export const getUsers = (sorted_by: string, search: string, page=1) => new Promi
 })
 //POST user
 export const postUser = (user: UserInterface, github_token: String) => new Promise((resolve,reject) => {
-    const data = github_token? Object.assign(user, github_token): user;
-    axios.post(`user/`, data)
+    axios.post(`user/`, {data: Object.assign(user, github_token)})
         .then((response) => resolve(response.data))
         .catch(e=>reject(logError(e)))
 })
