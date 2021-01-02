@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {getUserMe} from '../../axios';
-import {useHistory} from 'react-router-dom';
+import {getUser} from '../../axios';
+import {useHistory,useParams} from 'react-router-dom';
 import {
     Switch,
     Route,
@@ -9,36 +9,37 @@ import {
 import Activity from './Activity';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
-//user는 나중에 context로 바꾸기
-const Me = () => {
+//Me랑 통합하기
+const User = () => {
     let history = useHistory();
     let match = useRouteMatch();
+    let {id} = useParams();
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(undefined);
     useEffect(()=> {
-        getUserMe()
+        getUser(id)
             .then(user=>{
                 setUser(()=>user)
                 setLoading(false)
                 }
             )
             .catch(console.log)
-    },[loading]);
+    },[loading, id]);
     return (
         loading? <></>:
         <>
-        <h1>My page</h1>
         <div className="activity-header">
         <div>
-        <button onClick={()=>{history.push('/users/me/profile')}}>Profile</button>
-        <button onClick={()=>{history.push('/users/me/activity')}}>Activity</button>
-        <button onClick={()=>{history.push('/users/me/edit')}}>Edit</button>
+        <button onClick={()=>{history.push(`/users/${id}/profile`)}}>Profile</button>
+        <button onClick={()=>{history.push(`/users/${id}/activity`)}}>Activity</button>
+        {/*loggedIn && User == Me일 때만 보이도록 */}
+        <button onClick={()=>{history.push(`/users/${id}/edit`)}}>Edit</button>
         </div>
         <hr/>
         </div>
         <Switch>
         <Route exact path={match.path}>
-            <Activity user={user}/>
+            <Profile user={user}/>
         </Route>
         <Route exact path={`${match.path}/profile`}>
             <Profile user={user}/>
@@ -46,6 +47,7 @@ const Me = () => {
         <Route path={`${match.path}/activity`}>
             <Activity user={user}/>
         </Route>
+        {/*loggedIn && User == Me일 때만 접근 허용하기 */}
         <Route path={`${match.path}/edit`}>
             <EditProfile user={user}/>
         </Route>
@@ -54,4 +56,4 @@ const Me = () => {
         </>
     )
 }
-export default Me;
+export default User;

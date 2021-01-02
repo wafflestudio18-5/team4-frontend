@@ -6,6 +6,7 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
+<<<<<<< Updated upstream
 var baseUrl: string = "http://localhost:8000"//test server
 var token: string = "Token "+"04cbda9c006d6a987f08d2b87faa80b9982c37cf"//test token
 
@@ -18,6 +19,13 @@ function alertError (error : Error) {
     //throw error
     throw(error)
     //mainly used logs, and tried not to use alerts in this file 
+=======
+const logError = (error: any) => {
+    const log = error.response
+    console.log(`${log.status} ${log.statusText}`)
+    console.log(`${log.config.method} ${log.config.url}`)
+    return log.data
+>>>>>>> Stashed changes
 }
 
 //User APIs
@@ -25,43 +33,72 @@ function alertError (error : Error) {
 export const getUserMe = () => new Promise((resolve, reject) => {
     axios.get('user/me/')
         .then((response) => resolve(response.data))
-        .catch(reject)
+        .catch(e=>reject(logError(e)))
     })
 
 export const getUser = (id: number) => new Promise((resolve,reject) => {
     axios.get(`user/${id}/`)
         .then((response) => resolve(response.data))
-        .catch(reject)
+        .catch(e=>reject(logError(e)))
+})
+export const getUsers = (sorted_by: string, search: string, page=1) => new Promise((resolve,reject) => {
+    axios.get(`users/`,{params:{sorted_by, search, page}})
+        .then((response) => resolve(response.data))
+        .catch(e=>reject(logError(e)))
 })
 //POST user
 export const postUser = (user: UserInterface, github_token: String) => new Promise((resolve,reject) => {
     axios.post(`user/`, {data: Object.assign(user, github_token)})
         .then((response) => resolve(response.data))
-        .catch(reject)
+        .catch(e=>reject(logError(e)))
 })
 //PUT user
 export const editUserMe = (user: UserInterface) => new Promise((resolve,reject) => {
+<<<<<<< Updated upstream
     axios.put(`user/me/`, {data: user})
         .then((response) => resolve(response.data))
         .catch(reject)//response.data.message?
+=======
+    console.log(user)
+    const data = user
+    axios.put(`user/me/`, data)
+        .then((response) => resolve(response.data))
+        .catch(e=>reject(logError(e)))//response.data.message?
+>>>>>>> Stashed changes
 })
 //DELETE user
 export const deleteUserMe = () => new Promise((resolve,reject) => {
     axios.delete(`user/me/`)
         .then((response) => resolve(response.data))
-        .catch(reject)//response.data.message?
+        .catch(e=>reject(logError(e)))//response.data.message?
 })
 //login
 export const login = (username: string, password: string, github_token: string) => new Promise((resolve,reject) => {
+<<<<<<< Updated upstream
     axios.put(`user/login/`,{data:{username, password, github_token}})
         .then((response) => resolve(response.data))
         .catch(reject)//response.data.message?
+=======
+    const data = github_token? {username, password, github_token}:{username, password}
+    axios({method: 'put', url: `user/login/`, data})
+        .then((response) => {
+            axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
+            resolve(response.data)})
+        .catch(e=>reject(logError(e)))//response.data.message?
+>>>>>>> Stashed changes
 })
 //logout
 export const logout = () => new Promise((resolve,reject) => {
     axios.post(`user/logout/`)
+<<<<<<< Updated upstream
         .then((response) => resolve(response.data))
         .catch(reject)//response.data.message?
+=======
+        .then((response) => {
+            axios.defaults.headers.common['Authorization'] = "";
+            resolve(response.data)})
+        .catch(e=>reject(logError(e)))//response.data.message?
+>>>>>>> Stashed changes
 })
 
 //Question APIs
@@ -70,7 +107,7 @@ export const getQuestion = (id: number) =>
     new Promise((resolve,reject) => {
         axios.get(`question/${id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -78,7 +115,7 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
     new Promise((resolve,reject) => {
         axios.get(`question/user/${id}/`, {params:{sorted_by, page}})
             .then(response => resolve(response.data.questions))
-            .catch(reject)//FIXME: how to handle status code 301?
+            .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
@@ -87,7 +124,7 @@ export const getQuestionsWithTags = (tags: string[], filter_by: string, sorted_b
         axios.get(`question/tagged/}`,
                     {params:{'tags':tags.join('+'), filter_by, sorted_by, page}})
             .then(response => resolve(response.data.questions))
-            .catch(reject)//FIXME: how to handle status code 301?
+            .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
@@ -96,7 +133,7 @@ export const getQuestionsWithKeywords = (keywords: string[], filter_by: string, 
         axios.get(`question/search/keywords/}`,
                     {params:{'keywords':keywords.join('+'), filter_by, sorted_by, page}})
             .then(response => resolve(response.data.questions))
-            .catch(reject)//FIXME: how to handle status code 301?
+            .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
@@ -105,7 +142,7 @@ export const postQuestion = (question: QuestionInterface) =>
     new Promise((resolve,reject) => {
         axios.post(`question/`, {data:{question}})
             .then(response => resolve(response.data))
-            .catch(reject)//FIXME: how to handle status code 301?
+            .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
@@ -114,7 +151,7 @@ export const editQuestion = (id: number, question: QuestionEditInterface) =>
     new Promise((resolve,reject) => {
         axios.put(`question/${id}/`, {data:{question}})
             .then(response => resolve(response.data))
-            .catch(reject)//FIXME: how to handle status code 301?
+            .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
@@ -124,7 +161,7 @@ export const getAnswersOfUser = (id: number, sorted_by: string, page = 1) =>
     new Promise((resolve,reject) => {
         axios.get(`answer/user/${id}/`, {params:{page, sorted_by}})
             .then(response => resolve(response.data.answers))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -132,7 +169,7 @@ export const getAnswersOfQuestion = (id: number, sorted_by: string, page = 1) =>
     new Promise((resolve,reject) => {
         axios.get(`answer/question/${id}/`, {params:{page, sorted_by}})
             .then(response => resolve(response.data.answers))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -140,7 +177,7 @@ export const getAnswer = (id: number) =>
     new Promise((resolve,reject) => {
         axios.get(`answer/${id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //POST answer
@@ -148,7 +185,7 @@ export const postAnswer = (id: number, content: string) =>
     new Promise((resolve,reject) => {
         axios.post(`answer/question/${id}/`, {data:{content}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -156,7 +193,7 @@ export const postAnswerAcceptance = (id: number) =>
     new Promise((resolve,reject) => {
         axios.post(`answer/${id}/acception/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //PUT answer
@@ -164,7 +201,7 @@ export const editAnswer = (id: number, content: string) =>
     new Promise((resolve,reject) => {
         axios.put(`answer/${id}/`,{data:{content}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //DELETE answer
@@ -172,7 +209,7 @@ export const deleteAnswer = (id: number) =>
     new Promise((resolve,reject) => {
         axios.delete(`answer/${id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -180,7 +217,7 @@ export const deleteAnswerAcceptance = (id: number) =>
     new Promise((resolve,reject) => {
         axios.delete(`answer/${id}/acception/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -190,21 +227,21 @@ export const getComment = (id: number) =>
     new Promise((resolve,reject) => {
         axios.get(`comment/${id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 export const getCommentsOfAnswer = (id: number, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`comment/answer/${id}/`)
             .then(response => resolve(response.data.comments))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 export const getCommentsOfQuestion = (id: number, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`comment/question/${id}/`)
             .then(response => resolve(response.data.comments))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //POST comment
@@ -212,14 +249,14 @@ export const commentOnQuestion = (question_id: number, content: String) =>
     new Promise((resolve,reject) => {
         axios.post(`comment/question/${question_id}/`, {data:{content}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 export const commentOnAnswer = (answer_id: number, content: String) => 
     new Promise((resolve,reject) => {
         axios.post(`comment/answer/${answer_id}/`, {data:{content}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //PUT comment
@@ -227,7 +264,7 @@ export const editComment = (id: number, comment: string) =>
     new Promise((resolve,reject) => {
         axios.put(`comment/${id}/`, {data:{comment}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //DELETE comment
@@ -235,7 +272,7 @@ export const deleteComment = (id: number) =>
     new Promise((resolve,reject) => {
         axios.delete(`comment/${id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //Rate APIs
@@ -244,21 +281,21 @@ export const rateQuestion = (id: number, rating: number) =>
     new Promise((resolve,reject) => {
         axios.put(`rate/question/${id}/`, {data:{rating}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 export const rateAnswer = (id: number, rating: number) => 
     new Promise((resolve,reject) => {
         axios.put(`rate/answer/${id}/`, {data:{rating}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 export const rateComment = (id: number, rating: number) => 
     new Promise((resolve,reject) => {
         axios.put(`rate/comment/${id}/`, {data:{rating}})
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 
@@ -268,7 +305,14 @@ export const getBookmarks = (sorted_by: string, page = 1) =>
     new Promise((resolve,reject) => {
         axios.get(`bookmark/user/me/`, {params:{sorted_by, page}})
             .then(response => resolve(response.data.questions))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
+    }
+)
+export const getBookmarksOfUser = (id: number, sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`bookmark/user/${id}/`, {params:{sorted_by, page}})
+            .then(response => resolve(response.data.questions))
+            .catch(e=>reject(logError(e)))
     }
 )
 //POST bookmark
@@ -276,7 +320,7 @@ export const addBookmark = (question_id: number) =>
     new Promise((resolve,reject) => {
         axios.post(`bookmark/question/${question_id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
     }
 )
 //DELETE bookmark
@@ -284,6 +328,23 @@ export const deleteBookmark = (id: number) =>
     new Promise((resolve,reject) => {
         axios.delete(`bookmark/question/${id}/`)
             .then(response => resolve(response.data))
-            .catch(reject)
+            .catch(e=>reject(logError(e)))
+    }
+)
+//Tag APIs
+//GET tag
+export const getTagsOfUser = (id: number, sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        axios.get(`tag/user/${id}/`, {params:{sorted_by, page}})
+            .then(response => resolve(response.data.tags))
+            .catch(e=>reject(logError(e)))
+    }
+)
+export const getTags = (search: string, sorted_by: string, page = 1) => 
+    new Promise((resolve,reject) => {
+        const params = search? {search, sorted_by, page}: {sorted_by, page}
+        axios.get(`tags/`, {params})
+            .then(response => resolve(response.data.tags))
+            .catch(e=>reject(logError(e)))
     }
 )
