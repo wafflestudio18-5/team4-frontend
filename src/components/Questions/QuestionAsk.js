@@ -64,7 +64,7 @@ const QuestionAsk = () =>  {
                 <div className="qask-body-sub">Include all the information someone would need to answer your question</div>
                 <MDEditor 
                 value={body}
-                onChange={(e) => {setBody(e.target.value)}}
+                onChange={(e) => {console.log(e); setBody(e)}}
                 />
                 <MDEditor.Markdown source={body} />
             </div>
