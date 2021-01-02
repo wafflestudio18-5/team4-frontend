@@ -1,14 +1,18 @@
 import React from 'react';
 import AnswerBox from './AnswerBox'
 
-const AnswerList = (Answers) => {
-    console.log(Answers);
-    const Answer_num = Answers.length
-    var res = (<div></div>)
-    for (var i=0; i<Answer_num; i++) {
-        res = res + (<AnswerBox Answer = {Answers.i.content}/>)
+const AnswerList = (Answers, num) => {
+    console.log(num);
+    console.log(Answers.Answers);
+    console.log(Answers.Answers.length);
+    const len = Answers.Answers.length
+    var L = new Array()
+    var i;
+    for (i=0; i < len; i++) {
+        L.push(i)
     }
-    return (<div className = "answer-list">{res}</div>)
+    console.log(L);
+    return (<div className = "answer-list">{L.map((number) => (<AnswerBox Answer = {Answers.Answers[number]}/>))}</div>)
 }
 
 export default AnswerList;

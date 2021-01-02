@@ -1,7 +1,7 @@
-import {Fragment} from 'react'
+import {Fragment, useState} from 'react'
 
-export const CommentBox = (comment) => {
-    console.log(comment);
+export const CommentBox =  (comment) => {
+    console.log(comment);   
 
     return(
        <Fragment className="comment-box">
@@ -25,7 +25,9 @@ export const CommentBox = (comment) => {
 }
 
 export const CommentList = (comments) => {
+    console.log(comments);
     const comments_length = comments.length
+    console.log(comments_length);
     var res = (<div></div>)
     for (var i=0; i<comments_length; i++) {
         res = res + (<CommentBox comment={Comment}/>)

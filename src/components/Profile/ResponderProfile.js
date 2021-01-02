@@ -3,10 +3,20 @@ import {getUser} from '../../axios.ts'
 
 
 const ResponderProfile = (id, created_date, updated_date) => {
-    const [Responder, setResponder] = useState()
-    setResponder(getUser(id))
+    const [Responder, setResponder] = useState(null)
+    getUser(id)
+        .then(res => {
+            console.log(res);
+            setResponder(res.data)
+        })
+        .catch(e => {
+            console.log(e);
+        })
     return (
-        <Fragment /*asked at: should we change this to create {date} at {time}? */>
+        <>
+        {Responder? 
+        <>
+        <Fragment>
             replied at {created_date}, {(created_date !== updated_date) && (", updated at") && {updated_date}}
             <div className="author-profile-bottom">
                 <div className="author-pic">
@@ -18,6 +28,12 @@ const ResponderProfile = (id, created_date, updated_date) => {
                 </div>
             </div>
         </Fragment>
+        </>
+        :
+        <>
+        </>
+        }
+        </>
     )
 }
 

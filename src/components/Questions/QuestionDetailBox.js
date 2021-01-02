@@ -75,6 +75,9 @@ const QuestionDetailBox = (match) => {
     console.log(comments);
     const Author = question.author
     console.log(answers.product);
+    console.log(question.answer_count);
+    const number = question.answer_count
+    console.log(comments);
 
     // instance.get(`question/${id}/`)
     //     .then((res) => {
@@ -156,7 +159,7 @@ const QuestionDetailBox = (match) => {
         </div>   
             </div>
             <div className="q-main-comment-box">
-                    {comments===undefined || !comments? "" : <CommentList comments={comments}/>}
+                    <CommentList comments={comments}/>
                 <div className="comments-page-btn">
                         <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
                         <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page-1)}}>prev page</button>
@@ -174,7 +177,7 @@ const QuestionDetailBox = (match) => {
                     <button onClick={() => {set_answer_sort("activity")}}>activity</button>
                     <button onClick={() => {set_answer_sort("newest")}}>newest</button>
                 </div>
-                {answers===undefined || !answers? null : <AnswerList Answers={answers} is_accepted={question.has_accepted}/>}
+                 <AnswerList Answers={answers} num = {3}/>
                 <div className="ans-page-btn">
                     <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
                     <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page-1)}}>prev page</button>

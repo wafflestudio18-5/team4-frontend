@@ -5,7 +5,10 @@ import {getCommentsOfAnswer} from '../../axios.ts'
 import {CommentList} from '../Comment/Comments'
 import {CommentPostAnswer} from '../Comment/CommentPost'
 
-const AnswerBox = (Answer, accept) => {
+const AnswerBox = (Ans) => {
+    console.log("Answer box");
+    console.log(Ans);
+    const Answer = Ans.Answer
     const comments = getCommentsOfAnswer()
     return(
        <Fragment>
@@ -25,14 +28,12 @@ const AnswerBox = (Answer, accept) => {
                     {Answer.is_accepted && "Accepted!"}
                 </div>
                 <div className="ans-accepted-box">
-                    {accept? "Accepted a Question" : "" }
+                    is accepted: {Answer.is_acceptedf}
                 </div>
            </div>
            <div className="ansbox-right-box">
                <div className="ansbox-content-box">
-                    <MDEditor class="qask-body-editor"
-                        value={Answer.content}/>
-                    <MDEditor.Markdown source={Answer.content} />
+                    {Answer.content}
                 </div>
                 <div className="ansbox-roght-bottom-box">
                     <div className="ansbox-sharebtn-box">
