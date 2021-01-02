@@ -99,7 +99,7 @@ export const Signin = () => {
 
             <div className="login-box">
                 <div>
-                    Login ith username and Password
+                    Login with username and Password
                 </div>
                 <input className="id-input" value={username} placeholder="input yout username" onChange={(e)=>{usernameOnChange(e.target.value)}}/>
                 <input className="password-input" value={password} type="password" placeholder="inpur your Password" onChange={(e)=>{passwordOnChange(e.target.value)}}/> 
