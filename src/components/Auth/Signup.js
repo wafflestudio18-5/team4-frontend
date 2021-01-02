@@ -4,6 +4,7 @@ import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
 import {postUser} from '../../axios'
+import {login, logout, postUser} from '../../axios'
 import * as config from '../../config'
 
 
