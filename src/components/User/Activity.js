@@ -85,11 +85,6 @@ const Section = ({activity,user,data}) => {
 }
 
 const Activity = ({user}) => {
-<<<<<<< Updated upstream
-    console.log(user)
-    let history = useHistory();
-=======
->>>>>>> Stashed changes
     const [category, setCategory] = useState("Summary");
     return (
     <>

@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
@@ -101,4 +99,3 @@ const Signin = () => {
 
 export default Signin;
 
->>>>>>> Stashed changes

@@ -10,15 +10,11 @@ import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
-<<<<<<< Updated upstream
-
-=======
 import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
 import { Config } from './axios';
 import User from './components/User/User';
->>>>>>> Stashed changes
 function App() {
   return (
     <div>
@@ -31,13 +27,7 @@ function App() {
       <Route exact path="/question/tagged" component={SearchResultTags}/>
       <Route exact path="/question/kwds" component={SearchResultKwds}/>
       <Route path="/users/me" component={Me}/>
-<<<<<<< Updated upstream
-      <Route path="/history" component={History}/>
-=======
-      :<Redirect to="/"/>}
-
       <Route path="/users/:id" component={User}/>
->>>>>>> Stashed changes
       <Route exact path="/users" component={Users}/>
       </Switch>
     </Router>

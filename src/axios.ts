@@ -6,26 +6,11 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
-<<<<<<< Updated upstream
-var baseUrl: string = "http://localhost:8000"//test server
-var token: string = "Token "+"04cbda9c006d6a987f08d2b87faa80b9982c37cf"//test token
-
-axios.defaults.headers.common['Authorization'] = token;
-axios.defaults.baseURL = baseUrl;
-//alertError: function to show info about errors for all requests/responses
-function alertError (error : Error) {
-    //put the error status code as log
-    console.log('error at ' + error);
-    //throw error
-    throw(error)
-    //mainly used logs, and tried not to use alerts in this file 
-=======
 const logError = (error: any) => {
     const log = error.response
     console.log(`${log.status} ${log.statusText}`)
     console.log(`${log.config.method} ${log.config.url}`)
     return log.data
->>>>>>> Stashed changes
 }
 
 //User APIs
@@ -54,17 +39,11 @@ export const postUser = (user: UserInterface, github_token: String) => new Promi
 })
 //PUT user
 export const editUserMe = (user: UserInterface) => new Promise((resolve,reject) => {
-<<<<<<< Updated upstream
-    axios.put(`user/me/`, {data: user})
-        .then((response) => resolve(response.data))
-        .catch(reject)//response.data.message?
-=======
     console.log(user)
     const data = user
     axios.put(`user/me/`, data)
         .then((response) => resolve(response.data))
         .catch(e=>reject(logError(e)))//response.data.message?
->>>>>>> Stashed changes
 })
 //DELETE user
 export const deleteUserMe = () => new Promise((resolve,reject) => {
@@ -74,31 +53,20 @@ export const deleteUserMe = () => new Promise((resolve,reject) => {
 })
 //login
 export const login = (username: string, password: string, github_token: string) => new Promise((resolve,reject) => {
-<<<<<<< Updated upstream
-    axios.put(`user/login/`,{data:{username, password, github_token}})
-        .then((response) => resolve(response.data))
-        .catch(reject)//response.data.message?
-=======
     const data = github_token? {username, password, github_token}:{username, password}
     axios({method: 'put', url: `user/login/`, data})
         .then((response) => {
             axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
             resolve(response.data)})
         .catch(e=>reject(logError(e)))//response.data.message?
->>>>>>> Stashed changes
 })
 //logout
 export const logout = () => new Promise((resolve,reject) => {
     axios.post(`user/logout/`)
-<<<<<<< Updated upstream
-        .then((response) => resolve(response.data))
-        .catch(reject)//response.data.message?
-=======
         .then((response) => {
             axios.defaults.headers.common['Authorization'] = "";
             resolve(response.data)})
         .catch(e=>reject(logError(e)))//response.data.message?
->>>>>>> Stashed changes
 })
 
 //Question APIs
