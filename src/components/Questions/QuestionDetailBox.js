@@ -29,11 +29,11 @@ const QuestionDetailBox = (match) => {
     
 
     useEffect(() => {
-        if (question === {}) {
+        if (question.title === undefined) {
         instance.get(`question/${id}/`)
             .then((res) => {
                 console.log(res);
-                setQuestion(res)
+                setQuestion(res.data)
                 setMaxPage(question.answer_count/30)
             })
             .catch((e) => {
@@ -63,11 +63,10 @@ const QuestionDetailBox = (match) => {
     if (!id instanceof Number) {
         return  (<Fragment>Wrong Question Id!</Fragment>)
     }
-    console.log(question);
     if (question.title === undefined) {
         return (<Fragment>Wrong Question Id!</Fragment>)
     }
-
+    console.log(question);
     // instance.get(`question/${id}/`)
     //     .then((res) => {
     //         console.log(res);
