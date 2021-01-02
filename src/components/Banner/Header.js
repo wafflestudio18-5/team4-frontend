@@ -3,6 +3,7 @@ import {getUserMe, getQuestionsWithKeywords, logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import './image.css'
+import axios from 'axios'
 import logo from '../../logo.png'
 import {Login, Logout} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
@@ -11,21 +12,49 @@ import styles from "./Header.module.scss";
 import Button from '../Button';
 
 export const Header = () => {
+  const dispatch = useDispatch();
+  const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+  console.log(isLoggedin);
+  const token = useSelector(state => state.userInfoReducer.token)
+  console.log(token);
 
-  const [user, setUser] = useState(undefined);
+  console.log("Token " + token);
+  const [user, setUser] = useState({});
   const {authTokens, setAuthTokens} = useAuth()
-      useEffect(()=> {
-          if(user !== undefined) return
-          getUserMe()
-              .then(setUser)
-              .catch(console.log)
-      },[authTokens]);
-    let history = useHistory();
-    const [command, setCommand] = useState('');
-    const search = () => {
-    /*GET /question/search/keywords*/
-        history.push("/users/me")
-    }
+  const instance = axios.create({
+    baseURL: 'http://localhost:8000/',
+    headers: { 'Authorization' : 'Token ' + token },
+  });
+
+  useEffect(()=> {
+      if(isLoggedin) {
+      instance.get('user/me/')
+          .then(res => {
+            console.log(res);
+            setUser(res)
+          })
+          .catch(e => {
+            console.log(e)
+          })}
+  },[]);
+
+  // if(isLoggedin) {
+  //   instance.get('user/me/')
+  //       .then(res => {
+  //         console.log(res);
+  //         setUser(res.data)
+  //       })
+  //       .catch(e => {
+  //         console.log(e)
+  //       })}
+
+  console.log(user);
+  let history = useHistory();
+  const [command, setCommand] = useState('');
+  const search = () => {
+  /*GET /question/search/keywords*/
+      history.push("/users/me")
+  }
   const signout = () => {
     logout()
       .then(() => {
@@ -46,7 +75,7 @@ export const Header = () => {
       </form>
       <div className={styles.rightNav}>
 
-        {user===undefined?
+        {!isLoggedin?
         <>
         <Button title="Signin" onClick={() => {history.push("/signin")}}>Sign In</Button>
         <Button title="Signup" onClick={() => {history.push("/signup")}}>Sign Up</Button>

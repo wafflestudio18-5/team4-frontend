@@ -3,7 +3,7 @@
 export const Login = (payload) => {
     return {
         type: "LOGIN",
-        payload: payload
+        token: payload
     }
 }
 
@@ -17,7 +17,7 @@ export const Logout = () => {
 export const setUserInfo = (payload) => {
     return {
         type: "SET_USER_INFO",
-        payload: payload
+        user: payload
     }
 }
 
@@ -31,10 +31,11 @@ export const removeUserInfo = () => {
 export const isLoggedReducer = (state={loggedin: false, token: null}, action) => {
     switch(action.type) {
         case "LOGIN":
-            localStorage.setItem("token", action.payload.token)
-            return {loggedin: true, token: action.payload.token}
+            console.log("login token");
+            console.log(action.token.token);
+            return {loggedin: true, token: action.token.token}
         case "LOGOUT":
-            return {loggedin : false, token: ""}
+            return {loggedin : false, token: null}
         default:
             return state
     }
@@ -61,9 +62,13 @@ const defaultUserInfo = {
 export const userInfoReducer = (state = defaultUserInfo, action) => {
     switch (action.type) {
         case "SET_USER_INFO" :
+            console.log("setting user info");
             console.log(action);
-            localStorage.setItem("token", action.payload.payload.data.token)
-            return action
+            console.log(action.user.payload);
+            if (action.user.payload.data === undefined) {
+                return action.user.payload
+            }
+            return action.user.payload.data
         case "REMOVE_USER_INFO" :
             return defaultUserInfo
         default:

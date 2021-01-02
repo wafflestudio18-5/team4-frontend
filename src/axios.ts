@@ -4,8 +4,9 @@ import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface
 import {useAuth} from './context/auth'
 
 export const Config = () => {
+    const token = localStorage.getItem("token")
     const {authTokens} = useAuth()
-    axios.defaults.headers.common['Authorization'] = authTokens;
+    axios.defaults.headers.common['Authorization'] = "Token " + token;
 }
 
 //TODO: baseUrl, token needs to be updated to an exact value
@@ -83,7 +84,7 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
 export const getQuestionsWithTags = (tags: string, filter_by: string, sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`question/tagged/}`,
-                    {body:{'tags': tags.replace(' ','+'), filter_by, sorted_by, page}})
+                    {params:{'tags': tags.replace(' ','+'), filter_by, sorted_by, page}})
             .then(response => resolve(response.data.questions))
             .catch(reject)//FIXME: how to handle status code 301?
     }

@@ -43,18 +43,22 @@ const Signup = () => {
     }
     const signup = async () => {
         postUser({username: username, password: password, email: email, nickname: nickname})
-            .then(response => {
+            .then(res => {
                 setWarn("")
                 //res 는 user info이므로 redux에 저장하기
+                console.log(res);
+                console.log("token");
+                console.log(res.token);
+                dispatch(setUserInfo({payload: res}))
+                dispatch(Login({token : res.token}))
+                // const token = `Token ${res.token}`
+                // const logged_in = true
+                // setAuthTokens({token, logged_in})
                 console.log("Successfully Logged in ");
-                const token = `Token ${response.token}`
-                const logged_in = true
-                setAuthTokens({token, logged_in})
-                history.push('/') //go to main
             })
             .catch(error => {
                 console.log(error);
-                setWarn("Authentication failed")
+                setWarn(error.message)
             })
     }
 
@@ -62,7 +66,8 @@ const Signup = () => {
         await axios.post("https://github.com/login/oauth/access_token/", {params:{
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
-            code: code
+            code: code,
+            redirect_uri: "https://wafflow.com"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
@@ -101,6 +106,7 @@ const Signup = () => {
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
+            redirectUri="https://wafflow.com/"
             buttonText="Login with Github"/>
 
             <div style={{display:'flex', flexDirection:'column'}} className="login-box">
