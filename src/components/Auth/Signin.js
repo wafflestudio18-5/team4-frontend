@@ -58,7 +58,7 @@ export const Signin = () => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('http://localhost:8000/user/login', {params:{'github_token' : token}})
+            await axios.put('http://localhost:8000/api/user/login', {params:{'github_token' : token}})
                 .then(res => {
 
                     dispatch(setUserInfo({payload: res}))
