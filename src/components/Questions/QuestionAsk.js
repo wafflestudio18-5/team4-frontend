@@ -7,14 +7,18 @@ import {postQuestion} from '../../axios.ts'
 import MDEditor from '@uiw/react-md-editor'
 import TagEditor from 'react-tageditor'
 import {useAuth} from '../../context/auth'
+import {useSelector, useDispatch} from 'react-redux'
 
 
 const QuestionAsk = () =>  {
     const {authTokens, setAuthTokens} = useAuth()
+    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
+
 
     const instance = axios.create({
         baseURL: 'http://localhost:8000/',
-        headers: { 'Authorization' : 'Token' + authTokens},
+        headers: { 'Authorization' : 'Token ' + token},
       });
 
     //const history = useHistory();
@@ -24,8 +28,7 @@ const QuestionAsk = () =>  {
 
 
     function submit() {
-
-        axios.post(`question/`, {title: title, content: body, tags: tags.replace(' ', '+')})
+        instance.post(`question/`, {title: title, content: body, tags: tags.replace(' ', '+')})
             .then(res => {
                 console.log(res);
             })
