@@ -5,7 +5,7 @@ import {useAuth} from '../../context/auth'
 import './image.css'
 import axios from 'axios'
 import logo from '../../logo.png'
-import {Login, Logout} from '../../modules/AuthRedux'
+import {Login, Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
 
 import styles from "./Header.module.scss";
@@ -53,15 +53,20 @@ export const Header = () => {
   const [command, setCommand] = useState('');
   const search = () => {
   /*GET /question/search/keywords*/
-      history.push("/users/me")
+      history.push("/users/me/")
   }
   const signout = () => {
-    logout()
+    instance.post('/user/logout/')
       .then(() => {
-        setUser(()=>undefined)
+        //setUser(()=>undefined)
         setAuthTokens()
         //Redirect?
       })
+      .catch(e => {
+        console.log(e);
+      })
+      dispatch(Logout)
+      dispatch(removeUserInfo)
 
   }
 
@@ -77,8 +82,8 @@ export const Header = () => {
 
         {!isLoggedin?
         <>
-        <Button title="Signin" onClick={() => {history.push("/signin")}}>Sign In</Button>
-        <Button title="Signup" onClick={() => {history.push("/signup")}}>Sign Up</Button>
+        <Button title="Signin" onClick={() => {history.push("/signin/")}}>Sign In</Button>
+        <Button title="Signup" onClick={() => {history.push("/signup/")}}>Sign Up</Button>
         </>
         :
         <>

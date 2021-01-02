@@ -35,6 +35,7 @@ export const isLoggedReducer = (state={loggedin: false, token: null}, action) =>
             console.log(action.token.token);
             return {loggedin: true, token: action.token.token}
         case "LOGOUT":
+            console.log("logout!");
             return {loggedin : false, token: null}
         default:
             return state
@@ -70,6 +71,7 @@ export const userInfoReducer = (state = defaultUserInfo, action) => {
             }
             return action.user.payload.data
         case "REMOVE_USER_INFO" :
+            console.log("remove user info");
             return defaultUserInfo
         default:
             return state

@@ -1,4 +1,4 @@
-import {useState, Fragment, useEffect} from 'react'
+import {useState, Fragment, useEffect, Button} from 'react'
 import React from 'react'
 import {getQuestion, getCommentsOfQuestion, getAnswersOfQuestion} from '../../axios.ts'
 import QdetailBox from './QdetailBox'
@@ -7,6 +7,8 @@ import AnswerList from '../Answer/AnswerList'
 import AnswerPost from '../Answer/AnswerPost'
 import {CommentPostQuestion} from '../Comment/CommentPost'
 import axios from 'axios'
+import AuthorProfile from '../Profile/AuthorProfile'
+import { Login_info } from '../../Formats'
 
 const QuestionDetailBox = (match) => {
     console.log("renders!");
@@ -26,8 +28,6 @@ const QuestionDetailBox = (match) => {
     const [max_page, setMaxPage] = useState(1)
     const [max_comment, setMaxComment] = useState(1)
 
-    
-
     useEffect(() => {
         if (question.title === undefined) {
         instance.get(`question/${id}/`)
@@ -40,19 +40,19 @@ const QuestionDetailBox = (match) => {
                 console.log(e);
                 alert(e.message)
             })
-        instance.get(`comment/question/${id}?page=${comment_page}`)
+        instance.get(`comment/question/${id}/?page=${comment_page}`)
             .then((res) => {
                 console.log(res);
-                setComments(res.comments)
+                setComments(res.data.comments)
                 setMaxComment(question.comment_count)
             })
             .catch((e) => {
                 console.log(e);
             })
-        instance.get(`answer/question/${id}/`, {page: answer_page, sorted_by: answer_sort})
+        instance.get(`answer/question/${id}/`, {params:{page: answer_page, sorted_by: answer_sort}})
             .then((res) => {
                 console.log(res);
-                setAnswers(res)
+                setAnswers(res.data.answers)
             })
             .catch((e) => {
                 console.log(e);
@@ -67,6 +67,15 @@ const QuestionDetailBox = (match) => {
         return (<Fragment>Wrong Question Id!</Fragment>)
     }
     console.log(question);
+    console.log(answers);
+    console.log(answers);
+    console.log(answers.length);
+    console.log(typeof(answers));
+    console.log(answers === Array(0));
+    console.log(comments);
+    const Author = question.author
+    console.log(answers.product);
+
     // instance.get(`question/${id}/`)
     //     .then((res) => {
     //         console.log(res);
@@ -97,7 +106,7 @@ const QuestionDetailBox = (match) => {
     //         console.log(e);
     //     })
 
-    return(
+    return (
         <Fragment>
             <div className="qdetail-main-title-box">
                 <div className="qdetail-main-title">
@@ -108,15 +117,46 @@ const QuestionDetailBox = (match) => {
                 </div>
             </div>
             <div className="qdetail-top-info-box">
-                <div classNaem="qdetail-top-info">
+                <div className="qdetail-top-info">
                     Asked at {question.created_at}, viewed {question.view_count}times 
                 </div>
             </div>
             <div className="q-main-content-box">
-                <QdetailBox Question={question}/>
+            <div className = "QdetailBoxLeft">
+            <div className="VoteBox">
+            <button>UpVote</button>
+            <div classnName="votes">
+                {question.vote}
+            </div>
+            <button>DownVote</button>
+            </div>
+        </div> 
+        <div className="QdetailBoxRight">
+            <div className = "questionContent">
+                {question.content}
+            </div>
+            <div className="questionTags">
+                hello
+            </div>
+            <div className="questionbottomBox">
+                <button>Share</button>
+                <Fragment /*asked at: should we change this to create {date} at {time}? */>
+                    asked at {question.created_a===undefined? null : question.created_at}
+                    <div className="author-profile-bottom">
+                        <div className="author-pic">
+                            <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
+                        </div>
+                        <div className="author-info">
+                            <div className="author-username">{Author.nickname===undefined? null : Author.nickname}</div>
+                            <div className="author-reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
+                        </div>
+                    </div>
+                </Fragment>
+            </div>
+        </div>   
             </div>
             <div className="q-main-comment-box">
-                    <CommentList comments={comments}/>
+                    {comments===undefined || !comments? "" : <CommentList comments={comments}/>}
                 <div className="comments-page-btn">
                         <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
                         <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page-1)}}>prev page</button>
@@ -134,7 +174,7 @@ const QuestionDetailBox = (match) => {
                     <button onClick={() => {set_answer_sort("activity")}}>activity</button>
                     <button onClick={() => {set_answer_sort("newest")}}>newest</button>
                 </div>
-                <AnswerList Answers={answers} is_accepted={question.has_accepted}/>
+                {answers===undefined || !answers? null : <AnswerList Answers={answers} is_accepted={question.has_accepted}/>}
                 <div className="ans-page-btn">
                     <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
                     <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page-1)}}>prev page</button>
@@ -143,6 +183,41 @@ const QuestionDetailBox = (match) => {
             </div>
         </Fragment>
     )
+
+    // return(
+    //     <>
+        
+
+    //         <div className = "questionContent">
+    //             {question.content}
+    //         </div>
+    //         <div className="questionTags">
+    //             hellossssssssss
+    //         </div>
+    //         <div className="questionbottomBox">
+    //             <button>Share</button>
+    //             <Fragment>
+    //                 asked at {question.created_a===undefined? null : question.created_at}
+    //                 <div className="author-profile-bottom">
+    //                     <div className="author-pic">
+    //                         <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
+    //                     </div>
+    //                     <div className="author-info">
+    //                         <div className="author-username">{Author.nickname===undefined? null : Author.nickname}</div>
+    //                         <div className="author-reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
+    //                     </div>
+    //                 </div>
+    //             </Fragment>
+    //         </div>
+            
+
+        
+        
+        
+        
+    //     </>
+    // )
+
 }
 
 export default React.memo(QuestionDetailBox)

@@ -2,12 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {getUserMe} from '../../axios'
 import axios from 'axios'
 import {getAnswersOfUser, getQuestionsOfUser} from '../../axios'
+import {useSelector, useDispatch} from 'react-redux'
 //to be modified for all users
+
+
 const Profile = () => {
+    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
     console.log("token");
-    console.log(localStorage.getItem("token"));
-    var token = "Token "+ localStorage.getItem("token") 
-    axios.defaults.headers.common['Authorization'] = token
+    console.log(token);
+    axios.defaults.headers.common['Authorization'] = "Token " +  token
     const [user, setUser] = useState(undefined);
     const [topPosts, setTopPosts] = useState(undefined)
 

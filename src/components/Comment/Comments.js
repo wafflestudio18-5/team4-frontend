@@ -1,16 +1,16 @@
-import {Fragment, Button} from 'react'
+import {Fragment} from 'react'
 
 export const CommentBox = (comment) => {
+    console.log(comment);
+
     return(
        <Fragment className="comment-box">
         <div className="comment-vote-box">
-            <Button //Add Buttons to upvote / downvote
-            ></Button> 
+            <button>UpVote</button>
             <div classnName="comment-votes">
                 {comment.vote}
             </div>
-            <Button //Add Buttons to upvote / downvote
-            ></Button>
+            <button>DownVote</button>
         </div>
         <div className="comment-content-box">
             {comment.content}
@@ -25,6 +25,10 @@ export const CommentBox = (comment) => {
 }
 
 export const CommentList = (comments) => {
-    const CommentsMapped = comments.map(Comment => <CommentBox comment={Comment}/>)
-    return (<div className = "comment-list">{CommentsMapped}</div>)
+    const comments_length = comments.length
+    var res = (<div></div>)
+    for (var i=0; i<comments_length; i++) {
+        res = res + (<CommentBox comment={Comment}/>)
+    }
+    return (<div className = "comment-list">{res}</div>)
 } 

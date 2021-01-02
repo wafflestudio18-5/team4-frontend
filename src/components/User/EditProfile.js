@@ -2,13 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {getUserMe, editUserMe} from '../../axios';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios'
+import {useSelector, useDispatch} from 'react-redux'
 
 //PUT /user/me
 
 const EditProfile = () => {
+    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
     console.log("token");
-    console.log(localStorage.getItem("token"));
-    var token = "Token "+ localStorage.getItem("token") 
+    console.log(token);
     axios.defaults.headers.common['Authorization'] = token
     let history = useHistory();
     //default value -> user info

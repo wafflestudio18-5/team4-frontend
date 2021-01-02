@@ -9,7 +9,7 @@ export const CommentPostQuestion = (id_q) => {
             <div className="comment-content">
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-            <button className="comment-submit-btn" onClick={commentOnQuestion(id_q, content)}>
+            <button className="comment-submit-btn" onClick={e => {commentOnQuestion(id_q, content)}}>
                 POST Comment
             </button>
         </Fragment>

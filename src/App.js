@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Route, Switch, Redirect, BrowserRouter} from 'react-router-dom'
+import {Route, Switch, Redirect} from 'react-router-dom'
 import History from './components/User/History'
 import Me from './components/User/Me'
 import Users from './components/User/Users';
@@ -12,6 +12,7 @@ import {Signin} from './components/Auth/Signin'
 import QuestionAsk from './components/Questions/QuestionAsk'
 import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
+
 import { Config } from './axios';
 
 function App() {
@@ -44,7 +45,6 @@ function App() {
   return (
     <div>
     <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
-      <BrowserRouter>
       <Header/>
       isLoggedin : {isLoggedin.toString() + "    "}
       token: {"Token " + token}
@@ -62,7 +62,6 @@ function App() {
       :<Redirect to="/"/>}
       <Route exact path="/users" component={Users}/>
       </Switch>
-      </BrowserRouter>
     </AuthContext.Provider>
     </div>
   );

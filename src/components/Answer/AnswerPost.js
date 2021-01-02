@@ -6,7 +6,7 @@ import {postAnswer} from '../../axios.ts'
 const AnswerPost = (id) => {    
     const [Content, setContent] = useState("")
     const postAns = (content) => {
-        if (content.length() > 10) {
+        if (content.length > 10) {
             postAnswer(id, content)
             setContent("")
         }
@@ -20,11 +20,11 @@ const AnswerPost = (id) => {
             <div className="ans-content-box">
                 <MDEditor class="qask-body-editor"
                     value={Content}
-                    onChange={({target:{Content}}) => setContent(Content)}/>
+                    onChange={e => setContent(e)}/>
                 <MDEditor.Markdown source={Content} />
             </div>
             <div className="ans-post-btn-box">
-                <button className="ans-post-btn" onClick={postAns(Content)}></button>
+                <button className="ans-post-btn" onClick={e => {postAns(Content)}}></button>
             </div>
         </Fragment>
     )
