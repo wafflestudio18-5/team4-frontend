@@ -28,6 +28,9 @@ const QuestionAsk = () =>  {
 
 
     function submit() {
+        console.log(title);
+        console.log(body);
+        console.log(tags.replace(' ', '+'));
         instance.post(`question/`, {title: title, content: body, tags: tags.replace(' ', '+')})
             .then(res => {
                 console.log(res);
@@ -59,7 +62,10 @@ const QuestionAsk = () =>  {
             <div classNameName="qask-body-box">
                 <div className="qask-body">Body</div>
                 <div className="qask-body-sub">Include all the information someone would need to answer your question</div>
-                <MDEditor className="qask-body-editor"/>
+                <MDEditor 
+                value={body}
+                onChange={(e) => {setBody(e.target.value)}}
+                />
                 <MDEditor.Markdown source={body} />
             </div>
 
