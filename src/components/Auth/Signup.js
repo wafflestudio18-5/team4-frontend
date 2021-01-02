@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
+import {postUser} from '../../axios'
 import {login, logout, postUser} from '../../axios'
 import * as config from '../../config'
 
@@ -35,7 +36,8 @@ const Signup = () => {
         setWarn("")
         setNickname(nickname)
     }
-    const signup = async () => {
+    const signup = async (e) => {
+        e.preventDefault()
         postUser({username, password, email, nickname})
             .then(response => {
                 //res 는 user info이므로 redux에 저장하기
@@ -53,14 +55,14 @@ const Signup = () => {
     return (
         <> 
 
-            <div style={{display:'flex', flexDirection:'column'}} className="login-box">
-                <label>Username</label><input type="text" className="id-input"  value={username} onChange={(e)=>onChangeUsername(e.target.value)}/>
-                <label>Password</label><input type="password" className="password-input" value={password} onChange={(e)=>onChangePassword(e.target.value)}/> 
-                <label>Nickname</label><input type="text" className="nickname-input" value={nickname} onChange={(e)=>onChangeNickname(e.target.value)}/> 
-                <label>Email</label><input type="text" className="email-input"  value={email} onChange={(e)=>onChangeEmail(e.target.value)}/>
-                <button className="signup-btn" onClick={()=>signup()}>Sign Up</button>
+            <form className="signup-form" style={{display:'flex', flexDirection:'column'}}  onSubmit={e=>signup(e)}>
+                <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>onChangeUsername(e.target.value)}/>
+                <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>onChangePassword(e.target.value)}/> 
+                <label>Nickname</label><input required type="text" className="nickname-input" value={nickname} onChange={(e)=>onChangeNickname(e.target.value)}/> 
+                <label>Email</label><input required type="text" className="email-input"  value={email} onChange={(e)=>onChangeEmail(e.target.value)}/>
+                <button className="signup-btn">Sign Up</button>
                 <div className="warn">{warn}</div>
-            </div>
+            </form>
         </>
        
     )

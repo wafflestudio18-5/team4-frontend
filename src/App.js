@@ -7,12 +7,12 @@ import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
-
-import {Signin} from './components/Auth/Signin'
-import QuestionAsk from './components/Questions/QuestionAsk'
+import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
-import { Config } from './axios';
+import User from './components/User/User';
+import QuestionAsk from './components/Questions/QuestionAsk'
+import {AuthContext} from './context/auth'
 
 function App() {
   const existingTokens = () => {
@@ -50,6 +50,7 @@ function App() {
       {authTokens?
       <Route path="/users/me" component={Me}/>
       :<Redirect to="/"/>}
+      <Route path="/users/:id" component={User}/>
       <Route exact path="/users" component={Users}/>
       </Switch>
     </AuthContext.Provider>

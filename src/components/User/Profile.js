@@ -1,24 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {getUserMe} from '../../axios'
-import axios from 'axios'
-import {getAnswersOfUser, getQuestionsOfUser} from '../../axios'
+import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser} from '../../axios'
 //to be modified for all users
-const Profile = () => {
-    console.log("token");
-    console.log(localStorage.getItem("token"));
-    var token = "Token "+ localStorage.getItem("token") 
-    axios.defaults.headers.common['Authorization'] = token
-    const [user, setUser] = useState(undefined);
+const Profile = ({user}) => {
+    //const [user, setUser] = useState(user);
     const [topPosts, setTopPosts] = useState(undefined)
-
+    const [topTags, setTopTags] = useState(undefined)
     useEffect(()=> {
-        if(!user){
-            getUserMe()
-                .then(setUser)
-                .catch(console.log)
-            return
-        }
+        // if(!user){
+        //     getUserMe()
+        //         .then(setUser)
+        //         .catch(console.log)
+        //     return
+        // }
         getTopAnswers()
+        getTopTags()
     }, [user]);
     const getTopAnswers = () => {
         getAnswersOfUser(user.id, 'votes')
@@ -30,12 +25,17 @@ const Profile = () => {
             .then(setTopPosts)
             .catch(console.log)
     }
+    const getTopTags = () => {
+        getTagsOfUser(user.id, 'votes')
+            .then(setTopTags)
+            .catch(console.log)
+    }
     return (
-        (user && topPosts)?
+        (user && topPosts && topTags)?
         <>
         <div className="user-card">
             <div>
-                <img width="100px" height="100px" src={user.picture}/>
+                <img width="100px" height="100px" src={user.picture} alt={`user:${user.nickname}`}/>
                 <span>{user.reputation}</span>
             </div>
         </div>
@@ -51,14 +51,12 @@ const Profile = () => {
         </div>
         <div className="user-top-tags">
         <h3>Top tags</h3>
-        <div className="user-tag">javascript</div>
-        <div className="user-tag">react</div>
-        <div className="user-tag">ecmascript-6</div>
+        {topTags.map(tag => <div key={tag.id} className="user-tag"><span>{tag.name}</span><span>score:{tag.score}</span><span>posts:{tag.posts}</span></div>)}
         </div>
         <div className="user-top-posts">
         <div><h3>Top posts</h3><button onClick={()=>{getTopQuestions()}}>Questions</button><button onClick={()=>{getTopAnswers()}}>Answers</button></div>
-        {topPosts.map(answer => 
-            <div className="post-li"><span>{answer.vote}</span><span>{answer.title}</span><span>{answer.created_at.substring(0,10)}</span></div>
+        {topPosts.map(post => 
+            <div key={post.id} className="post-li"><span>{post.vote}</span><span>{post.title}</span><span>{post.created_at.substring(0,10)}</span></div>
         )}
         </div>
         </>

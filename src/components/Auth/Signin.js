@@ -1,4 +1,6 @@
-import {useState, Fragment} from 'react'
+import React, {useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
 import {login} from '../../axios'
@@ -11,7 +13,11 @@ export const Signin = () => {
     const token = localStorage.getItem("token")
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
-
+    const history = useHistory();
+    const token_instance = axios.create({
+        baseURL: 'https://github.com/',
+        headers: { 'Accept': 'application/json' },
+      });
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -27,11 +33,13 @@ export const Signin = () => {
         setPassword(password)
     }
 
-    const loginwthUsername = async () => {
-        await axios.put('http://localhost:8000/user/login/', {username: username, password : password}, null)
-                .then(res => {
+    const loginwthUsername = async (e) => {
+        e.preventDefault()
+        login(username, password)
+            .then(res => {
                     dispatch(setUserInfo({payload: res}))
                     dispatch(Login({token : res.token}))
+                    history.push('/')
                 })
                 .catch(e => {
                     console.log(e);
@@ -85,21 +93,16 @@ export const Signin = () => {
             onFailure={onFailure}
             redirectUri="http://localhost:8000/"
             buttonText="Login with Github"/>
-
-            <div className="login-box">
-                <div>
-                    Login ith username and Password
-                </div>
-                <input className="id-input" value={username} placeholder="input yout username" onChange={(e)=>{usernameOnChange(e.target.value)}}/>
-                <input className="password-input" value={password} type="password" placeholder="inpur your Password" onChange={(e)=>{passwordOnChange(e.target.value)}}/> 
-
-                <button className="login-btn" onClick={loginwthUsername}>Login</button>
-                <div className="warn">{warn}</div>
-            </div>
+            
+            <form onSubmit={e=>loginwthUsername(e)} className="login-form" >
+                <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
+                <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
+                <button className="login-button">Login</button>
+                <div className="warn" >{warn}</div>
+            </form>
         </Fragment>
        
     )
 }
 
 export default Signin;
-
