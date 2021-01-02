@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Route, Switch, Redirect} from 'react-router-dom'
+import {Route, Switch, Redirect, BrowserRouter} from 'react-router-dom'
 import History from './components/User/History'
 import Me from './components/User/Me'
 import Users from './components/User/Users';
@@ -37,21 +37,23 @@ function App() {
   return (
     <div>
     <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
+      <BrowserRouter>
       <Header/>
       <Switch>
       <Route exact path="/" component={Main}/>
       <Route exact path="/signin" component={Signin}/>
       <Route exact path="/question/ask" component={QuestionAsk}/>
       <Route exact path="/signup" component={Signup}/>
-      <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
-      <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
       <Route exact path="/question/tagged" component={SearchResultTags}/>
       <Route exact path="/question/kwds" component={SearchResultKwds}/>
+      <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
+      <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       {authTokens?
       <Route path="/users/me" component={Me}/>
       :<Redirect to="/"/>}
       <Route exact path="/users" component={Users}/>
       </Switch>
+      </BrowserRouter>
     </AuthContext.Provider>
     </div>
   );

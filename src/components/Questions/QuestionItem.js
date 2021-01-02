@@ -5,7 +5,6 @@ const QuestionItem= (Question_info) => {
     var ContentPeak = Question_info.content.substring(200) //TODO: show 200 texts? 
     return(
         <Fragment className="QuestionItemBox">
-            <Link /*TODO: use Redux to determine path*/>
                 <div className ="QuestionItemLeft">
                     <div className="answerCountBox">
                         answers: {Question_info.answer_count}
@@ -21,7 +20,7 @@ const QuestionItem= (Question_info) => {
                 </div>
                 <div className="QuestionItemRight">
                     <div className="questionTitle">
-                        {Question_info.title}
+                        <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link>
                     </div>
                     {ContentPeak}
                     <div className="tags">
@@ -29,7 +28,6 @@ const QuestionItem= (Question_info) => {
                     </div>
                     <AuthorProfile id={Question_info.author.id} created_date={Question_info.created_at}/>
                 </div>
-            </Link>
         </Fragment>
     )
 }

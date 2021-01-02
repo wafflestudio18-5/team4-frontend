@@ -9,9 +9,9 @@ import {CommentPostQuestion} from '../Comment/CommentPost'
 import axios from 'axios'
 
 const QuestionDetailBox = (match) => {
+    console.log("renders!");
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/',
-        headers: { 'Authorization': '' },
+        baseURL: 'http://localhost:8000/'
       });
 
     const id = match.match.params.question_id
@@ -29,6 +29,7 @@ const QuestionDetailBox = (match) => {
     
 
     useEffect(() => {
+        if (question === {}) {
         instance.get(`question/${id}/`)
             .then((res) => {
                 console.log(res);
@@ -56,10 +57,15 @@ const QuestionDetailBox = (match) => {
             .catch((e) => {
                 console.log(e);
             })
+        }
     }, [])
 
     if (!id instanceof Number) {
         return  (<Fragment>Wrong Question Id!</Fragment>)
+    }
+    console.log(question);
+    if (question.title === undefined) {
+        return (<Fragment>Wrong Question Id!</Fragment>)
     }
 
     // instance.get(`question/${id}/`)
@@ -93,7 +99,7 @@ const QuestionDetailBox = (match) => {
     //     })
 
     return(
-        <Fragment className="qdetail-main-box">
+        <Fragment>
             <div className="qdetail-main-title-box">
                 <div className="qdetail-main-title">
                     {question.title}
@@ -113,8 +119,8 @@ const QuestionDetailBox = (match) => {
             <div className="q-main-comment-box">
                     <CommentList comments={comments}/>
                 <div className="comments-page-btn">
-                        <button onClick={set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)} >next page</button>
-                        <button onClick={set_comment_page(comment_page===1? 1 : comment_page-1)}>prev page</button>
+                        <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
+                        <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page-1)}}>prev page</button>
                 </div>
                 <div className="comment-post-box-q">
                     <CommentPostQuestion id={id}/>
@@ -125,14 +131,14 @@ const QuestionDetailBox = (match) => {
                     {question.answer_count} Answers
                 </div>
                 <div className="sort-by-btn">
-                    <button onClick={set_answer_sort("votes")} >votes</button>
-                    <button onClick={set_answer_sort("activity")}>activity</button>
-                    <button onClick={set_answer_sort("newest")}>newest</button>
+                    <button onClick={() => {set_answer_sort("votes")}} >votes</button>
+                    <button onClick={() => {set_answer_sort("activity")}}>activity</button>
+                    <button onClick={() => {set_answer_sort("newest")}}>newest</button>
                 </div>
                 <AnswerList Answers={answers} is_accepted={question.has_accepted}/>
                 <div className="ans-page-btn">
-                    <button onClick={set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)} >next page</button>
-                    <button onClick={set_answer_page(answer_page===1? 1 : answer_page-1)}>prev page</button>
+                    <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
+                    <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page-1)}}>prev page</button>
                 </div>
                 <AnswerPost id={id}/>
             </div>

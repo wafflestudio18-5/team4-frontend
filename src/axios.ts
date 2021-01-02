@@ -80,10 +80,10 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
     }
 )
 
-export const getQuestionsWithTags = (tags: string[], filter_by: string, sorted_by: string, page=1) => 
+export const getQuestionsWithTags = (tags: string, filter_by: string, sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`question/tagged/}`,
-                    {params:{'tags':tags.join('+'), filter_by, sorted_by, page}})
+                    {body:{'tags': tags.replace(' ','+'), filter_by, sorted_by, page}})
             .then(response => resolve(response.data.questions))
             .catch(reject)//FIXME: how to handle status code 301?
     }

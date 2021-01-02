@@ -25,6 +25,6 @@ export const CommentBox = (comment) => {
 }
 
 export const CommentList = (comments) => {
-    const CommentsMapped = comments.map(Comment => {return <CommentBox comment={Comment}/>})
+    const CommentsMapped = comments.map(Comment => <CommentBox comment={Comment}/>)
     return (<div className = "comment-list">{CommentsMapped}</div>)
 } 

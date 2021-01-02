@@ -1,7 +1,8 @@
-import {useState, Fragement} from 'react'
+import {useState, Fragement, useHistory} from 'react'
 import {getQuestionsWithTags, getQuestionsWithKeywords, getUser} from '../../axios.ts'
 import QuestionList from '../Questions/QuestionList'
 import qs from 'qs';
+import AskButton from '../Button'
 
 //tags: list of tags
 export const SearchResultTags = ({location}) => {
@@ -12,8 +13,19 @@ export const SearchResultTags = ({location}) => {
     const [sort, setSort] = useState(query.sorted_by)
     const [page, setPage] = useState(parseInt(query.page))
     const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
-    const tags_form = query.tags
+    const tags_form = query.tags.replace(' ', '+')
+    console.log(query.tags);
     let result = filter_by === null? getQuestionsWithTags(tags_form, sort, page) : getQuestionsWithTags(filter_by,tags_form, sort, page)
+    console.log("result!");
+    console.log(result);
+
+    if (result === undefined) {
+        return (
+            <div>
+               Sorry, No Questions!
+            </div>
+        )
+    }
     const max_page = result.questions.count()/30
     const Refresh = () => {
         //TODO: 값 확인하기 (refresh 필요 있나)
@@ -30,6 +42,7 @@ export const SearchResultTags = ({location}) => {
         Refresh()
     }
 
+
     
     return (
         <Fragement className="search-result-tags-box">
@@ -42,9 +55,7 @@ export const SearchResultTags = ({location}) => {
                         <div className="advanced-tip-box" /*TODO: <a> tag*/>
                             Advanced Question
                         </div>
-                        <div className="ask-q-box">
-                            <button className="ask-q-btn" /*TODO: pnClick*/></button>
-                        </div>
+                        <AskButton/>
                     </div>                
                 </div>
                 <div className="result-head-sub">
