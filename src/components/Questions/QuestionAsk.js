@@ -6,13 +6,13 @@ import QuestionAskGuide from './QuestionAskGuide'
 import {postQuestion} from '../../axios.ts'
 import MDEditor from '@uiw/react-md-editor';
 import TagEditor from 'react-tageditor'
-
+import {useHistory} from 'react-router-dom'
 
 const QuestionAsk = () =>  {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [tags, setTags] = useState([])
-
+    const history = useHistory()
 
     const submit = () => {
         postQuestion({

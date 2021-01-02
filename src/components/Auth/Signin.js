@@ -41,10 +41,10 @@ export const Signin = () => {
                     dispatch(Login({token : res.token}))
                     history.push('/')
                 })
-                .catch(e => {
-                    console.log(e);
-                    setWarn("Authentication failed")
-                })
+            .catch(e => {
+                console.log(e);
+                setWarn("Authentication failed")
+            })
     }
     
     const onSuccess = async({code}) => {
@@ -81,13 +81,13 @@ export const Signin = () => {
     }
     if(isLoggedin) {
         return (
-            <Fragment>
+            <>
                 You are Already Logged in
-            </Fragment>
+            </>
         )
     }
     return (
-        <Fragment> 
+        <> 
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
@@ -100,7 +100,7 @@ export const Signin = () => {
                 <button className="login-button">Login</button>
                 <div className="warn" >{warn}</div>
             </form>
-        </Fragment>
+        </>
        
     )
 }

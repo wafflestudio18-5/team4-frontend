@@ -12,7 +12,6 @@ import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
 import User from './components/User/User';
 import QuestionAsk from './components/Questions/QuestionAsk'
-import {AuthContext} from './context/auth'
 
 function App() {
   const existingTokens = () => {
