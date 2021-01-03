@@ -1,11 +1,12 @@
-import React , {Fragment, Link} from 'react';
+import React from 'react';
+import {Link} from 'react-router-dom'
 import AuthorProfile from '../Profile/AuthorProfile'
 
-const QuestionItem= (Question_info) => {
-    var ContentPeak = Question_info.content.substring(200) //TODO: show 200 texts? 
+const QuestionItem= ({Question_info}) => {
+    var ContentPeak = Question_info.content?.substring(200) //TODO: show 200 texts? 
     return(
-        <Fragment className="QuestionItemBox">
-            <Link /*TODO: use Redux to determine path*/>
+        <div className="QuestionItemBox">
+            <Link to={`/question/${Question_info.id}`}/*TODO: use Redux to determine path*/>
                 <div className ="QuestionItemLeft">
                     <div className="answerCountBox">
                         answers: {Question_info.answer_count}
@@ -25,12 +26,12 @@ const QuestionItem= (Question_info) => {
                     </div>
                     {ContentPeak}
                     <div className="tags">
-                        {Question_info.tags.map((tag) => {return <span><Link /*TODO: use Rounter*/><span className="tagInfo">{tag.name}</span></Link></span>})}
+                        {Question_info.tags?.map((tag) => {return <span><Link /*TODO: use Rounter*/><span className="tagInfo">{tag.name}</span></Link></span>})}
                     </div>
-                    <AuthorProfile id={Question_info.author.id} created_date={Question_info.created_at}/>
+                    <AuthorProfile question={Question_info}/>
                 </div>
             </Link>
-        </Fragment>
+        </div>
     )
 }
 

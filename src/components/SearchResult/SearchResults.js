@@ -1,5 +1,5 @@
-import {useState, Fragement} from 'react'
-import {getQuestionsWithTags, getQuestionsWithKeywords, getUser} from '../../axios.ts'
+import React, {useState, useEffect, Fragement} from 'react'
+import {getQuestionsWithTags, getQuestionsWithKeywords, getQuestionsOfUser, getUser} from '../../axios.ts'
 import QuestionList from '../Questions/QuestionList'
 import qs from 'qs';
 
@@ -204,28 +204,36 @@ export const    SearchResultKwds = ({location}) => {
 }
 
 //user_id
-export const SearchResultUser = (match) => {
-    console.log(match);
-    const {user_id} = match.match.params
-    console.log("id :"+ user_id);
-    const user = getUser(user_id)
-    const [sort, setSort] = useState("newest")
-    const [page, setPage] = useState(1)
-    const [result, setResult] = useState(getQuestionsWithKeywords(user_id, sort, page))
+export const SearchResultUser = ({query}) => {
+    console.log(query);
+    const [sortedBy, setSortedBy] = useState(query.sorted_by)
+    const [page, setPage] = useState(query.page)
+    const [result, setResult] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [maxPage, setMaxPage] = useState(0)
     console.log(result);
-    const max_page = result.questions.count()/30
 
+    useEffect(()=>{
+        getQuestionsOfUser(query.user, sortedBy, page)
+            .then(questions => {
+                setResult(()=>questions)
+                setMaxPage(()=>Math.ceil(questions.length/30))
+                setLoading(()=>false)
+            })
+            .catch(console.log)
+    },[sortedBy, page])
     const Refresh = () => {
-        setResult(getQuestionsWithKeywords(user_id, sort, page))
+        getQuestionsOfUser(query.user, sortedBy, page)
+            .then(setResult)
     }
     
-    const changeSort = (n_sort) => {
-        setSort(n_sort)
+    const changeSort = (sortedBy) => {
+        setSortedBy(sortedBy)
         Refresh()
     }
 
-    const changePage = (n_page) => {
-        setPage(n_page)
+    const changePage = (page) => {
+        setPage(page)
         Refresh()
     }
 
@@ -233,7 +241,8 @@ export const SearchResultUser = (match) => {
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        !result.length? <></>:
+        <div className="search-result-kwds-box">
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -249,7 +258,7 @@ export const SearchResultUser = (match) => {
                     </div>                
                 </div>
                 <div className="result-head-sub">
-                    Results for user {user.username}
+                    Results for user {query.user}
                 </div>
             </div>
             <div className="search-result-body">
@@ -264,36 +273,36 @@ export const SearchResultUser = (match) => {
                         </div>
                         <div className="results-info-box">
                             <div className="results-num-box">
-                                {result.questions.count()} results
+                                {result.length} results
                             </div>
                             <div className="sort-btn-box" /*TODO: 두 개는 dropdown?*/>
                                 <div className="sort-newest">
                                     <button className="new-btn" onClick = {() => changeSort("newest")}>new</button>
                                 </div>
                                 <div className="sort-update">
-                                    <button className="update-btn" onClick = {() => changeSort("recent_activity")}>update</button>
+                                    <button className="update-btn" onClick = {() => changeSort("activity")}>update</button>
                                 </div>
                                 <div className="sort-votes">
-                                    <button className="vote-btn" onClick = {() => changeSort("most_votes")}>votes</button>
+                                    <button className="vote-btn" onClick = {() => changeSort("votes")}>votes</button>
                                 </div>
                                 <div className="sort-views">
-                                    <button className="view-btn" onClick = {() => changeSort("most_frequent")}>views</button>
+                                    <button className="view-btn" onClick = {() => changeSort("views")}>views</button>
                                 </div>
                             </div>
                         </div>
                     </div>
             </div>
-            <QuestionList Questions={result.questions}/>
+            <QuestionList Questions={result}/>
             <div className="select-page-box">
                 <div className="page-plus-btn-box">
-                    <button className="page-plus-btn" onClick = {() => {changePage(page===max_page? max_page : page+1)}}>next page</button>
+                    {page===maxPage?<></>:<button className="page-plus-btn" onClick = {() => {changePage(page+1)}}>next page</button>}
                 </div>
                 {page}
                 <div className="page-minus-btn-box">
-                    <button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>
+                    {page===maxPage?<></>:<button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>}
                 </div>
             </div>
-        </Fragement>
+        </div>
     )
     
 }
