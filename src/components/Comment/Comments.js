@@ -24,13 +24,10 @@ export const CommentBox =  (comment) => {
     )
 }
 
-export const CommentList = (comments) => {
-    console.log(comments);
-    const comments_length = comments.length
-    console.log(comments_length);
+export const CommentList = (comments_all) => {
+    console.log(comments_all);
+    const comment_list = comments_all.comments_all
+    console.log(comment_list);
     var res = (<div></div>)
-    for (var i=0; i<comments_length; i++) {
-        res = res + (<CommentBox comment={Comment}/>)
-    }
-    return (<div className = "comment-list">{res}</div>)
+    return (<div className = "comment-list">{comment_list.map(comment => {return <CommentBox comment = {comment}/>})}</div>)
 } 
