@@ -12,10 +12,10 @@ export const Config = () => {
 //TODO: use redux to store and use token
 
 const logError = (error: any) => {
-    const log = error.response
-    console.log(`${log.status} ${log.statusText}`)
-    console.log(`${log.config.method} ${log.config.url}`)
-    return log.data
+    const log = error?.response
+    console.log(`${error?.status} ${error?.statusText}`)
+    console.log(`${log?.config?.method} ${log?.config?.url}`)
+    return log?.data
 }
 axios.defaults.baseURL = "http://localhost:8000";
 
