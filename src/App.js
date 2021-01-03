@@ -5,7 +5,7 @@ import Me from './components/User/Me'
 import Users from './components/User/Users';
 import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
-import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
+import {SearchResultUser, SearchResultTags, SearchResultKeywords} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
 import {useSelector, useDispatch} from 'react-redux' 
 import {Signin} from './components/Auth/Signin'
@@ -54,7 +54,7 @@ function App() {
       <Route exact path="/question/ask" component={QuestionAsk}/>
       <Route exact path="/signup" component={Signup}/>
       <Route exact path="/question/tagged" component={SearchResultTags}/>
-      <Route exact path="/question/kwds" component={SearchResultKwds}/>
+      <Route exact path="/question/keywords" component={SearchResultKeywords}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
       <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       {authTokens?

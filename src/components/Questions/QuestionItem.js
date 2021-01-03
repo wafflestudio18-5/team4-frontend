@@ -1,7 +1,8 @@
 import React , {Fragment, Link} from 'react';
 import AuthorProfile from '../Profile/AuthorProfile'
 
-const QuestionItem= (Question_info) => {
+const QuestionItem= (Question) => {
+    const Question_info = Question.Question_info
     var ContentPeak = Question_info.content.substring(200) //TODO: show 200 texts? 
     return(
         <Fragment className="QuestionItemBox">
@@ -20,11 +21,11 @@ const QuestionItem= (Question_info) => {
                 </div>
                 <div className="QuestionItemRight">
                     <div className="questionTitle">
-                        <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link>
+                        {/* <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> */}
                     </div>
                     {ContentPeak}
                     <div className="tags">
-                        {Question_info.tags.map((tag) => {return <span><Link /*TODO: use Rounter*/><span className="tagInfo">{tag.name}</span></Link></span>})}
+                        {/* {Question_info.tags.map((tag) => {return <span><Link ><span className="tagInfo">{tag.name}</span></Link></span>})} */}
                     </div>
                     <AuthorProfile id={Question_info.author.id} created_date={Question_info.created_at}/>
                 </div>

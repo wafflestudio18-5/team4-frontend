@@ -83,16 +83,16 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
 
 export const getQuestionsWithTags = (tags: string, sorted_by: string="newest", page: Number=1, filter_by?: string) => 
     new Promise((resolve,reject) => {
-        axios.get(`question/tagged/}`,
+        axios.get(`question/tagged/`,
                     {params:{'tags': tags, 'sorted_by': sorted_by, 'page': page, 'filter_by': filter_by,}})
             .then(response => resolve(response.data.questions))
             .catch(reject)//FIXME: how to handle status code 301?
     }
 )
 
-export const getQuestionsWithKeywords = (keywords: string[], filter_by: string, sorted_by: string, page=1) => 
+export const getQuestionsWithKeywords = (keywords: string, sorted_by: string, page=1, filter_by?: string) => 
     new Promise((resolve,reject) => {
-        axios.get(`question/search/keywords/}`,
+        axios.get(`question/keywords/`,
                     {params:{'keywords': keywords, 'filter_by': filter_by,'sorted_by': sorted_by, 'page': page}})
             .then(response => resolve(response.data.questions))
             .catch(reject)//FIXME: how to handle status code 301?
