@@ -1,26 +1,43 @@
 
-import {Fragment, useState} from 'react'
+import {Fragment, useState, useHistory} from 'react'
 import React from 'react'
-import QuestionAskBox from './QuestionAskBox'
+import axios from 'axios'
 import QuestionAskGuide from './QuestionAskGuide'
 import {postQuestion} from '../../axios.ts'
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor from '@uiw/react-md-editor'
 import TagEditor from 'react-tageditor'
-import {useHistory} from 'react-router-dom'
+import {useAuth} from '../../context/auth'
+import {useSelector, useDispatch} from 'react-redux'
+
 
 const QuestionAsk = () =>  {
+    const {authTokens, setAuthTokens} = useAuth()
+    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
+
+
+    const instance = axios.create({
+        baseURL: 'http://localhost:8000/',
+        headers: { 'Authorization' : 'Token ' + token},
+      });
+
+    //const history = useHistory();
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
-    const [tags, setTags] = useState([])
-    const history = useHistory()
+    const [tags, setTags] = useState("")
 
-    const submit = () => {
-        postQuestion({
-            'title': title,
-            'constent': body,
-            'tags': tags.join('+')
-        })
-        history.replace('/questions')
+
+    function submit() {
+        console.log(title);
+        console.log(body);
+        console.log(tags.replace(' ', '+'));
+        instance.post(`question/`, {title: title, content: body, tags: tags.replace(' ', '+')})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
 
     return (
@@ -38,16 +55,17 @@ const QuestionAsk = () =>  {
                 <div className="qask-title">Title</div>
                 <div className="qask-title-sub">Be specific and imagine you’re asking a question to another person</div>
                 <div className="qask-title-input-box">
-                    <input className="qask-title-input" value={title} onChange={() => setTitle}/>
+                    <input className="qask-title-input" value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
 
                 </div>
             </div>
             <div classNameName="qask-body-box">
                 <div className="qask-body">Body</div>
                 <div className="qask-body-sub">Include all the information someone would need to answer your question</div>
-                <MDEditor className="qask-body-editor"
-                    value={body}
-                    onChange={({target:{body}}) => setBody(body)}/>
+                <MDEditor 
+                value={body}
+                onChange={(e) => {console.log(e); setBody(e)}}
+                />
                 <MDEditor.Markdown source={body} />
             </div>
 
@@ -55,8 +73,7 @@ const QuestionAsk = () =>  {
                 <div className="qask-tags">Tags</div>
                 <div className="qask-tags-sub">Add up to 5 tags to describe what your question is about</div>
                 <div className="qask-tags-input-box">
-                    <TagEditor className="qask-tags-editor" tags={tags} delimiters={[' ']} 
-                    onChange={setTags} placeholder="Input tags, split by space" />
+                <input className="qask-title-input" value={tags} placeholder="Input tags, seperated by space" onChange={(e)=>{setTags(e.target.value)}}/>
                 </div>
             </div>
 

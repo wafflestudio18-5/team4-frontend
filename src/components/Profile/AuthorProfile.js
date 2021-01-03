@@ -2,7 +2,7 @@ import {useState, Fragment} from 'react'
 import {getUser} from '../../axios.ts'
 
 const AuthorProfile = (id, created_date) => {
-    const [Author, setAuthor] = useState()
+    const [Author, setAuthor] = useState({})
     setAuthor(getUser(id))
     return (
         <Fragment /*asked at: should we change this to create {date} at {time}? */>
