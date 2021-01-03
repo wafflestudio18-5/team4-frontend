@@ -22,7 +22,7 @@ export const Header = () => {
   const [user, setUser] = useState({});
   const {authTokens, setAuthTokens} = useAuth()
   const instance = axios.create({
-    baseURL: 'http://localhost:8000/',
+    baseURL: 'http://localhost:8000/api/',
     headers: { 'Authorization' : 'Token ' + token },
   });
 

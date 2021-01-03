@@ -149,8 +149,8 @@ export const  SearchResultKeywords = ({location}) => {
         ignoreQueryPrefix: true
     });
     console.log(query);
-    const [sort, setSort] = query.sorted_by
-    const [page, setPage] = query.page
+    const [sort, setSort] = useState(query.hasOwnProperty("filter_by")? query.sorted_by : "newest")
+    const [page, setPage] = useState(query.hasOwnProperty("filter_by")? parseInt(query.page) : 1)
     const keywords_form = query.keywords.replace(' ', '+')
     const [result, setResult] = useState(null)
     const [filter_by, setFilter] = useState(query.hasOwnProperty("filter_by")? query.filter_by : null)
@@ -199,7 +199,7 @@ export const  SearchResultKeywords = ({location}) => {
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        <>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -210,7 +210,7 @@ export const  SearchResultKeywords = ({location}) => {
                             Advanced Question
                         </div>
                         <div className="ask-q-box">
-                            <button className="ask-q-btn" /*TODO: pnClick*/></button>
+                            <button className="ask-q-btn" /*TODO: onClick*/>Ask a Question</button>
                         </div>
                     </div>                
                 </div>
@@ -230,7 +230,6 @@ export const  SearchResultKeywords = ({location}) => {
                         </div>
                         <div className="results-info-box">
                             <div className="results-num-box">
-                                {result.questions.count()} results
                             </div>
                             <div className="sort-btn-box" /*TODO: 두 개는 dropdown?*/>
                                 <div className="sort-newest">
@@ -249,17 +248,17 @@ export const  SearchResultKeywords = ({location}) => {
                         </div>
                     </div>
             </div>
-            {/* <QuestionList Questions={result.questions}/> */}
+                <QuestionList Questions={result}/> 
             <div className="select-page-box">
                 <div className="page-plus-btn-box">
                     <button className="page-plus-btn" onClick = {() => {changePage(page===max_page? max_page : page+1)}}>next page</button>
                 </div>
-                {page}
+                    {page}
                 <div className="page-minus-btn-box">
                     <button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>
                 </div>
             </div>
-        </Fragement>
+        </>
     )
     
 }
@@ -294,7 +293,7 @@ export const SearchResultUser = (match) => {
 
     
     return (
-        <Fragement className="search-result-kwds-box">
+        <>
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -354,7 +353,7 @@ export const SearchResultUser = (match) => {
                     <button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>
                 </div>
             </div>
-        </Fragement>
+        </>
     )
     
 }

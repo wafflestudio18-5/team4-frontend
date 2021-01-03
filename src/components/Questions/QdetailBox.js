@@ -11,7 +11,7 @@ const QdetailBox = (Question) => {
             <div className="VoteBox">
             <Button //Add Buttons to upvote / downvote
             ></Button> 
-            <div classnName="votes">
+            <div className="votes">
                 {Question.vote}
             </div>
             <Button //Add Buttons to upvote / downvote

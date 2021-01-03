@@ -77,7 +77,7 @@ const QuestionAsk = () =>  {
                 </div>
             </div>
 
-                    <div classnName="qask-body-left-buttonbox">
+                    <div className="qask-body-left-buttonbox">
                         <button onClick = {submit} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
                             Post Your Question
                         </button>

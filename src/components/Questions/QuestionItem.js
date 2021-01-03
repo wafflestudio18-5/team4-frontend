@@ -5,7 +5,10 @@ const QuestionItem= (Question) => {
     const Question_info = Question.Question_info
     var ContentPeak = Question_info.content.substring(200) //TODO: show 200 texts? 
     return(
-        <Fragment className="QuestionItemBox">
+        <>
+                <div>
+                    {Question_info.content}
+                </div>
                 <div className ="QuestionItemLeft">
                     <div className="answerCountBox">
                         answers: {Question_info.answer_count}
@@ -23,13 +26,13 @@ const QuestionItem= (Question) => {
                     <div className="questionTitle">
                         {/* <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> */}
                     </div>
-                    {ContentPeak}
+                        {ContentPeak}
                     <div className="tags">
                         {/* {Question_info.tags.map((tag) => {return <span><Link ><span className="tagInfo">{tag.name}</span></Link></span>})} */}
                     </div>
                     <AuthorProfile id={Question_info.author.id} created_date={Question_info.created_at}/>
                 </div>
-        </Fragment>
+        </>
     )
 }
 

@@ -7,7 +7,7 @@ export const CommentBox =  (comment) => {
        <Fragment className="comment-box">
         <div className="comment-vote-box">
             <button>UpVote</button>
-            <div classnName="comment-votes">
+            <div className="comment-votes">
                 {comment.vote}
             </div>
             <button>DownVote</button>
@@ -28,6 +28,5 @@ export const CommentList = (comments_all) => {
     console.log(comments_all);
     const comment_list = comments_all.comments_all
     console.log(comment_list);
-    var res = (<div></div>)
     return (<div className = "comment-list">{comment_list.map(comment => {return <CommentBox comment = {comment}/>})}</div>)
 } 
