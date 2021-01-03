@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {getUserMe} from '../../axios';
-import {useHistory} from 'react-router-dom';
+import {useHistory, Redirect} from 'react-router-dom';
 import {
     Switch,
     Route,
     useRouteMatch
   } from "react-router-dom";
+import {useSelector} from 'react-redux'
 import Activity from './Activity';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
@@ -14,18 +15,11 @@ const Me = () => {
     let history = useHistory();
     let match = useRouteMatch();
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState(undefined);
-    useEffect(()=> {
-        getUserMe()
-            .then(user=>{
-                setUser(()=>user)
-                setLoading(false)
-                }
-            )
-            .catch(console.log)
-    },[loading]);
+    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+    const user = useSelector(state => state?.userInfoReducer?.payload?.payload)
+
     return (
-        loading? <></>:
+        !isLoggedin? <>{history.push('/signin')}</>:
         <>
         <h1>My page</h1>
         <div className="activity-header">
