@@ -1,4 +1,4 @@
-import {useState, Fragement, useHistory} from 'react'
+import {useState, Fragement, useEffect} from 'react'
 import {getQuestionsWithTags, getQuestionsWithKeywords, getUser} from '../../axios.ts'
 import QuestionList from '../Questions/QuestionList'
 import qs from 'qs';
@@ -10,23 +10,48 @@ export const SearchResultTags = ({location}) => {
         ignoreQueryPrefix: true
     });
     console.log(query);
-    const [sort, setSort] = useState(query.sorted_by)
-    const [page, setPage] = useState(parseInt(query.page))
-    const [filter_by, setFilter] = query.hasOwnProperty("filter_by")? query.filter_by : null
+    console.log(query);
+    const [result, setResult] = useState({})
+    const [sort, setSort] = useState(query.hasOwnProperty("filter_by")? query.sorted_by : "newest")
+    const [page, setPage] = useState(query.hasOwnProperty("filter_by")? parseInt(query.page) : 1)
+    const [filter_by, setFilter] = useState(query.hasOwnProperty("filter_by")? query.filter_by : null)   
     const tags_form = query.tags.replace(' ', '+')
     console.log(query.tags);
-    let result = filter_by === null? getQuestionsWithTags(tags_form, sort, page) : getQuestionsWithTags(filter_by,tags_form, sort, page)
-    console.log("result!");
+    console.log(tags_form);
+    console.log(sort);
+    console.log(page);
+    console.log(filter_by);
+
+    var max_page = 1
+
+    useEffect(() => {
+        if (!result) {
+            return;
+        }
+        getQuestionsWithTags(tags_form, sort, page, filter_by)  
+            .then(res => {
+                console.log(res);
+                setResult(res)
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    })
+    
     console.log(result);
 
-    if (result === undefined) {
-        return (
+    
+    try {
+        max_page = result.questions.count()/30}
+    catch {
+        return(
             <div>
-               Sorry, No Questions!
+                Error: No Resources
             </div>
         )
     }
-    const max_page = result.questions.count()/30
+
+    
     const Refresh = () => {
         //TODO: 값 확인하기 (refresh 필요 있나)
         result = getQuestionsWithTags(tags_form, sort, page)

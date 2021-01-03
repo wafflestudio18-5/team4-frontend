@@ -1,4 +1,4 @@
-import {Fragment} from 'react'
+import {Fragment, useState} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import ResponderProfile from '../Profile/ResponderProfile'
 import {getCommentsOfAnswer} from '../../axios.ts'
@@ -9,7 +9,17 @@ const AnswerBox = (Ans) => {
     console.log("Answer box");
     console.log(Ans);
     const Answer = Ans.Answer
-    const comments = getCommentsOfAnswer()
+    console.log(Answer);
+    const [comment, setComment] = useState({})
+
+    getCommentsOfAnswer(Answer.id)
+        .then(res => {
+            console.log(res);
+            setComment(res.data)
+        })
+        .catch(e => {
+            console.log(e);
+        })
     return(
        <Fragment>
            <div className="ansbox-left-box">
@@ -39,10 +49,10 @@ const AnswerBox = (Ans) => {
                     <div className="ansbox-sharebtn-box">
                         <button className="ansbox-sharebtn" /*TODO: Link */>Share</button>
                     </div>
-                    <ResponderProfile id={Answer.author.id} created_date={Answer.created_at} updated_date={Answer.updated_at}/>
+                    <ResponderProfile answer = {Answer}/>
                 </div>
                 <div className="ans-comments-box">
-                    <CommentList comments={comments}/>
+                    {/* <CommentList comments={comments}/> */}
                 </div>  
                 <div className="comment-post-box-ans">
                     <CommentPostAnswer id={Answer.id}/>

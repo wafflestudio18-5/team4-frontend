@@ -16,15 +16,15 @@ const AnswerPost = (id) => {
     }
 
     return(
-        <Fragment className="ans-post-box">
+        <Fragment>
             <div className="ans-content-box">
-                <MDEditor class="qask-body-editor"
+                <MDEditor
                     value={Content}
                     onChange={e => setContent(e)}/>
                 <MDEditor.Markdown source={Content} />
             </div>
             <div className="ans-post-btn-box">
-                <button className="ans-post-btn" onClick={e => {postAns(Content)}}></button>
+                <button className="ans-post-btn" onClick={e => {postAns(Content)}}>Post Your Answer</button>
             </div>
         </Fragment>
     )
