@@ -12,6 +12,7 @@ import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
 import User from './components/User/User';
 import QuestionAsk from './components/Questions/QuestionAsk'
+import Search from './components/SearchResult/Search';
 
 function App() {
   const existingTokens = () => {
@@ -42,13 +43,12 @@ function App() {
       <Route exact path="/signin" component={Signin}/>
       <Route exact path="/question/ask" component={QuestionAsk}/>
       <Route exact path="/signup" component={Signup}/>
+      <Route exact path="/search" component={Search}/>
       <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
       <Route exact path="/question/tagged" component={SearchResultTags}/>
       <Route exact path="/question/kwds" component={SearchResultKwds}/>
-      {authTokens?
       <Route path="/users/me" component={Me}/>
-      :<Redirect to="/"/>}
       <Route path="/users/:id" component={User}/>
       <Route exact path="/users" component={Users}/>
       </Switch>
