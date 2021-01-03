@@ -1,7 +1,7 @@
 import {useState, Fragment} from 'react'
-import {commentOnQuestion, commentOnAnswer} from '../../axios.ts'
 import axios from 'axios'
-import {useSelector, useDispatch} from 'react-redux' 
+import {Link} from 'react-router-dom'
+import {useSelector} from 'react-redux' 
 
 export const CommentPostQuestion = (id_q) => {
     const [content, setContent] = useState("")
@@ -12,17 +12,24 @@ export const CommentPostQuestion = (id_q) => {
 
     if (!isLoggedin) {
         return (<div>
-            You are not Logged in!
+            Familiar Poblem? Sign in to leave a Comment
+            <Link to="/signin">Signin</Link>
         </div>)
     }
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/',
-      headers: { 'Authorization' : 'Token ' + token },
+      baseURL: 'http://localhost:8000/api/',
+      Authorization : 'Token ' + token
     });
 
     const postCommentonQuestion = () => {
         instance.post(`comment/question/${id_q.id}/`, {content: content})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(e=>{
+                console.log(e);
+            })
     }
 
     return(
@@ -47,22 +54,29 @@ export const CommentPostAnswer = (id_ans) => {
 
     if (!isLoggedin) {
         return (<div>
-            You are not Logged in!
+            Something to say about the Answer? Sign in to leave a Comment 
+            <Link to="/signin">Signin</Link>
         </div>)
     }
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/',
+      baseURL: 'http://localhost:8000/api/',
       headers: { 'Authorization' : 'Token ' + token },
     });
 
     const postCommentonAnswer = () => {
         instance.post(`comment/answer/${id_ans.id}/`, {content: content})
+            .then(res => {
+                console.log();
+            })
+            .catch(e =>{
+                console.log(e);
+            })
     }
 
     return(
         <Fragment>
-            <div className="comment-content">
+            <div className="comment-content">   
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
             <button className="comment-submit-btn" onClick={postCommentonAnswer()}>

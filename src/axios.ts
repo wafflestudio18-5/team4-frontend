@@ -11,7 +11,7 @@ export const Config = () => {
 
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "http://localhost:8000/api/";
 
 //User APIs
 //GET user
