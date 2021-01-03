@@ -62,7 +62,7 @@ export const userInfoReducer = (state = defaultUserInfo, action) => {
     switch (action.type) {
         case "SET_USER_INFO" :
             console.log(action);
-            localStorage.setItem("token", action.payload.payload.data.token)
+            localStorage.setItem("token", action.payload.payload.token)
             return action
         case "REMOVE_USER_INFO" :
             return defaultUserInfo
