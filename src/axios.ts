@@ -3,10 +3,6 @@ import { ObjectFlags, resolveModuleName } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
 import {useAuth} from './context/auth'
 
-export const Config = () => {
-    const {authTokens} = useAuth()
-    axios.defaults.headers.common['Authorization'] = authTokens;
-}
 
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
@@ -48,7 +44,7 @@ export const postUser = (user: UserInterface, github_token: String) => new Promi
 export const editUserMe = (user: UserInterface) => new Promise((resolve,reject) => {
     console.log(user)
     const data = user
-    axios.put(`api/user/me/`, data)
+    axios.put(`api/user/me/`, data, {headers: {'content-type': 'multipart/form-data'}})
         .then((response) => resolve(response.data))
         .catch(e=>reject(logError(e)))//response.data.message?
 })
@@ -68,7 +64,8 @@ export const login = (username: string, password: string, github_token: string) 
         .catch(e=>reject(logError(e)))//response.data.message?
 })
 //logout
-export const logout = () => new Promise((resolve,reject) => {
+export const logout = (token: string) => new Promise((resolve,reject) => {
+    axios.defaults.headers.common['Authorization'] = token
     axios.post(`api/user/logout/`)
         .then((response) => {
             axios.defaults.headers.common['Authorization'] = "";
