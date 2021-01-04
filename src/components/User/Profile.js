@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser} from '../../axios'
+import {useHistory} from 'react-router-dom'
 //to be modified for all users
 const Profile = ({user}) => {
+    const history = useHistory()
     //const [user, setUser] = useState(user);
     const [topPosts, setTopPosts] = useState(undefined)
     const [topTags, setTopTags] = useState(undefined)
@@ -58,6 +60,7 @@ const Profile = ({user}) => {
         {topPosts.map(post => 
             <div key={post.id} className="post-li"><span>{post.vote}</span><span>{post.title}</span><span>{post.created_at.substring(0,10)}</span></div>
         )}
+        <button onClick={()=>{history.push(`/search?q=user:${user.id}`)}}>See all posts</button>
         </div>
         </>
         :<></>
