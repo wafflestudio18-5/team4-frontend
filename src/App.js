@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
-import {Route, Switch, Redirect} from 'react-router-dom'
-import History from './components/User/History'
+import {Route, Switch} from 'react-router-dom'
 import Me from './components/User/Me'
 import Users from './components/User/Users';
 import Main from './components/Main'

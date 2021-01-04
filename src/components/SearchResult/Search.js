@@ -45,7 +45,7 @@ const Search = ({location}) => {
 }
 
 const SearchResult = ({query}) => {
-    const {keywords, tags, user} = query
+    const {tags, user} = query
     if(user && !tags.length) return <SearchResultUser query={query}/>
     if(user || tags.length) return <SearchResultTags query={query}/>
     return <SearchResultKwds query={query}/>

@@ -3,7 +3,7 @@ import {logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
-import {Login, Logout} from '../../modules/AuthRedux'
+import {Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
 
 import styles from "./Header.module.scss";
@@ -12,16 +12,17 @@ import Button from '../Button';
 export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-  const user = useSelector(state => state.userInfoReducer)
+  const token = useSelector(state => state.isLoggedReducer.token)
+  const user = useSelector(state => state.userInfoReducer.payload?.payload)
     let history = useHistory();
     const [command, setCommand] = useState('');
-    const search = () => {
-    /*GET /question/search/keywords*/
-        history.push("/users/me")
-    }
   const signout = () => {
-    logout()
+    console.log(token)
+    logout(`Token ${token}`)
       .then(() => {
+        dispatch(Logout());
+        dispatch(removeUserInfo())
+        history.go(-1)
       })
 
   }

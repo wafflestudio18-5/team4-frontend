@@ -2,17 +2,11 @@ import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
-import axios from 'axios'
-import {login, logout, postUser} from '../../axios'
-import * as config from '../../config'
+import {postUser} from '../../axios'
 
 
 const Signup = () => {
     const history = useHistory();
-    const token_instance = axios.create({
-        baseURL: 'https://github.com/',
-        headers: { 'Accept': 'application/json' },
-      });
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
