@@ -1,16 +1,14 @@
 import React, {useState} from 'react'
 import {useHistory, Redirect} from 'react-router-dom'
-import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
 import {login} from '../../axios'
 import * as config from '../../config'
-import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
+import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
 
 
 export const Signin = () => {
-    const token = localStorage.getItem("token")
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
     const history = useHistory();
@@ -22,7 +20,6 @@ export const Signin = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [warn, setWarn] = useState("")
-    const {setAuthTokens} = useAuth()
     const usernameOnChange = (username) => {
         setWarn("")
         setUsername(()=>username)

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getUserMe, editUserMe} from '../../axios';
+import {editUserMe} from '../../axios';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
@@ -8,7 +8,7 @@ import {setUserInfo} from '../../modules/AuthRedux'
 //PUT /user/me
 
 const EditProfile = () => {
-    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+    //const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.isLoggedReducer.token)
     const user = useSelector(state => state?.userInfoReducer?.payload?.payload)
     const dispatch = useDispatch();

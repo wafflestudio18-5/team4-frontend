@@ -3,7 +3,7 @@ import {logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
-import {Login, Logout, removeUserInfo} from '../../modules/AuthRedux'
+import {Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
 
 import styles from "./Header.module.scss";
@@ -16,10 +16,6 @@ export const Header = () => {
   const user = useSelector(state => state.userInfoReducer.payload?.payload)
     let history = useHistory();
     const [command, setCommand] = useState('');
-    const search = () => {
-    /*GET /question/search/keywords*/
-        history.push("/users/me")
-    }
   const signout = () => {
     console.log(token)
     logout(`Token ${token}`)
