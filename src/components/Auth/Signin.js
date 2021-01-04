@@ -37,9 +37,10 @@ export const Signin = () => {
         e.preventDefault()
         login(username, password)
             .then(res => {
+                console.log(res)
                     dispatch(setUserInfo({payload: res}))
                     dispatch(Login({token : res.token}))
-                    history.push('/')
+                    history.go(-1)
                 })
             .catch(e => {
                 console.log(e);

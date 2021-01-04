@@ -88,7 +88,7 @@ const Activity = ({user}) => {
     const [category, setCategory] = useState("Summary");
     return (
     <>
-    {user===undefined?<></>:
+    {!user?<></>:
         <div className="activity-header">
         <div>
             <button key="Summary" onClick={()=>{setCategory("Summary")}}>Summary</button>

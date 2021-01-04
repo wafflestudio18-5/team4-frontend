@@ -25,7 +25,7 @@ const AnswerPost = (id) => {
                 <MDEditor.Markdown source={Content} />
             </div>
             <div className="ans-post-btn-box">
-                <button className="ans-post-btn" onClick={e => {postAns}}></button>
+                <button className="ans-post-btn" onClick={e => {postAns()}}></button>
             </div>
         </Fragment>
     )
