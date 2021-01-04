@@ -26,13 +26,16 @@ export const Header = () => {
       })
 
   }
-
+  const search = (e) => {
+    e.preventDefault()
+    history.push(`/search?q=${command.replace(/\s/, '+')}`)
+  }
   return (
       
     <div className={styles.header}>
       <img alt="logo" className={styles.logo} src={logo} onClick={()=>{history.push('/')}}/>
       {/*preventDefault*/}
-      <form className={styles.inputWithButton}  name="search-form" role="search" action="/search" method="get">
+      <form className={styles.inputWithButton}  name="search-form" role="search" action="/search" method="get" onSubmit={(e)=>{search(e)}}>
         <input className={styles.input} onChange={(e)=>{setCommand(e.target.value)}} name="q" type="text" value={command} maxLength="200" placeholder="Search your..."/>
         <Button title="WAFFLE!"></Button>
       </form>
