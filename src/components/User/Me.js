@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {getUserMe} from '../../axios';
-import {useHistory, Redirect} from 'react-router-dom';
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {
     Switch,
     Route,
@@ -14,7 +13,6 @@ import EditProfile from './EditProfile';
 const Me = () => {
     let history = useHistory();
     let match = useRouteMatch();
-    const [loading, setLoading] = useState(true)
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const user = useSelector(state => state?.userInfoReducer?.payload?.payload)
 
