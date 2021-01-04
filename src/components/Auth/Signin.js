@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, Redirect} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
@@ -33,14 +33,14 @@ export const Signin = () => {
         setPassword(password)
     }
 
-    const loginwthUsername = async (e) => {
+    const signin = async (e) => {
         e.preventDefault()
         login(username, password)
             .then(res => {
                 console.log(res)
-                    dispatch(setUserInfo({payload: res}))
-                    dispatch(Login({token : res.token}))
-                    history.go(-1)
+                dispatch(setUserInfo({payload: res}))
+                dispatch(Login({token : res.token}))
+                history.go(-1)
                 })
             .catch(e => {
                 console.log(e);
@@ -82,9 +82,7 @@ export const Signin = () => {
     }
     if(isLoggedin) {
         return (
-            <>
-                You are Already Logged in
-            </>
+            <Redirect to='/'/>
         )
     }
     return (
@@ -95,7 +93,7 @@ export const Signin = () => {
             redirectUri="http://localhost:8000/"
             buttonText="Login with Github"/>
             
-            <form onSubmit={e=>loginwthUsername(e)} className="login-form" >
+            <form onSubmit={e=>signin(e)} className="login-form" >
                 <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
                 <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
                 <button className="login-button">Login</button>
