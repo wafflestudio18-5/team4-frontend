@@ -9,6 +9,8 @@ import {
 import Activity from './Activity';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
+import {useSelector} from 'react-redux'
+
 //Me랑 통합하기
 const User = () => {
     let history = useHistory();
@@ -16,6 +18,9 @@ const User = () => {
     let {id} = useParams();
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(undefined);
+    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+    const me = useSelector(state => state?.userInfoReducer?.payload?.payload)
+
     useEffect(()=> {
         getUser(id)
             .then(user=>{
@@ -32,9 +37,10 @@ const User = () => {
         <div>
         <button onClick={()=>{history.push(`/users/${id}/profile`)}}>Profile</button>
         <button onClick={()=>{history.push(`/users/${id}/activity`)}}>Activity</button>
-        {/*loggedIn && User == Me일 때만 보이도록 */}
+        {isLoggedin && user.id === me.id?
         <button onClick={()=>{history.push(`/users/${id}/edit`)}}>Edit</button>
-        </div>
+        :<></>
+        }</div>
         <hr/>
         </div>
         <Switch>
@@ -49,7 +55,9 @@ const User = () => {
         </Route>
         {/*loggedIn && User == Me일 때만 접근 허용하기 */}
         <Route path={`${match.path}/edit`}>
-            <EditProfile user={user}/>
+        {isLoggedin && user.id === me.id?
+            <EditProfile user={user}/>:
+            <Activity user={user}/>}
         </Route>
         {/*default*/} 
         </Switch>
