@@ -1,3 +1,11 @@
+.box {
+    display:flex;
+    flex-direction:column;
+    width: 100%;
+    margin: 0%;
+    padding: 0%;
+}
+
 .board {
     display:flex;
     flex-direction: row;
@@ -27,8 +35,9 @@
     width: 25px;
     height: 25px;
     font-size: 19px;
+    margin-left: 2px;
     padding: 10px;
-    background-color: grey;
+    background-color: #AAAAAA;
     border-radius: 2px;
     text-align: center;
     align-items: center;
@@ -48,11 +57,13 @@
 
 .votes_number {
     text-align: center;
+    margin-left: 3px;
 }
 
 
 .answeCountBox {
     align-items: center;
+    align-content: center;
     display: flex;
     flex-direction: column;
     height: fit-content;
@@ -66,7 +77,8 @@
     height: 25px;
     font-size: 19px;
     padding: 10px;
-    background-color: grey;
+    margin-left: 3px;
+    background-color: #AAAAAA;
     border-radius: 2px;
     text-align: center;
     align-items: center;
@@ -87,3 +99,39 @@
 .answers_number {
     text-align: center;
 }
+
+.vert_5 {
+    height: 4px;
+}
+
+.vert_10 {
+    height: 8px;
+}
+
+.title_line {
+    size:10px;
+    width:100%;
+    color:blue;
+    align-self: center;
+}
+
+.QuestionItemRight {
+    display: flex;
+    flex: 83%;
+    flex-direction: column;
+    height: 100%;
+}
+
+.titlebox {
+    text-decoration: none;
+    font: 20x Arial;
+    color: blue;
+}
+
+.bookmark {
+    width: auto;
+}
+
+
+
+

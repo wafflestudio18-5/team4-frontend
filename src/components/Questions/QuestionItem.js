@@ -11,6 +11,7 @@ const QuestionItem= (Question) => {
     const ContentPeak = Question_info.content.length >= 600 ? Question_info.content.substring(0,600) + "..." : Question_info.content.substring(0,600) + "..."//TODO: show 200 texts? 
     console.log(ContentPeak);
     return(
+    <div className={styles.box}>
         <div className={styles.board}>
                 <div className ={styles.QuestionItemLeft}>
                     <div className={styles.voteBox}>       
@@ -25,6 +26,7 @@ const QuestionItem= (Question) => {
                         </div>
 
                     </div>
+                    <div className={styles.vert_10}/>
                     <div className={styles.answerCountBox}>
                         <div className={styles.answer_square}>
                             <div className={styles.answers_number}>
@@ -35,26 +37,33 @@ const QuestionItem= (Question) => {
                             Answer
                         </div>
                     </div>
+                    <div className={styles.vert_10}/>
                     <div className={styles.viewsBox}>
-                        views: {Question_info.view_count}
+                        {Question_info.view_count} views
                     </div>
-                    <div className={styles.bokmark} /*TODO: use Redux to determine auth : Incluse Button. etc...*/> 
+                <div className={styles.vert_10}/>
+
+                    <div className={styles.bookmark}> 
                     </div>
                 </div>
                 <div className={styles.QuestionItemRight}>
                     <div className={styles.titlebox}>
-                        <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> 
+                        <Link style={styles.titlebox} to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> 
                     </div>
                     <div className={styles.contentpeak}>
                         {ContentPeak}
                     </div>
                     <div className={styles.tags}>
-                        {/* {Question_info.tags.map((tag) => {return <span><Link ><span className="tagInfo">{tag.name}</span></Link></span>})} */}
+                        {Question_info.tags.map((tag) => {return <span><Link to={`/question/tagged/?tags=${tag.name}&sorted_by=newest&page=1`} ><span className="tagInfo">{tag.name}</span></Link></span>})}
 
                     </div>
                     <AuthorProfile question={Question_info}/>
                 </div>
         </div>
+        <div>
+            <hr className={styles.title_line}/>  
+        </div>
+    </div>
     )
 }
 

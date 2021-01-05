@@ -3,14 +3,14 @@ import {getUser} from '../../axios.ts'
 
 
 const AuthorProfile = (data) => {
-    const id = data.id
-    const created_date = data.created_date
-
+    console.log(data);
+    const id = data.question.id
+    const created_date = data.question.created_at
     const [Author, setAuthor] = useState(null)
 
     useEffect(() => {
         if (Author === null) {
-        getUser(id)
+        getUser(data.question.id)
         .then(res => {
             console.log(res);
             setAuthor(res)
