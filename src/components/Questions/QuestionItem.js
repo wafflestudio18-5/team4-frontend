@@ -48,7 +48,7 @@ const QuestionItem= (Question) => {
                 </div>
                 <div className={styles.QuestionItemRight}>
                     <div className={styles.titlebox}>
-                        <Link style={styles.titlebox} to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> 
+                        <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> 
                     </div>
                     <div className={styles.contentpeak}>
                         {ContentPeak}

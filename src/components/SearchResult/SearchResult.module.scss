@@ -60,7 +60,7 @@
     padding: 10px;
 
     position: absolute;
-    width: 65%;
+    width: 50%;
     height: 1200px;
     left: 210px;
     top: 53px;
@@ -239,11 +239,6 @@ margin: 0px 0px;
 }
 
 .result_list {
-        /* Frame 18 */
-
-
-/* Auto Layout */
-
 display: flex;
 flex-direction:row;
 align-items: flex-start;
@@ -256,10 +251,10 @@ height: fit-content;
 
 /* Inside Auto Layout */
 
-flex: 0.9;
+flex: 1;
 order: 1;
 flex-grow: 0;
-margin: 10px 0px;
+margin: 0px 0px;
 }
 
 .select_page_box {
