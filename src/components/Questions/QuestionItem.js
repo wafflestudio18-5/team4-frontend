@@ -2,7 +2,6 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 
 import AuthorProfile from '../Profile/AuthorProfile'
-import {Link} from 'react-router-dom'
 import styles from './QuestionItem.module.scss'
 
 const QuestionItem= (Question) => {

@@ -50,7 +50,7 @@ export const Header = () => {
       </form>
       <div className={styles.rightNav}>
 
-        {!isLoggedin?
+        {!(isLoggedin) || user===undefined ?
         <>
         <Button title="Signin" onClick={() => {history.push("/signin/")}}>Sign In</Button>
         <Button title="Signup" onClick={() => {history.push("/signup/")}}>Sign Up</Button>
