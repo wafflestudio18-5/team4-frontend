@@ -44,10 +44,9 @@ function App() {
 
   return (
     <div>
+    <meta name="viewport" content="width=device-width,user-scalable=no"></meta>
     <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Header/>
-      isLoggedin : {isLoggedin.toString() + "    "}
-      token: {"Token " + token}
       <Switch>
       <Route exact path="/" component={Main}/>
       <Route exact path="/signin" component={Signin}/>

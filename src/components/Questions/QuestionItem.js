@@ -1,38 +1,50 @@
-import React , {Fragment, Link} from 'react';
+import React , {Fragment} from 'react';
 import AuthorProfile from '../Profile/AuthorProfile'
+import {Link} from 'react-router-dom'
+import styles from './QuestionItem.module.scss'
 
 const QuestionItem= (Question) => {
     const Question_info = Question.Question_info
-    var ContentPeak = Question_info.content.substring(200) //TODO: show 200 texts? 
+    console.log("Question Item");
+    console.log(Question_info);
+    const ContentPeak = Question_info.content.length >= 600 ? Question_info.content.substring(0,600) + "..." : Question_info.content.substring(0,600) + "..."//TODO: show 200 texts? 
+    console.log(ContentPeak);
     return(
-        <>
-                <div>
-                    {Question_info.content}
-                </div>
-                <div className ="QuestionItemLeft">
-                    <div className="answerCountBox">
+        <div className={styles.board}>
+                <div className ={styles.QuestionItemLeft}>
+                    <div className={styles.voteBox}>       
+                        <div className={Question_info.isaccepted? styles.vote_aquare_accepted : styles.vote_square}>
+                            <div className={styles.votes_number}>
+                                {Question_info.vote}
+                            </div>
+                            
+                        </div>
+                        <div className={styles.vote_text}>
+                            Votes
+                        </div>
+                    </div>
+                    <div className={styles.answerCountBox}>
                         answers: {Question_info.answer_count}
                     </div>
-                    <div className="voteBox">       
-                        votes: {Question_info.vote}
+                    <div className={styles.viewsBox}>
+                        views: {Question_info.view_count}
                     </div>
-                    <div className="viewsBox">
-                        views: {Question_info.views_count}
-                    </div>
-                    <div className="bokmark" /*TODO: use Redux to determine auth : Incluse Button. etc...*/> 
+                    <div className={styles.bokmark} /*TODO: use Redux to determine auth : Incluse Button. etc...*/> 
                     </div>
                 </div>
-                <div className="QuestionItemRight">
-                    <div className="questionTitle">
-                        {/* <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> */}
+                <div className={styles.QuestionItemRight}>
+                    <div className={styles.titlebox}>
+                        <Link to={'/question/' + Question_info.id + '/'}>{Question_info.title}</Link> 
                     </div>
+                    <div className={styles.contentpeak}>
                         {ContentPeak}
-                    <div className="tags">
+                    </div>
+                    <div className={styles.tags}>
                         {/* {Question_info.tags.map((tag) => {return <span><Link ><span className="tagInfo">{tag.name}</span></Link></span>})} */}
                     </div>
                     <AuthorProfile id={Question_info.author.id} created_date={Question_info.created_at}/>
                 </div>
-        </>
+        </div>
     )
 }
 

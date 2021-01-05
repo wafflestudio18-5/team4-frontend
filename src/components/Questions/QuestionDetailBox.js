@@ -139,7 +139,7 @@ const QuestionDetailBox = (match) => {
             </div>
             <div className="questionbottomBox">
                 <button>Share</button>
-                <Fragment>
+                <div>
                     asked at {question.created_a===undefined? null : question.created_at}
                     <div className="author-profile-bottom">
                         <div className="author-pic">
@@ -150,7 +150,7 @@ const QuestionDetailBox = (match) => {
                             <div className="author-reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
                         </div>
                     </div>
-                </Fragment>
+                </div>
             </div>
             </div>   
             </div>
