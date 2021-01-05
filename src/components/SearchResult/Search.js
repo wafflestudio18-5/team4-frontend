@@ -1,6 +1,6 @@
 import React from 'react'
 import qs from 'qs'
-import { SearchResultKwds, SearchResultTags, SearchResultUser } from './SearchResults';
+import { SearchResultKeywords, SearchResultTags, SearchResultUser } from './SearchResults';
 const Search = ({location}) => {
     const q = qs.parse(location.search, {ignoreQueryPrefix: true});
     console.log(q);
@@ -48,7 +48,7 @@ const SearchResult = ({query}) => {
     const {tags, user} = query
     if(user && !tags.length) return <SearchResultUser query={query}/>
     if(user || tags.length) return <SearchResultTags query={query}/>
-    return <SearchResultKwds query={query}/>
+    return <SearchResultKeywords query={query}/>
 
 }
 export default Search

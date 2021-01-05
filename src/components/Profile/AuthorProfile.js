@@ -33,7 +33,7 @@ const AuthorProfile = (data) => {
             asked at {created_date}
             <div className="author-profile-bottom">
                 <div className="author-pic">
-                    <img src={author?.picture} alt="Author's profile"></img>
+                    <img src={Author?.picture} alt="Author's profile"></img>
                 </div>
                 <div className="author-info">
                     <div className="author-username">{Author.nickname}</div>

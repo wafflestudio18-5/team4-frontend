@@ -7,7 +7,6 @@ import {login, logout, postUser} from '../../axios'
 import * as config from '../../config'
 import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
-import {postUser} from '../../axios'
 
 
 

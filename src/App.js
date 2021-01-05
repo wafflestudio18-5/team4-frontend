@@ -12,14 +12,7 @@ import {Signin} from './components/Auth/Signin'
 import QuestionAsk from './components/Questions/QuestionAsk'
 import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
-
-import { Config } from './axios';
-
-import Signin from './components/Auth/Signin';
-import Signup from './components/Auth/Signup';
-import {AuthContext} from './context/auth'
 import User from './components/User/User';
-import QuestionAsk from './components/Questions/QuestionAsk'
 import Search from './components/SearchResult/Search';
 
 
@@ -61,9 +54,9 @@ function App() {
       <Route exact path="/signup" component={Signup}/>
       <Route exact path="/question/keywords" component={SearchResultKeywords}/>
       <Route exact path="/search" component={Search}/>
-      <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
       <Route exact path="/question/tagged" component={SearchResultTags}/>
+      <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       <Route path="/users/me" component={Me}/>
       <Route path="/users/:id" component={User}/>
       <Route exact path="/users" component={Users}/>
