@@ -2,7 +2,6 @@ import axios from 'axios'
 import { ObjectFlags, resolveModuleName } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
 
-
 //TODO: baseUrl, token needs to be updated to an exact value
 //TODO: use redux to store and use token
 
@@ -13,6 +12,7 @@ const logError = (error: any) => {
     return log?.data
 }
 axios.defaults.baseURL = "http://localhost:8000";
+
 
 //User APIs
 //GET user
@@ -90,19 +90,21 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
     }
 )
 
-export const getQuestionsWithTags = (tags: string[], filter_by: string, sorted_by: string, page=1) => 
+export const getQuestionsWithTags = (tags: string, sorted_by: string="newest", page: Number=1, filter_by?: string) => 
     new Promise((resolve,reject) => {
         axios.get(`api/question/tagged/}`,
                     {params:{'tags':tags.join('+'), filter_by, sorted_by, page}})
+
             .then(response => resolve(response.data.questions))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
-export const getQuestionsWithKeywords = (keywords: string[], filter_by: string, sorted_by: string, page=1) => 
+export const getQuestionsWithKeywords = (keywords: string, sorted_by: string, page: Number =1, filter_by?: string) => 
     new Promise((resolve,reject) => {
         axios.get(`api/question/search/keywords/}`,
                     {params:{'keywords':keywords.join('+'), filter_by, sorted_by, page}})
+
             .then(response => resolve(response.data.questions))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }

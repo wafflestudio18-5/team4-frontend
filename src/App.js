@@ -4,14 +4,24 @@ import Me from './components/User/Me'
 import Users from './components/User/Users';
 import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
-import {SearchResultUser, SearchResultTags, SearchResultKwds} from './components/SearchResult/SearchResults'
+import {SearchResultUser, SearchResultTags, SearchResultKeywords} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
+
+import {useSelector, useDispatch} from 'react-redux' 
+import {Signin} from './components/Auth/Signin'
+import QuestionAsk from './components/Questions/QuestionAsk'
+import Signup from './components/Auth/Signup';
+import {AuthContext} from './context/auth'
+
+import { Config } from './axios';
+
 import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
 import {AuthContext} from './context/auth'
 import User from './components/User/User';
 import QuestionAsk from './components/Questions/QuestionAsk'
 import Search from './components/SearchResult/Search';
+
 
 function App() {
   const existingTokens = () => {
@@ -33,6 +43,13 @@ function App() {
     }
     setAuthTokens(tokens)
   }
+
+  const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+  const token = useSelector(state => state.userInfoReducer.token)
+
+  console.log("isLogged?");
+  console.log(isLoggedin);
+
   return (
     <div>
     <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
@@ -42,11 +59,11 @@ function App() {
       <Route exact path="/signin" component={Signin}/>
       <Route exact path="/question/ask" component={QuestionAsk}/>
       <Route exact path="/signup" component={Signup}/>
+      <Route exact path="/question/keywords" component={SearchResultKeywords}/>
       <Route exact path="/search" component={Search}/>
       <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
       <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
       <Route exact path="/question/tagged" component={SearchResultTags}/>
-      <Route exact path="/question/kwds" component={SearchResultKwds}/>
       <Route path="/users/me" component={Me}/>
       <Route path="/users/:id" component={User}/>
       <Route exact path="/users" component={Users}/>

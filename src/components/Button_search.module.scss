@@ -1,0 +1,18 @@
+@import "./project.scss";
+.button {
+  height:fit-content;
+  background-color: $green-primary;
+  border-radius: 3px;
+  padding: 0 5px;
+  border: 0;
+  outline: 10px;
+  display: flex;
+  align-items: center;
+}
+.buttonTitle {
+  @include roboto-16-regular;
+  color: $text-white;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+}

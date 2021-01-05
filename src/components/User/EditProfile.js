@@ -5,6 +5,7 @@ import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
 import {setUserInfo} from '../../modules/AuthRedux'
 
+
 //PUT /user/me
 
 const EditProfile = () => {
@@ -13,6 +14,7 @@ const EditProfile = () => {
     const user = useSelector(state => state?.userInfoReducer?.payload?.payload)
     const dispatch = useDispatch();
     axios.defaults.headers.common['Authorization'] = `Token ${token}`
+
     let history = useHistory();
     //default value -> user info
 

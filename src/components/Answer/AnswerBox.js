@@ -1,12 +1,25 @@
-import {Fragment} from 'react'
+import {Fragment, useState} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import ResponderProfile from '../Profile/ResponderProfile'
 import {getCommentsOfAnswer} from '../../axios.ts'
 import {CommentList} from '../Comment/Comments'
 import {CommentPostAnswer} from '../Comment/CommentPost'
 
-const AnswerBox = (Answer, accept) => {
-    const comments = getCommentsOfAnswer()
+const AnswerBox = (Ans) => {
+    console.log("Answer box");
+    console.log(Ans);
+    const Answer = Ans.Answer
+    console.log(Answer);
+    const [comment, setComment] = useState({})
+
+    getCommentsOfAnswer(Answer.id)
+        .then(res => {
+            console.log(res);
+            setComment(res.data)
+        })
+        .catch(e => {
+            console.log(e);
+        })
     return(
        <Fragment>
            <div className="ansbox-left-box">
@@ -25,23 +38,21 @@ const AnswerBox = (Answer, accept) => {
                     {Answer.is_accepted && "Accepted!"}
                 </div>
                 <div className="ans-accepted-box">
-                    {accept? "Accepted a Question" : "" }
+                    is accepted: {Answer.is_acceptedf}
                 </div>
            </div>
            <div className="ansbox-right-box">
                <div className="ansbox-content-box">
-                    <MDEditor class="qask-body-editor"
-                        value={Answer.content}/>
-                    <MDEditor.Markdown source={Answer.content} />
+                    {Answer.content}
                 </div>
                 <div className="ansbox-roght-bottom-box">
                     <div className="ansbox-sharebtn-box">
                         <button className="ansbox-sharebtn" /*TODO: Link */>Share</button>
                     </div>
-                    <ResponderProfile id={Answer.author.id} created_date={Answer.created_at} updated_date={Answer.updated_at}/>
+                    <ResponderProfile answer = {Answer}/>
                 </div>
                 <div className="ans-comments-box">
-                    <CommentList comments={comments}/>
+                    {/* <CommentList comments={comments}/> */}
                 </div>  
                 <div className="comment-post-box-ans">
                     <CommentPostAnswer id={Answer.id}/>

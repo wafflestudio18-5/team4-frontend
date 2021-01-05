@@ -17,7 +17,8 @@ const QuestionDetailBox = (match) => {
 
     console.log("renders!");
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/',
+        baseURL: 'http://localhost:8000/api/',
+
         Authorization: 'Token ' + token
       });
 
@@ -47,7 +48,8 @@ const QuestionDetailBox = (match) => {
             })
         instance.get(`comment/question/${id}/?page=${comment_page}`)
             .then((res) => {
-                console.log(res); 
+                console.log(res);
+
                 setComments(res.data.comments)
                 setMaxComment(question.comment_count)
             })
@@ -71,6 +73,9 @@ const QuestionDetailBox = (match) => {
     if (question.title === undefined) {
         return (<Fragment>Wrong Question Id!</Fragment>)
     }
+
+
+    console.log(question);
 
     const Author = question.author
     const number = question.answer_count
@@ -121,24 +126,26 @@ const QuestionDetailBox = (match) => {
             <div className="q-main-content-box">
             <div className = "QdetailBoxLeft">
             <div className="VoteBox">
-            <button onClick = {q_upvote}>UpVote</button>
-            <div classnName="votes">
+            <button onClick = {e => {q_upvote()}}>UpVote</button>
+            <div className="votes">
                 {question.vote}
             </div>
-            <button onClick={q_downvote}>DownVote</button>
+            <button onClick={e => {q_downvote()}}>DownVote</button>
             </div>
-        </div> 
-        <div className="QdetailBoxRight">
+            </div> 
+            <div className="QdetailBoxRight">
+
             <div className = "questionContent">
                 {question.content}
             </div>
             <div className="questionTags">
-                {question.tags}
+
+                {/* {question.tags} */}
             </div>
             <div className="questionbottomBox">
                 <button>Share</button>
-                <Fragment>
-                    asked at {question.created_at===undefined? null : question.created_at}
+                <div>
+                    asked at {question.created_a===undefined? null : question.created_at}
                     <div className="author-profile-bottom">
                         <div className="author-pic">
                             <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
@@ -148,12 +155,13 @@ const QuestionDetailBox = (match) => {
                             <div className="author-reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
                         </div>
                     </div>
-                </Fragment>
+                </div>
             </div>
-        </div>   
+            </div>   
             </div>
             <div className="q-main-comment-box">
-                    <CommentList comments_all={comments}/>
+                    {/* <CommentList comments_all={comments}/> */}
+
                 <div className="comments-page-btn">
                         <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
                         <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page-1)}}>prev page</button>

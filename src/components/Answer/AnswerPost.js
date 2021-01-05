@@ -9,23 +9,26 @@ const AnswerPost = (id) => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.userInfoReducer.token)
     const [Content, setContent] = useState("")
-
-    const instance = axios.create()
-           
-    const postAns = () => {
-
+    const postAns = (content) => {
+        if (content.length > 10) {
+            postAnswer(id, content)
+            setContent("")
+        }
+        else {
+            alert("answer too short!")
+        }
     }
 
     return(
-        <Fragment className="ans-post-box">
+        <Fragment>
             <div className="ans-content-box">
-                <MDEditor class="qask-body-editor"
+                <MDEditor
                     value={Content}
                     onChange={e => setContent(e)}/>
                 <MDEditor.Markdown source={Content} />
             </div>
             <div className="ans-post-btn-box">
-                <button className="ans-post-btn" onClick={e => {postAns()}}></button>
+                <button className="ans-post-btn" onClick={e => {postAns(Content)}}>Post Your Answer</button>
             </div>
         </Fragment>
     )

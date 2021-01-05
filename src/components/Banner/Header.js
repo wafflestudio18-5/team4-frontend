@@ -2,7 +2,9 @@ import React, {useState} from 'react'
 import {logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
+import axios from 'axios'
 import logo from '../../logo.png'
+
 import {Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
 
@@ -12,6 +14,7 @@ import Button from '../Button';
 export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+
   const token = useSelector(state => state.isLoggedReducer.token)
   const user = useSelector(state => state.userInfoReducer.payload?.payload)
     let history = useHistory();
@@ -23,7 +26,13 @@ export const Header = () => {
         dispatch(Logout());
         dispatch(removeUserInfo())
         history.go(-1)
+
       })
+      .catch(e => {
+        console.log(e);
+      })
+      dispatch(Logout)
+      dispatch(removeUserInfo)
 
   }
   const search = (e) => {
@@ -43,8 +52,8 @@ export const Header = () => {
 
         {!isLoggedin?
         <>
-        <Button title="Signin" onClick={() => {history.push("/signin")}}>Sign In</Button>
-        <Button title="Signup" onClick={() => {history.push("/signup")}}>Sign Up</Button>
+        <Button title="Signin" onClick={() => {history.push("/signin/")}}>Sign In</Button>
+        <Button title="Signup" onClick={() => {history.push("/signup/")}}>Sign Up</Button>
         </>
         :
         <>

@@ -1,10 +1,18 @@
 import React, {useState, useEffect} from 'react';
+
+import {getUserMe} from '../../axios'
+import axios from 'axios'
+import {getAnswersOfUser, getQuestionsOfUser} from '../../axios'
+import {useSelector, useDispatch} from 'react-redux'
+//to be modified for all users
+
 import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser} from '../../axios'
 import {useHistory} from 'react-router-dom'
 //to be modified for all users
 const Profile = ({user}) => {
     const history = useHistory()
     //const [user, setUser] = useState(user);
+
     const [topPosts, setTopPosts] = useState(undefined)
     const [topTags, setTopTags] = useState(undefined)
     useEffect(()=> {

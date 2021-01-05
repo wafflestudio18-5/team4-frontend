@@ -1,5 +1,8 @@
 import React, {useState} from 'react'
+import {useAuth} from '../../context/auth'
+
 import {useHistory, Redirect} from 'react-router-dom'
+
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
 import {login} from '../../axios'
@@ -38,6 +41,7 @@ export const Signin = () => {
                 dispatch(setUserInfo({payload: res}))
                 dispatch(Login({token : res.token}))
                 history.go(-1)
+
                 })
             .catch(e => {
                 console.log(e);
@@ -50,7 +54,7 @@ export const Signin = () => {
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://localhost:8000/"
+            redirect_uri: "http://localhost:8000/api/"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
@@ -80,6 +84,7 @@ export const Signin = () => {
     if(isLoggedin) {
         return (
             <Redirect to='/'/>
+
         )
     }
     return (
@@ -87,9 +92,10 @@ export const Signin = () => {
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://localhost:8000/"
+            redirectUri="http://localhost:8000/api/"
             buttonText="Login with Github"/>
             
+
             <form onSubmit={e=>signin(e)} className="login-form" >
                 <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
                 <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 

@@ -1,12 +1,27 @@
-import React, {useState} from 'react'
+import React, {useState, Fragment} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
+import axios from 'axios'
+import {login, logout, postUser} from '../../axios'
+import * as config from '../../config'
+import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
+import {useSelector, useDispatch} from 'react-redux'
 import {postUser} from '../../axios'
 
 
+
 const Signup = () => {
+    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const dispatch = useDispatch();
+
     const history = useHistory();
+
+    const token_instance = axios.create({
+        baseURL: 'https://github.com/',
+        headers: { 'Accept': 'application/json' },
+      });
+
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
@@ -29,24 +44,74 @@ const Signup = () => {
         setWarn("")
         setNickname(nickname)
     }
-    const signup = async (e) => {
-        e.preventDefault()
-        postUser({username, password, email, nickname})
-            .then(response => {
+
+    const signup = async () => {
+        postUser({username: username, password: password, email: email, nickname: nickname})
+            .then(res => {
+                setWarn("")
                 //res 는 user info이므로 redux에 저장하기
-                const token = `Token ${response.token}`
-                const logged_in = true
-                setAuthTokens({token, logged_in})
-                history.push('/') //go to main
+                console.log(res);
+                console.log("token");
+                console.log(res.token);
+                dispatch(setUserInfo({payload: res}))
+                dispatch(Login({token : res.token}))
+                // const token = `Token ${res.token}`
+                // const logged_in = true
+                // setAuthTokens({token, logged_in})
+                console.log("Successfully Logged in ");
             })
             .catch(error => {
                 console.log(error);
-                setWarn("Authentication failed")
+                setWarn(error.message)
             })
     }
 
+    const onSuccess = async({code}) => {
+        await axios.post("https://github.com/login/oauth/access_token/", {params:{
+            client_username: config.GITHUB_CLIENT_USERNAME,
+            client_secret: config.GITHUB_CLIENT_SECRET,
+            code: code,
+            redirect_uri: "https://wafflow.com"
+        }})
+        .then(async res => {
+            const token = res.access_token.substring(0,40)
+            //redux에 토큰 저장
+            console.log("github token acquired");
+            await axios.post('http://localhost:8000/api/user/', {'github_token' : token})
+                .then(res => {
+
+                    dispatch(setUserInfo({payload: res}))
+                    dispatch(Login({token : res.token}))
+
+                })
+                .catch(e => {
+                    console.log(e);
+                    setWarn("Authentication failed")
+                })
+        })
+        .catch(e => {
+            console.log(e);
+            alert("Failed to acquire Token from Github")
+        })
+    }
+
+    const onFailure = (e) => {
+        console.log(e);
+    }
+    if(isLoggedin) {
+        return (
+            <Fragment>
+                You are Already Logged in
+            </Fragment>
+        )
+    }
     return (
         <> 
+            <GitHubLogin clientId="1bc89bcdb1f71159016b"
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+            redirectUri="https://wafflow.com/"
+            buttonText="Login with Github"/>
 
             <form className="signup-form" style={{display:'flex', flexDirection:'column'}}  onSubmit={e=>signup(e)}>
                 <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>onChangeUsername(e.target.value)}/>

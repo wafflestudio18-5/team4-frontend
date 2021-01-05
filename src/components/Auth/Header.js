@@ -2,22 +2,39 @@ import React, {useState, useEffect} from 'react'
 import {getUserMe, getQuestionsWithKeywords} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
+import axios from 'axios'
 import logo from '../../logo.png'
 import {Login, Logout} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
+import {useAuth} from '../../context/auth'
 
 import styles from "./Header.module.scss";
 import Button from '../Button';
 
 export const Header = () => {
+  const {authTokens, setAuthTokens} = useAuth()
+
+  console.log("Header Component");
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+  console.log(isLoggedin);
+  const token = useSelector(state => state.userInfoReducer.token)
+  console.log(token);
+
+  console.log("Token " + token);
+
+  const instance = axios.create({
+    baseURL: 'http://localhost:8000/api/',
+    headers: { 'Authorization' : 'Token ' + token },
+  });
+  console.log("Header: islogged?");
+  console.log(isLoggedin);
   const [user, setUser] = useState("");
       useEffect(()=> {
-          if(!isLoggedin) return;
-          getUserMe()
+          if(isLoggedin) {
+          instance.get('user/me/')
               .then(setUser)
-              .catch(console.log)
+              .catch(e => {console.log(e)}) } 
       },[user]);
   let history = useHistory();
   const [command, setCommand] = useState('');
@@ -57,7 +74,6 @@ export const Header = () => {
           <p className={styles.menuItem}>{user.reputation}</p>
         </div>
         <Button title="Profile" onClick={()=>{history.push("/users/me")}}></Button>
-        <></>
         <Button title="Logout" onClick={()=>onLogoutBtnClick}></Button>
         </>
         }

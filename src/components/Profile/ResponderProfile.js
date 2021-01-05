@@ -1,13 +1,30 @@
-import {useState, Fragment} from 'react'
+import {useState, Fragment, useEffect} from 'react'
 import {getUser} from '../../axios.ts'
 
 
-const ResponderProfile = (id, created_date, updated_date) => {
-    const [Responder, setResponder] = useState()
-    setResponder(getUser(id))
+const ResponderProfile = (answer) => {
+    const Answer = answer.answer
+    const [Responder, setResponder] = useState(null)
+    useEffect ( () => {
+        if (Responder !== null) {
+            return;
+        }
+        getUser(Answer.id)
+        .then(res => {
+            console.log(res);
+            setResponder(res)
+        })
+        .catch(e => {
+            console.log(e);
+        })
+    })
+
     return (
-        <Fragment /*asked at: should we change this to create {date} at {time}? */>
-            replied at {created_date}, {(created_date !== updated_date) && (", updated at") && {updated_date}}
+        <>
+        {Responder? 
+        <>
+        <Fragment>
+            replied at {Answer.created_at}, updated at {Answer.updated_at}
             <div className="author-profile-bottom">
                 <div className="author-pic">
                     <img src={Responder.picture} alt="Author's profile"></img>
@@ -18,6 +35,12 @@ const ResponderProfile = (id, created_date, updated_date) => {
                 </div>
             </div>
         </Fragment>
+        </>
+        :
+        <>
+        </>
+        }
+        </>
     )
 }
 
