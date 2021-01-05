@@ -19,6 +19,7 @@ export const CommentPostQuestion = (id_q) => {
 
     const instance = axios.create({
       baseURL: 'http://localhost:8000/api/',
+
       Authorization : 'Token ' + token
     });
 
@@ -61,6 +62,7 @@ export const CommentPostAnswer = (id_ans) => {
 
     const instance = axios.create({
       baseURL: 'http://localhost:8000/api/',
+
       headers: { 'Authorization' : 'Token ' + token },
     });
 
@@ -80,6 +82,7 @@ export const CommentPostAnswer = (id_ans) => {
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
             <button className="comment-submit-btn" onClick={e => {postCommentonAnswer()}}>
+
                 POST Comment to Answer
             </button>
         </Fragment>

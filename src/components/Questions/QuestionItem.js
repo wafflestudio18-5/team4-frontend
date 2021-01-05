@@ -1,4 +1,6 @@
-import React , {Fragment} from 'react';
+import React from 'react';
+import {Link} from 'react-router-dom'
+
 import AuthorProfile from '../Profile/AuthorProfile'
 import {Link} from 'react-router-dom'
 import styles from './QuestionItem.module.scss'
@@ -22,6 +24,7 @@ const QuestionItem= (Question) => {
                         <div className={styles.vote_text}>
                             Votes
                         </div>
+
                     </div>
                     <div className={styles.answerCountBox}>
                         answers: {Question_info.answer_count}
@@ -41,8 +44,9 @@ const QuestionItem= (Question) => {
                     </div>
                     <div className={styles.tags}>
                         {/* {Question_info.tags.map((tag) => {return <span><Link ><span className="tagInfo">{tag.name}</span></Link></span>})} */}
+
                     </div>
-                    <AuthorProfile id={Question_info.author.id} created_date={Question_info.created_at}/>
+                    <AuthorProfile question={Question_info}/>
                 </div>
         </div>
     )

@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react'
-import {getUserMe, getQuestionsWithKeywords, logout} from '../../axios'
+import React, {useState} from 'react'
+import {logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
-import {useAuth} from '../../context/auth'
 import './image.css'
 import axios from 'axios'
 import logo from '../../logo.png'
-import {Login, Logout, removeUserInfo} from '../../modules/AuthRedux'
+
+import {Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
 
 import styles from "./Header.module.scss";
@@ -14,53 +14,19 @@ import Button from '../Button';
 export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-  console.log(isLoggedin);
-  const token = useSelector(state => state.userInfoReducer.token)
-  console.log(token);
 
-  console.log("Token " + token);
-  const [user, setUser] = useState({});
-  const {authTokens, setAuthTokens} = useAuth()
-  const instance = axios.create({
-    baseURL: 'http://localhost:8000/api/',
-    headers: { 'Authorization' : 'Token ' + token },
-  });
-
-  useEffect(()=> {
-      if(isLoggedin) {
-      instance.get('user/me/')
-          .then(res => {
-            console.log(res);
-            setUser(res)
-          })
-          .catch(e => {
-            console.log(e)
-          })}
-  },[]);
-
-  // if(isLoggedin) {
-  //   instance.get('user/me/')
-  //       .then(res => {
-  //         console.log(res);
-  //         setUser(res.data)
-  //       })
-  //       .catch(e => {
-  //         console.log(e)
-  //       })}
-
-  console.log(user);
-  let history = useHistory();
-  const [command, setCommand] = useState('');
-  const search = () => {
-  /*GET /question/search/keywords*/
-      history.push("/users/me/")
-  }
+  const token = useSelector(state => state.isLoggedReducer.token)
+  const user = useSelector(state => state.userInfoReducer.payload?.payload)
+    let history = useHistory();
+    const [command, setCommand] = useState('');
   const signout = () => {
-    instance.post('/user/logout/')
+    console.log(token)
+    logout(`Token ${token}`)
       .then(() => {
-        //setUser(()=>undefined)
-        setAuthTokens()
-        //Redirect?
+        dispatch(Logout());
+        dispatch(removeUserInfo())
+        history.go(-1)
+
       })
       .catch(e => {
         console.log(e);
@@ -69,12 +35,16 @@ export const Header = () => {
       dispatch(removeUserInfo)
 
   }
-
+  const search = (e) => {
+    e.preventDefault()
+    history.push(`/search?q=${command.replace(/\s/, '+')}`)
+  }
   return (
       
     <div className={styles.header}>
       <img alt="logo" className={styles.logo} src={logo} onClick={()=>{history.push('/')}}/>
-      <form className={styles.inputWithButton}  name="search-form" role="search" action="/questions" method="get">
+      {/*preventDefault*/}
+      <form className={styles.inputWithButton}  name="search-form" role="search" action="/search" method="get" onSubmit={(e)=>{search(e)}}>
         <input className={styles.input} onChange={(e)=>{setCommand(e.target.value)}} name="q" type="text" value={command} maxLength="200" placeholder="Search your..."/>
         <Button title="WAFFLE!"></Button>
       </form>

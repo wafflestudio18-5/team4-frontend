@@ -1,9 +1,13 @@
 import {useState, Fragment} from 'react'
 import MDEditor from '@uiw/react-md-editor';
-import {postAnswer} from '../../axios.ts'
+import {useSelector} from 'react-redux' 
+import axios from 'axios'
+
 
 //get id of question
-const AnswerPost = (id) => {    
+const AnswerPost = (id) => {   
+    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+    const token = useSelector(state => state.userInfoReducer.token)
     const [Content, setContent] = useState("")
     const postAns = (content) => {
         if (content.length > 10) {

@@ -65,11 +65,9 @@ export const userInfoReducer = (state = defaultUserInfo, action) => {
         case "SET_USER_INFO" :
             console.log("setting user info");
             console.log(action);
-            console.log(action.user.payload);
-            if (action.user.payload.data === undefined) {
-                return action.user.payload
-            }
-            return action.user.payload.data
+            localStorage.setItem("token", action.payload.payload.token)
+            return action
+
         case "REMOVE_USER_INFO" :
             console.log("remove user info");
             return defaultUserInfo

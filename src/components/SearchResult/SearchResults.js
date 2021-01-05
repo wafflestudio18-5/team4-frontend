@@ -1,5 +1,6 @@
 import {useState, Fragement, useEffect} from 'react'
 import {getQuestionsWithTags, getQuestionsWithKeywords, getUser} from '../../axios.ts'
+
 import QuestionList from '../Questions/QuestionList'
 import {useHistory} from 'react-router-dom'
 import qs from 'qs';
@@ -304,6 +305,7 @@ export const  SearchResultKeywords = ({location}) => {
 }
 
 //user_id
+
 export const SearchResultUser = (match) => {
     console.log(match);
     const {user_id} = match.match.params
@@ -323,6 +325,7 @@ export const SearchResultUser = (match) => {
 
     const changePage = (n_page) => {
         setPage(n_page)
+
     }
 
     useEffect(() => {
@@ -350,7 +353,9 @@ export const SearchResultUser = (match) => {
 
     
     return (
+
         <>
+
             <div className="search-result-head">
                 <div className="search-result-top">
                     <div className="search-result-title">
@@ -366,7 +371,7 @@ export const SearchResultUser = (match) => {
                     </div>                
                 </div>
                 <div className="result-head-sub">
-                    Results for user {user.username}
+                    Results for user {query.user}
                 </div>
             </div>
             <div className="search-result-body">
@@ -381,36 +386,37 @@ export const SearchResultUser = (match) => {
                         </div>
                         <div className="results-info-box">
                             <div className="results-num-box">
-                                {result.questions.count()} results
+                                {result.length} results
                             </div>
                             <div className="sort-btn-box" /*TODO: 두 개는 dropdown?*/>
                                 <div className="sort-newest">
                                     <button className="new-btn" onClick = {() => changeSort("newest")}>new</button>
                                 </div>
                                 <div className="sort-update">
-                                    <button className="update-btn" onClick = {() => changeSort("recent_activity")}>update</button>
+                                    <button className="update-btn" onClick = {() => changeSort("activity")}>update</button>
                                 </div>
                                 <div className="sort-votes">
-                                    <button className="vote-btn" onClick = {() => changeSort("most_votes")}>votes</button>
+                                    <button className="vote-btn" onClick = {() => changeSort("votes")}>votes</button>
                                 </div>
                                 <div className="sort-views">
-                                    <button className="view-btn" onClick = {() => changeSort("most_frequent")}>views</button>
+                                    <button className="view-btn" onClick = {() => changeSort("views")}>views</button>
                                 </div>
                             </div>
                         </div>
                     </div>
             </div>
-            <QuestionList Questions={result.questions}/>
+            <QuestionList Questions={result}/>
             <div className="select-page-box">
                 <div className="page-plus-btn-box">
-                    <button className="page-plus-btn" onClick = {() => {changePage(page===max_page? max_page : page+1)}}>next page</button>
+                    {page===maxPage?<></>:<button className="page-plus-btn" onClick = {() => {changePage(page+1)}}>next page</button>}
                 </div>
                 {page}
                 <div className="page-minus-btn-box">
-                    <button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>
+                    {page===maxPage?<></>:<button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>}
                 </div>
             </div>
         </>
+
     )
     
 }

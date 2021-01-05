@@ -18,6 +18,7 @@ const QuestionDetailBox = (match) => {
     console.log("renders!");
     const instance = axios.create({
         baseURL: 'http://localhost:8000/api/',
+
         Authorization: 'Token ' + token
       });
 
@@ -48,6 +49,7 @@ const QuestionDetailBox = (match) => {
         instance.get(`comment/question/${id}/?page=${comment_page}`)
             .then((res) => {
                 console.log(res);
+
                 setComments(res.data.comments)
                 setMaxComment(question.comment_count)
             })
@@ -71,6 +73,7 @@ const QuestionDetailBox = (match) => {
     if (question.title === undefined) {
         return (<Fragment>Wrong Question Id!</Fragment>)
     }
+
 
     console.log(question);
 
@@ -131,10 +134,12 @@ const QuestionDetailBox = (match) => {
             </div>
             </div> 
             <div className="QdetailBoxRight">
+
             <div className = "questionContent">
                 {question.content}
             </div>
             <div className="questionTags">
+
                 {/* {question.tags} */}
             </div>
             <div className="questionbottomBox">
@@ -156,6 +161,7 @@ const QuestionDetailBox = (match) => {
             </div>
             <div className="q-main-comment-box">
                     {/* <CommentList comments_all={comments}/> */}
+
                 <div className="comments-page-btn">
                         <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
                         <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page-1)}}>prev page</button>
