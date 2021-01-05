@@ -26,7 +26,14 @@ const QuestionItem= (Question) => {
 
                     </div>
                     <div className={styles.answerCountBox}>
-                        answers: {Question_info.answer_count}
+                        <div className={styles.answer_square}>
+                            <div className={styles.answers_number}>
+                                {Question_info.answer_count}
+                            </div>
+                        </div>
+                        <div className={styles.answer_text}>
+                            Answer
+                        </div>
                     </div>
                     <div className={styles.viewsBox}>
                         views: {Question_info.view_count}

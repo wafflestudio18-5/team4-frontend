@@ -9,7 +9,7 @@
 .QuestionItemLeft {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items:center;
     width: 17%;
     height:fit-content;
 }
@@ -52,6 +52,38 @@
 
 
 .answeCountBox {
-
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: 100%;
 }
 
+
+.answer_square {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    font-size: 19px;
+    padding: 10px;
+    background-color: grey;
+    border-radius: 2px;
+    text-align: center;
+    align-items: center;
+    border: 2px black;
+}
+
+.answer_square_accepted {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    font-size: 23px;
+    border: 3px lightgreen;
+    border-radius: 2px;
+    text-align: center;
+    border: 2px green;
+}
+
+.answers_number {
+    text-align: center;
+}
