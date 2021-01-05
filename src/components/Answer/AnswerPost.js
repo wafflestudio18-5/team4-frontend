@@ -2,6 +2,7 @@ import {useState, Fragment} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import {useSelector} from 'react-redux' 
 import axios from 'axios'
+import {postAnswer} from '../../axios'
 
 
 //get id of question

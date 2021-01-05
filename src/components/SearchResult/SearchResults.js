@@ -315,7 +315,7 @@ export const SearchResultUser = (match) => {
     const [page, setPage] = useState(1)
     const [result, setResult] = useState(null)
     console.log(result);
-    var max_page = 1
+    var maxPage = 1
     
     
 
@@ -371,7 +371,7 @@ export const SearchResultUser = (match) => {
                     </div>                
                 </div>
                 <div className="result-head-sub">
-                    Results for user {query.user}
+                    Results for user {user.nickname}
                 </div>
             </div>
             <div className="search-result-body">
