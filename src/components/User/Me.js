@@ -14,7 +14,7 @@ const Me = () => {
     let history = useHistory();
     let match = useRouteMatch();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const user = useSelector(state => state?.userInfoReducer?.payload?.payload)
+    const user = useSelector(state => state?.userInfoReducer?.user?.payload)
 
     return (
         !isLoggedin? <>{history.push('/signin')}</>:

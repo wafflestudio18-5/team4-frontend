@@ -14,10 +14,10 @@ export const Logout = () => {
 }
 
 //User info 관련 Actions
-export const setUserInfo = (payload) => {
+export const setUserInfo = (user) => {
     return {
         type: "SET_USER_INFO",
-        user: payload
+        user
     }
 }
 
@@ -64,8 +64,8 @@ export const userInfoReducer = (state = defaultUserInfo, action) => {
     switch (action.type) {
         case "SET_USER_INFO" :
             console.log("setting user info");
-            console.log(action);
-            localStorage.setItem("token", action.payload.payload.token)
+            console.log(action.user);
+            localStorage.setItem("token", action.user.payload.token)
             return action
 
         case "REMOVE_USER_INFO" :

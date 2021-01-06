@@ -16,7 +16,7 @@ export const Header = () => {
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
 
   const token = useSelector(state => state.isLoggedReducer.token)
-  const user = useSelector(state => state.userInfoReducer.payload?.payload)
+  const user = useSelector(state => state.userInfoReducer.user?.payload)
     let history = useHistory();
     const [command, setCommand] = useState('');
   const signout = () => {
@@ -37,7 +37,7 @@ export const Header = () => {
   }
   const search = (e) => {
     e.preventDefault()
-    history.push(`/search?q=${command.replace(/\s/, '+')}`)
+    history.push(`/search?q=${encodeURIComponent(command)}`)
   }
   return (
       

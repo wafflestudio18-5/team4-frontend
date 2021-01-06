@@ -11,7 +11,7 @@ import {setUserInfo} from '../../modules/AuthRedux'
 const EditProfile = () => {
     //const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.isLoggedReducer.token)
-    const user = useSelector(state => state?.userInfoReducer?.payload?.payload)
+    const user = useSelector(state => state?.userInfoReducer?.user?.payload)
     const dispatch = useDispatch();
     axios.defaults.headers.common['Authorization'] = `Token ${token}`
 
@@ -44,7 +44,6 @@ const EditProfile = () => {
         }
         console.log(formData)
         //remove later
-        formData.delete('email')
         editUserMe(formData)
             .then(response => {
                 console.log(response)
