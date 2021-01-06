@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom'
 import qs from 'qs';
 import Button from '../Button_search'
 import styles from './SearchResult.module.scss'
+import LeftBanner from '../Banner/LeftBanner'
 
 //tags: list of tags
 export const SearchResultTags = ({location}) => {
@@ -84,6 +85,11 @@ export const SearchResultTags = ({location}) => {
     }
     
     return (
+        <div className={styles.banner}>
+            <div className={styles.nav}>
+                <LeftBanner/>
+            </div>
+            
         <div className={styles.board}>
             <div className={styles.search_result_head}>
                 <div className="search_result_top">              
@@ -155,6 +161,7 @@ export const SearchResultTags = ({location}) => {
                 <Button title="next page" onClick = {() => {changePage(page===max_page? max_page : page+1)}}/>
             </div>
         </div>
+    </div>
     )
     
 }

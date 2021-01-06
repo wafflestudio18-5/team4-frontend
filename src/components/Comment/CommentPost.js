@@ -77,6 +77,7 @@ export const CommentPostAnswer = (id_ans) => {
     });
 
     const postCommentonAnswer = () => {
+        console.log(content);
         instance.post(`comment/answer/${id_ans.id}/`, {content: content})
             .then(res => {
                 console.log();
@@ -101,9 +102,9 @@ export const CommentPostAnswer = (id_ans) => {
     return(
         <Fragment>
             <div className="comment-content">   
-                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)} onKeyPress={() => {handleKeypress()}}/>
+                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-            <button className="comment-submit-btn" onClick={e => {postCommentonAnswer()}}>
+            <button className="comment-submit-btn" onClick={() => {postCommentonAnswer()}}>
 
                 POST Comment to Answer
             </button>

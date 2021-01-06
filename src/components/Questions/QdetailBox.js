@@ -26,7 +26,6 @@ const QdetailBox = (Question) => {
                 ßhello
             </div>
             <div className="questionbottomBox">
-                <Button>share</Button>
                 <AuthorProfile id={Question.id} created_date={Question.created_at}/>
             </div>
         </div>   

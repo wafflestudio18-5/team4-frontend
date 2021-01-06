@@ -1,3 +1,11 @@
+
+
+.banner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
 .search_result_head {
     /* Frame 17 */
 
@@ -329,5 +337,12 @@ margin: 0px 0px;
     height: 1200px;
     left: 210px;
     top: 53px;
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    .nav {
+        visibility: hidden;
+        width: 0px;
     }
 }

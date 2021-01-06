@@ -14,7 +14,7 @@ const LeftBanner = () => {
     }
 
     const goUsers = () => {
-        history.push('/user/all')
+        history.push('/users')
     }
 
     return(

@@ -1,5 +1,6 @@
-import {useState, Fragment, useEffect, Button} from 'react'
+import {useState, Fragment, useEffect} from 'react'
 import React from 'react'
+import Button from '@material-ui/core/Button';
 import {useHistory, Link} from 'react-router-dom'
 import {CommentList} from '../Comment/Comments'
 import AnswerList from '../Answer/AnswerList'
@@ -8,6 +9,7 @@ import {CommentPostQuestion} from '../Comment/CommentPost'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux' 
 import styles from './QuestionDetailBox.module.scss'
+import MDEditor from '@uiw/react-md-editor';
 
 
 const QuestionDetailBox = (match) => {
@@ -82,17 +84,20 @@ const QuestionDetailBox = (match) => {
     const number = question.answer_count
 
     const q_upvote = () => {
+        console.log(isLoggedin);
+        console.log("upvote");
         if (!isLoggedin) {
             alert("You are not Logged in!")
-            return;
         }
-        axios.put(`rate/question/${question.id}`, {rating: 1})
+        else {
+        instance.put(`rate/question/${question.id}/`, {rating: 1})
             .then(res => {
                 console.log(res);
             })
             .catch(e => {
                 console.log(e);
             })
+        }
     }
 
     const q_downvote = () => {
@@ -100,7 +105,7 @@ const QuestionDetailBox = (match) => {
             alert("You are not Logged in!")
             return;
         }
-        axios.put(`rate/question/${question.id}`, {rating: -1})
+        instance.put(`rate/question/${question.id}/`, {rating: -1})
             .then(res => {
                 console.log(res);
             })
@@ -143,11 +148,11 @@ const QuestionDetailBox = (match) => {
                 <div className={styles.q_main_content_box}>
                 <div className = {styles.QdetailBoxLeft}>
                 <div className={styles.VoteBox}>
-                    <button onClick = {e => {q_upvote()}}>UpVote</button>
+                    <Button onClick = {e => {q_upvote()}}>UpVote</Button>
                     <div className={styles.votes}>
                         {question.vote}
                     </div>
-                    <button onClick={e => {q_downvote()}}>DownVote</button>
+                    <Button onClick={e => {q_downvote()}}>DownVote</Button>
                 </div>
                 <div className={styles.bookmark_box}>
                         <div className={styles.bookmark}>
@@ -157,31 +162,31 @@ const QuestionDetailBox = (match) => {
                 </div> 
                 <div className={styles.QdetailBoxRight}>
 
-                <div className = {styles.questionContent}>
-                    {question.content}
-                </div>
-                <div className={styles.questionTags}>
-                    {question.tags.map((tag) => {return <div className={styles.tag_element}><Link to={`/question/tagged/?tags=${tag.name}&sorted_by=newest&page=1`} ><span className="tagInfo">{tag.name}</span></Link></div>})}
-                </div>
-                <div className={styles.questionbottomBox}>
-                        <div className={styles.author_profile_bottom}>
-                            <div className={styles.author_pic}>
-                                <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
+                    <div className = {styles.questionContent}>
+                        <MDEditor.Markdown source={question.content} /> 
+                    </div>
+                    <div className={styles.questionTags}>
+                        {question.tags.map((tag) => {return <div className={styles.tag_element}><Link to={`/question/tagged/?tags=${tag.name}&sorted_by=newest&page=1`} ><span className="tagInfo">{tag.name}</span></Link></div>})}
+                    </div>
+                    <div className={styles.questionbottomBox}>
+                            <div className={styles.author_profile_bottom}>
+                                <div className={styles.author_pic}>
+                                    <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
+                                </div>
+                                <div className="author_info">
+                                    <div className="author_username">{Author.nickname===undefined? null : Author.nickname}</div>
+                                    <div className="author_reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
+                                </div>
                             </div>
-                            <div className="author_info">
-                                <div className="author_username">{Author.nickname===undefined? null : Author.nickname}</div>
-                                <div className="author_reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
-                            </div>
-                        </div>
-                </div>
+                    </div>
                 </div>   
                 </div>
                 <div className="q_main_comment_box">
                         {/* <CommentList comments_all={comments}/> */}
 
                     <div className="comments_page_btn">
-                            <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
-                            <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page - 1)}}>prev page</button>
+                            <Button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</Button>
+                            <Button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page - 1)}}>prev page</Button>
                     </div>
                     <div className="comment_post_box_q">
                         <CommentPostQuestion id={id}/>
