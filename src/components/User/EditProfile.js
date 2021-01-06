@@ -11,7 +11,7 @@ import {setUserInfo} from '../../modules/AuthRedux'
 const EditProfile = () => {
     //const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.isLoggedReducer.token)
-    const user = useSelector(state => state?.userInfoReducer?.user?.payload)
+    const user = useSelector(state => state?.userInfoReducer?.user)
     const dispatch = useDispatch();
     axios.defaults.headers.common['Authorization'] = `Token ${token}`
 
@@ -24,7 +24,6 @@ const EditProfile = () => {
     const [title, setTitle] = useState('');
     const [intro, setIntro] = useState('');
     const [picture, setPicture] = useState(null);
-    console.log(picture)
     useEffect(()=> {
             //setPicture(()=>user.picture)
             setEmail(()=>user.email)

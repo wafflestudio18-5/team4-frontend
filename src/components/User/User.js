@@ -19,7 +19,7 @@ const User = () => {
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(undefined);
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const me = useSelector(state => state?.userInfoReducer?.user?.payload)
+    const me = useSelector(state => state?.userInfoReducer?.user)
 
     useEffect(()=> {
         getUser(id)

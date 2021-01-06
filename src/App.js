@@ -11,41 +11,20 @@ import {useSelector, useDispatch} from 'react-redux'
 import {Signin} from './components/Auth/Signin'
 import QuestionAsk from './components/Questions/QuestionAsk'
 import Signup from './components/Auth/Signup';
-import {AuthContext} from './context/auth'
 import User from './components/User/User';
 import Search from './components/SearchResult/Search';
 
 
 function App() {
-  const existingTokens = () => {
-    let tokens = {}
-    for(let i = 0; i < localStorage.length; i++) {
-      tokens[localStorage.key(i)] = localStorage.getItem(localStorage.key(i))
-    }
-    return tokens
-  }
-  const [authTokens, setAuthTokens] = useState(existingTokens())
-  const setTokens = (tokens) => {
-    if(!tokens) {
-      localStorage.clear()
-    }
-    else {
-      for(let key in tokens) {
-        localStorage.setItem(key, tokens[key])
-      }
-    }
-    setAuthTokens(tokens)
-  }
 
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-  const token = useSelector(state => state.userInfoReducer.token)
+  const token = useSelector(state => state.isLoggedReducer.token)
 
   console.log("isLogged?");
   console.log(isLoggedin);
 
   return (
     <div>
-    <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Header/>
       <Switch>
       <Route exact path="/" component={Main}/>
@@ -61,7 +40,6 @@ function App() {
       <Route path="/users/:id" component={User}/>
       <Route exact path="/users" component={Users}/>
       </Switch>
-    </AuthContext.Provider>
     </div>
   );
 }

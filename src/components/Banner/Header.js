@@ -16,11 +16,10 @@ export const Header = () => {
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
 
   const token = useSelector(state => state.isLoggedReducer.token)
-  const user = useSelector(state => state.userInfoReducer.user?.payload)
+  const user = useSelector(state => state.userInfoReducer.user)
     let history = useHistory();
     const [command, setCommand] = useState('');
   const signout = () => {
-    console.log(token)
     logout(`Token ${token}`)
       .then(() => {
         dispatch(Logout());
@@ -31,8 +30,6 @@ export const Header = () => {
       .catch(e => {
         console.log(e);
       })
-      dispatch(Logout)
-      dispatch(removeUserInfo)
 
   }
   const search = (e) => {

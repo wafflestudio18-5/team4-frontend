@@ -38,7 +38,7 @@ export const Signin = () => {
         login(username, password)
             .then(user => {
                 console.log(user)
-                dispatch(setUserInfo({user}))
+                dispatch(setUserInfo(user))
                 dispatch(Login({token : user.token}))
                 history.go(-1)
 

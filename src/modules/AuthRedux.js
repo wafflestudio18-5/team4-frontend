@@ -42,35 +42,35 @@ export const isLoggedReducer = (state={loggedin: false, token: null}, action) =>
     }
 }
 
-const defaultUserInfo = {
-    "id": "",
-  "username": "",
-  "token" : "",
-  "created_at": "",
-  "updated_at": "",
-  "email": "",
-  "last_login": "",
-  "nickname": "",
-  "picture": "",
-  "reputation": 0,
-  "title":"",
-  "intro":"",
-  "question_count": 0,
-  "answer_count":0,
-  "bookmark_count":0
+const defaultUser = {
+    user: {
+        "id": "",
+        "username": "",
+        "token" : "",
+        "created_at": "",
+        "updated_at": "",
+        "email": "",
+        "last_login": "",
+        "nickname": "",
+        "picture": "",
+        "reputation": 0,
+        "title":"",
+        "intro":"",
+        "question_count": 0,
+        "answer_count":0,
+        "bookmark_count":0
+    }
 }
 
-export const userInfoReducer = (state = defaultUserInfo, action) => {
+export const userInfoReducer = (state = defaultUser, action) => {
     switch (action.type) {
         case "SET_USER_INFO" :
-            console.log("setting user info");
-            console.log(action.user);
-            localStorage.setItem("token", action.user.payload.token)
+            localStorage.setItem("token", action.user.token)
             return action
 
         case "REMOVE_USER_INFO" :
             console.log("remove user info");
-            return defaultUserInfo
+            return defaultUser
         default:
             return state
     }
