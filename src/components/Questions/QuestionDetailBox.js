@@ -1,12 +1,13 @@
 import {useState, Fragment, useEffect, Button} from 'react'
 import React from 'react'
+import {useHistory, Link} from 'react-router-dom'
 import {CommentList} from '../Comment/Comments'
 import AnswerList from '../Answer/AnswerList'
 import AnswerPost from '../Answer/AnswerPost'
 import {CommentPostQuestion} from '../Comment/CommentPost'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux' 
+import styles from './QuestionDetailBox.module.scss'
 
 
 const QuestionDetailBox = (match) => {
@@ -109,84 +110,101 @@ const QuestionDetailBox = (match) => {
     }
 
     return (
-        <Fragment>
-            <div className="qdetail-main-title-box">
-                <div className="qdetail-main-title">
-                    {question.title}
+        <div className={styles.board}>
+            <div className={styles.box}>
+                <div className={styles.qdetail_main_title_box}>
+                    <div className={styles.qdetail_main_title}>
+                        {question.title}
+                    </div>
+                    <div className={styles.askq_btn}>
+                        <Link to = "question/ask">Ask a Question </Link> 
+                    </div>
                 </div>
-                <div className="askq-btn">
-                    <Link to = "question/ask">Ask a Question </Link>
-                </div>
-            </div>
-            <div className="qdetail-top-info-box">
-                <div className="qdetail-top-info">
-                    Asked at {question.created_at}, viewed {question.view_count}times 
-                </div>
-            </div>
-            <div className="q-main-content-box">
-            <div className = "QdetailBoxLeft">
-            <div className="VoteBox">
-            <button onClick = {e => {q_upvote()}}>UpVote</button>
-            <div className="votes">
-                {question.vote}
-            </div>
-            <button onClick={e => {q_downvote()}}>DownVote</button>
-            </div>
-            </div> 
-            <div className="QdetailBoxRight">
-
-            <div className = "questionContent">
-                {question.content}
-            </div>
-            <div className="questionTags">
-
-                {/* {question.tags} */}
-            </div>
-            <div className="questionbottomBox">
-                <button>Share</button>
-                <div>
-                    asked at {question.created_a===undefined? null : question.created_at}
-                    <div className="author-profile-bottom">
-                        <div className="author-pic">
-                            <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
+                <div className={styles.qdetail_top_info_box}>
+                    <div className={styles.qdetail_top_info}>
+                        <div className={styles.asked_at}>
+                            Asked at 
+                        </div> 
+                        <div className={styles.answered_number}>
+                            {question.created_at.substring(0,10)}
                         </div>
-                        <div className="author-info">
-                            <div className="author-username">{Author.nickname===undefined? null : Author.nickname}</div>
-                            <div className="author-reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
+                        <div className={styles.div10}/>
+                        <div className={styles.view_count}>
+                            viewed
+                        </div>
+                        <div className={styles.view_number}>
+                            {question.view_count}
+                        </div>
+                        <div className={styles.times} >
+                            times
                         </div>
                     </div>
                 </div>
-            </div>
-            </div>   
-            </div>
-            <div className="q-main-comment-box">
-                    {/* <CommentList comments_all={comments}/> */}
+                <div className={styles.q_main_content_box}>
+                <div className = {styles.QdetailBoxLeft}>
+                <div className={styles.VoteBox}>
+                    <button onClick = {e => {q_upvote()}}>UpVote</button>
+                    <div className={styles.votes}>
+                        {question.vote}
+                    </div>
+                    <button onClick={e => {q_downvote()}}>DownVote</button>
+                </div>
+                <div className={styles.bookmark_box}>
+                        <div className={styles.bookmark}>
+                            {question.bookmark_count}
+                        </div>
+                    </div>
+                </div> 
+                <div className={styles.QdetailBoxRight}>
 
-                <div className="comments-page-btn">
-                        <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
-                        <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page-1)}}>prev page</button>
+                <div className = {styles.questionContent}>
+                    {question.content}
                 </div>
-                <div className="comment-post-box-q">
-                    <CommentPostQuestion id={id}/>
+                <div className={styles.questionTags}>
+                    {question.tags.map((tag) => {return <div className={styles.tag_element}><Link to={`/question/tagged/?tags=${tag.name}&sorted_by=newest&page=1`} ><span className="tagInfo">{tag.name}</span></Link></div>})}
+                </div>
+                <div className={styles.questionbottomBox}>
+                        <div className={styles.author_profile_bottom}>
+                            <div className={styles.author_pic}>
+                                <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
+                            </div>
+                            <div className="author_info">
+                                <div className="author_username">{Author.nickname===undefined? null : Author.nickname}</div>
+                                <div className="author_reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
+                            </div>
+                        </div>
+                </div>
+                </div>   
+                </div>
+                <div className="q_main_comment_box">
+                        {/* <CommentList comments_all={comments}/> */}
+
+                    <div className="comments_page_btn">
+                            <button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</button>
+                            <button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page - 1)}}>prev page</button>
+                    </div>
+                    <div className="comment_post_box_q">
+                        <CommentPostQuestion id={id}/>
+                    </div>
+                </div>
+                <div className="ans_box">
+                    <div className="ans_box_head">
+                        {question.answer_count} Answers
+                    </div>
+                    <div className="sort_by_btn">
+                        <button onClick={() => {set_answer_sort("votes")}} >votes</button>
+                        <button onClick={() => {set_answer_sort("activity")}}>activity</button>
+                        <button onClick={() => {set_answer_sort("newest")}}>newest</button>
+                    </div>
+                    <AnswerList Answers={answers} num = {question.answer_count}/>
+                    <div className="ans_page_btn">
+                        <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
+                        <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page - 1)}}>prev page</button>
+                    </div>
+                    <AnswerPost id={id}/>
                 </div>
             </div>
-            <div className="ans-box">
-                <div className="ans-box-head">
-                    {question.answer_count} Answers
-                </div>
-                <div className="sort-by-btn">
-                    <button onClick={() => {set_answer_sort("votes")}} >votes</button>
-                    <button onClick={() => {set_answer_sort("activity")}}>activity</button>
-                    <button onClick={() => {set_answer_sort("newest")}}>newest</button>
-                </div>
-                 <AnswerList Answers={answers} num = {3}/>
-                <div className="ans-page-btn">
-                    <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
-                    <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page-1)}}>prev page</button>
-                </div>
-                <AnswerPost id={id}/>
-            </div>
-        </Fragment>
+        </div>
     )
 }
 

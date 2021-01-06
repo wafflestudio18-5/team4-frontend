@@ -33,14 +33,24 @@ export const CommentPostQuestion = (id_q) => {
             })
     }
 
+    const handleKeypress = (e) => {
+        if (e.keyCode === 13) {
+            instance.post(`comment/question/${id_q.id}/`, {content: content})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(e=>{
+                console.log(e);
+            })
+          }
+        
+    }
+
     return(
         <Fragment>
             <div className="comment-content">
-                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
+                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)} onKeyPress={() => {handleKeypress()}}/>
             </div>
-            <button className="comment-submit-btn" onClick={e => {postCommentonQuestion()}}>
-                POST Comment to Question
-            </button>
         </Fragment>
     )
 }
@@ -76,10 +86,22 @@ export const CommentPostAnswer = (id_ans) => {
             })
     }
 
+    const handleKeypress = (e) => {
+        if (e.keyCode === 13) {
+            instance.post(`comment/answer/${id_ans.id}/`, {content: content})
+            .then(res => {
+                console.log();
+            })
+            .catch(e =>{
+                console.log(e);
+            })
+        }
+    }
+
     return(
         <Fragment>
             <div className="comment-content">   
-                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
+                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)} onKeyPress={() => {handleKeypress()}}/>
             </div>
             <button className="comment-submit-btn" onClick={e => {postCommentonAnswer()}}>
 
@@ -87,4 +109,4 @@ export const CommentPostAnswer = (id_ans) => {
             </button>
         </Fragment>
     )
-}
+    }

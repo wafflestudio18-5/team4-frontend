@@ -1,7 +1,8 @@
 import {useHistory} from 'react-router-dom'
-import Button from '../Button_search'
+import styles from './LeftBanner.module.scss'
+import { Button } from '@material-ui/core';
 
-export const LeftBanner = () => {
+const LeftBanner = () => {
     const history = useHistory();
 
     const goHome = () => {
@@ -17,18 +18,20 @@ export const LeftBanner = () => {
     }
 
     return(
-        <div>
-            <div>
-                <div>
-                    <Button title="Home" onClick={() => {goHome()}}></Button>
+        <div className={styles.border}>
+            <div className={styles.box}>
+                <div className={styles.home_button}>
+                    <Button onClick={() => {goHome()}}>Home</Button>
                 </div>
-                <div>
-                    <Button title="Tags" onClick={() => {goTags()}}></Button>
+                <div className={styles.tags_Button}>
+                    <Button onClick={() => {goTags()}}>Tags</Button>
                 </div>
-                <div>
-                    <Button title="Users" onClick={() => {goUsers()}}></Button>
+                <div className={styles.users_Button}>
+                    <Button onClick={() => {goUsers()}}>Users</Button>
                 </div>
             </div>
         </div>
     )
 }
+
+export default LeftBanner
