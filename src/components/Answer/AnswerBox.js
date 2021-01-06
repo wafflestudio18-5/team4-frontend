@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react'
+import {Fragment, useEffect, useState} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import ResponderProfile from '../Profile/ResponderProfile'
 import {getCommentsOfAnswer} from '../../axios.ts'
@@ -10,9 +10,14 @@ const AnswerBox = (Ans) => {
     console.log(Ans);
     const Answer = Ans.Answer
     console.log(Answer);
-    const [comment, setComment] = useState({})
+    const [comment, setComment] = useState(null)
 
-    getCommentsOfAnswer(Answer.id)
+    useEffect(() => {
+        if (comment !== null) {
+            console.log(comment);
+        }
+        else {
+        getCommentsOfAnswer(Answer.id)
         .then(res => {
             console.log(res);
             setComment(res.data)
@@ -20,6 +25,9 @@ const AnswerBox = (Ans) => {
         .catch(e => {
             console.log(e);
         })
+        }
+    })
+    
     return(
        <Fragment>
            <div className="ansbox-left-box">
@@ -46,13 +54,10 @@ const AnswerBox = (Ans) => {
                     {Answer.content}
                 </div>
                 <div className="ansbox-roght-bottom-box">
-                    <div className="ansbox-sharebtn-box">
-                        <button className="ansbox-sharebtn" /*TODO: Link */>Share</button>
-                    </div>
                     <ResponderProfile answer = {Answer}/>
                 </div>
                 <div className="ans-comments-box">
-                    {/* <CommentList comments={comments}/> */}
+                    {/* <CommentList comments={comment}/> */}
                 </div>  
                 <div className="comment-post-box-ans">
                     <CommentPostAnswer id={Answer.id}/>

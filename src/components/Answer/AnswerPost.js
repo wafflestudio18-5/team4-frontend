@@ -7,12 +7,14 @@ import {postAnswer} from '../../axios'
 
 //get id of question
 const AnswerPost = (id) => {   
+    console.log(id);
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.userInfoReducer.token)
     const [Content, setContent] = useState("")
     const postAns = (content) => {
-        if (content.length > 10) {
-            postAnswer(id, content)
+        console.log(Content);
+        if (Content.length > 10) {
+            postAnswer(parseInt(id.id, 10), Content)
             setContent("")
         }
         else {
@@ -26,7 +28,7 @@ const AnswerPost = (id) => {
                 <MDEditor
                     value={Content}
                     onChange={e => setContent(e)}/>
-                <MDEditor.Markdown source={Content} />
+                {/* <MDEditor.Markdown source={Content} /> */}
             </div>
             <div className="ans-post-btn-box">
                 <button className="ans-post-btn" onClick={e => {postAns(Content)}}>Post Your Answer</button>

@@ -113,7 +113,7 @@ export const getQuestionsWithKeywords = (keywords: string, sorted_by: string, pa
 //POST question
 export const postQuestion = (question: QuestionInterface) => 
     new Promise((resolve,reject) => {
-        axios.post(`api/question/`, {data:{question}})
+        axios.post(`api/question/`, {data:question})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
@@ -156,7 +156,7 @@ export const getAnswer = (id: number) =>
 //POST answer
 export const postAnswer = (id: number, content: string) => 
     new Promise((resolve,reject) => {
-        axios.post(`api/answer/question/${id}/`, {data:{content}})
+        axios.post(`api/answer/question/${id}/`, {content:content})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
@@ -172,7 +172,7 @@ export const postAnswerAcceptance = (id: number) =>
 //PUT answer
 export const editAnswer = (id: number, content: string) => 
     new Promise((resolve,reject) => {
-        axios.put(`api/answer/${id}/`,{data:{content}})
+        axios.put(`api/answer/${id}/`,{content:{content}})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
@@ -205,8 +205,8 @@ export const getComment = (id: number) =>
 )
 export const getCommentsOfAnswer = (id: number, page=1) => 
     new Promise((resolve,reject) => {
-        axios.get(`api/comment/answer/${id}/`)
-            .then(response => resolve(response.data.comments))
+        axios.get(`api/comment/answer/${id}/?page=${page}/`)
+            .then(response => resolve(response))
             .catch(e=>reject(logError(e)))
     }
 )

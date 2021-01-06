@@ -1,3 +1,11 @@
+
+
+.banner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
 .search_result_head {
     /* Frame 17 */
 
@@ -60,7 +68,7 @@
     padding: 10px;
 
     position: absolute;
-    width: 65%;
+    width: 50%;
     height: 1200px;
     left: 210px;
     top: 53px;
@@ -239,29 +247,22 @@ margin: 0px 0px;
 }
 
 .result_list {
-        /* Frame 18 */
-
-
-/* Auto Layout */
-
 display: flex;
 flex-direction:row;
 align-items: flex-start;
 padding: 0px;
-
+margin: 0px;
 position: static;
 width: 100%;
 height: fit-content;
-left: 10px;
-top: 63px;
 
 
 /* Inside Auto Layout */
 
-flex: 0.9;
+flex: 1;
 order: 1;
 flex-grow: 0;
-margin: 10px 0px;
+margin: 0px 0px;
 }
 
 .select_page_box {
@@ -336,5 +337,12 @@ margin: 10px 0px;
     height: 1200px;
     left: 210px;
     top: 53px;
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    .nav {
+        visibility: hidden;
+        width: 0px;
     }
 }
