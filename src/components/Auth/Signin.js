@@ -36,10 +36,10 @@ export const Signin = () => {
     const signin = async (e) => {
         e.preventDefault()
         login(username, password)
-            .then(res => {
-                console.log(res)
-                dispatch(setUserInfo({payload: res}))
-                dispatch(Login({token : res.token}))
+            .then(user => {
+                console.log(user)
+                dispatch(setUserInfo(user))
+                dispatch(Login({token : user.token}))
                 history.go(-1)
 
                 })
