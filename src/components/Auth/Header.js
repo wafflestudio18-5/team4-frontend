@@ -18,7 +18,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
   console.log(isLoggedin);
-  const token = useSelector(state => state.userInfoReducer.token)
+  const token = useSelector(state => state.userInfoReducer.user.token)
   console.log(token);
 
   console.log("Token " + token);

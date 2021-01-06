@@ -2,19 +2,32 @@ import {useState, Fragment} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import {useSelector} from 'react-redux' 
 import axios from 'axios'
-import {postAnswer} from '../../axios'
+import {useHistory} from 'react-router-dom'
 
 
 //get id of question
 const AnswerPost = (id) => {   
     console.log(id);
+    const history = useHistory();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.token)
+    const token = useSelector(state => state.userInfoReducer.user.token)
     const [Content, setContent] = useState("")
+    const instance = axios.create({
+        baseURL: 'http://localhost:8000/api/',
+        headers: { 'Authorization' : 'Token ' + token},
+      });
     const postAns = (content) => {
         console.log(Content);
         if (Content.length > 10) {
-            postAnswer(parseInt(id.id, 10), Content)
+            instance.post(`/answer/question/${id.id}/`, {content:Content})
+                .then(res => {
+                    setContent("")
+                    console.log(res);
+                    history.go(0);
+                })
+                .catch(e => {
+                    console.log(e);
+                })
             setContent("")
         }
         else {

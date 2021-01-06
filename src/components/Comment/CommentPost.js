@@ -8,7 +8,7 @@ export const CommentPostQuestion = (id_q) => {
     console.log(id_q.id);
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.token)
+    const token = useSelector(state => state.userInfoReducer.user.token)
 
     if (!isLoggedin) {
         return (<div>
@@ -24,33 +24,25 @@ export const CommentPostQuestion = (id_q) => {
     });
 
     const postCommentonQuestion = () => {
+        console.log(content);
         instance.post(`comment/question/${id_q.id}/`, {content: content})
             .then(res => {
-                console.log(res);
+                console.log();
             })
-            .catch(e=>{
+            .catch(e =>{
                 console.log(e);
             })
     }
 
-    const handleKeypress = (e) => {
-        if (e.keyCode === 13) {
-            instance.post(`comment/question/${id_q.id}/`, {content: content})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(e=>{
-                console.log(e);
-            })
-          }
-        
-    }
 
     return(
         <Fragment>
-            <div className="comment-content">
-                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)} onKeyPress={() => {handleKeypress()}}/>
+            <form onSubmit={() => {postCommentonQuestion()}}>
+            <div className="comment-content">   
+                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
+                <button className="comment-submit-btn" type="submit">Submit</button>
+            </form>
         </Fragment>
     )
 }
@@ -61,7 +53,7 @@ export const CommentPostAnswer = (id_ans) => {
     const [content, setContent] = useState("")
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.token)
+    const token = useSelector(state => state.userInfoReducer.user.token)
 
     if (!isLoggedin) {
         return (<div>
@@ -87,27 +79,17 @@ export const CommentPostAnswer = (id_ans) => {
             })
     }
 
-    const handleKeypress = (e) => {
-        if (e.keyCode === 13) {
-            instance.post(`comment/answer/${id_ans.id}/`, {content: content})
-            .then(res => {
-                console.log();
-            })
-            .catch(e =>{
-                console.log(e);
-            })
-        }
-    }
+
 
     return(
         <Fragment>
+            
+            <form onSubmit={() => {postCommentonAnswer()}}>
             <div className="comment-content">   
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-            <button className="comment-submit-btn" onClick={() => {postCommentonAnswer()}}>
-
-                POST Comment to Answer
-            </button>
+                <button className="comment-submit-btn" type="submit">Submit</button>
+            </form>
         </Fragment>
     )
     }

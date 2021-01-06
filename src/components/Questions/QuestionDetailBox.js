@@ -16,16 +16,16 @@ const QuestionDetailBox = (match) => {
     const history = useHistory();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     console.log(isLoggedin);
-    const token = useSelector(state => state.userInfoReducer.user.payload.token)
+    const token = useSelector(state => state.userInfoReducer.user.token)
     console.log(token);
-    const user_id = useSelector(state => state.userInfoReducer.user.payload.id)
+    const user_id = useSelector(state => state.userInfoReducer.user.id)
     console.log(user_id);
 
     console.log("renders!");
     const instance = axios.create({
         baseURL: 'http://localhost:8000/api/',
 
-        Authorization: 'Token ' + token
+        headers: {Authorization: 'Token ' + token}
       });
 
     const id = match.match.params.question_id
@@ -39,6 +39,7 @@ const QuestionDetailBox = (match) => {
     const [comments, setComments] = useState({})
     const [max_page, setMaxPage] = useState(1)
     const [max_comment, setMaxComment] = useState(1)
+    const [bookmark_user, setBookmark] = useState([])
 
     useEffect(() => {
         if (question.title === undefined) {
@@ -70,6 +71,20 @@ const QuestionDetailBox = (match) => {
             .catch((e) => {
                 console.log(e);
             })
+        var page_bookmark = 1;
+
+        // while (true) {
+        // instance.get(`bookmark/user/me/`, {params:{page: page_bookmark, sorted_by: newest}})
+        //     .then((res) => {
+        //         console.log(res);
+        //         setBookmark(bookmark_user.concat(res.questions.id))
+        //     })
+        //     .catch((e) => {
+        //         console.log(e);
+        //         break
+        //     })
+        //     page_bookmark += 1;
+        // }
         }
     }, [])
 
@@ -93,6 +108,8 @@ const QuestionDetailBox = (match) => {
             alert("You are not Logged in!")
         }
         else {
+            console.log(token);
+
         instance.put(`rate/question/${question.id}/`, {rating: 1})
             .then(res => {
                 console.log(res);
@@ -118,8 +135,12 @@ const QuestionDetailBox = (match) => {
     }
 
     const goEdit = () => {
-        history.push('/question/edit')
+        history.push(`/question/edit/${question.id}`)
     }
+
+    // const bookmark_change = () => {
+    //     if (isLoggedin) 
+    // }
 
     console.log(question.author.id);
     console.log(user_id);
