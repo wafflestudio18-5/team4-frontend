@@ -67,7 +67,7 @@ export const userInfoReducer = (state = defaultUser, action) => {
         case "SET_USER_INFO" :
             console.log("setting user info");
             console.log(action);
-            localStorage.setItem("token", action.user.payload.token)
+            localStorage.setItem("token", action.user.token)
 
             return action
 

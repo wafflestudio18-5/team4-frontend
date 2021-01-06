@@ -13,10 +13,13 @@ import MDEditor from '@uiw/react-md-editor';
 
 
 const QuestionDetailBox = (match) => {
-
+    const history = useHistory();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     console.log(isLoggedin);
-    const token = useSelector(state => state.userInfoReducer.token)
+    const token = useSelector(state => state.userInfoReducer.user.payload.token)
+    console.log(token);
+    const user_id = useSelector(state => state.userInfoReducer.user.payload.id)
+    console.log(user_id);
 
     console.log("renders!");
     const instance = axios.create({
@@ -114,6 +117,13 @@ const QuestionDetailBox = (match) => {
             })
     }
 
+    const goEdit = () => {
+        history.push('/question/edit')
+    }
+
+    console.log(question.author.id);
+    console.log(user_id);
+
     return (
         <div className={styles.board}>
             <div className={styles.box}>
@@ -179,7 +189,8 @@ const QuestionDetailBox = (match) => {
                                 </div>
                             </div>
                     </div>
-                </div>   
+                </div>
+                {isLoggedin && user_id === question.author.id? <button onClick={() => {goEdit()}}>Edit</button> : null}   
                 </div>
                 <div className="q_main_comment_box">
                         {/* <CommentList comments_all={comments}/> */}

@@ -28,7 +28,7 @@ const QuestionItem= (Question) => {
                     </div>
                     <div className={styles.vert_10}/>
                     <div className={styles.answerCountBox}>
-                        <div className={styles.answer_square}>
+                        <div className={Question_info.isaccepted? styles.answer_square_accepted : styles.answer_square}>
                             <div className={styles.answers_number}>
                                 {Question_info.answer_count}
                             </div>

@@ -13,7 +13,7 @@ import {useSelector, useDispatch} from 'react-redux'
 const QuestionAsk = () =>  {
     const {authTokens, setAuthTokens} = useAuth()
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
-    const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
+    const token = useSelector(state => state.userInfoReducer.user.payload.token) //redux 에서 islooedin. token 가져오기
 
 
     const instance = axios.create({
