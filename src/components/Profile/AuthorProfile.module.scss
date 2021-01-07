@@ -9,20 +9,38 @@
 .created_date {
     font: 12px Arial;
     color: #848D95;
-    
+    padding: 2px;
 }
 
 .author_profile_bottom {
-
+    display: flex;
+    flex-direction: row;
 }
 
 .author_pic  {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
 }
 
 .img {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     object-fit: scale-down;
+    border-radius: 2px;
+}
+
+.author_info {
+    display: flex;
+    flex-direction: column;
+    color: #0077CC;
+    margin: 0px 0px 0px 5px;
+}
+
+.author_nickname {
+    font: 12px Arial;
+}
+
+.author_reputation {
+    color: #848d95;
+    font: 12px Arial
 }
