@@ -158,13 +158,13 @@ export const SearchResultTags = ({location}) => {
                         </div>
             </div>
             <div className={styles.select_page_box}>
-                {/* <Button title="prev page" onClick = {() => {changePage(page===1? 1 : page-1)}}/>
+                <Button title="prev page" onClick = {() => {changePage(page===1? 1 : page-1)}}/>
                 <div className={styles.divider15}/>
                 <div className="page_number">
                     {page}
                 </div>
                 <div className={styles.divider15}/>
-                <Button title="next page" onClick = {() => {changePage(page===max_page? max_page : page+1)}}/> */}
+                <Button title="next page" onClick = {() => {changePage(page===max_page? max_page : page+1)}}/>
             </div>
         </div>
     </div>
