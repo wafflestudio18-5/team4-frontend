@@ -3,9 +3,9 @@ import {useHistory} from 'react-router-dom'
 import {useAuth} from '../../context/auth'
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
-import {login, logout, postUser} from '../../axios'
+import {postUser} from '../../axios'
 import * as config from '../../config'
-import {Login, Logout, setUserInfo, removeUserInfo} from '../../modules/AuthRedux'
+import {Login, setUserInfo, } from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
 
 
@@ -26,7 +26,6 @@ const Signup = () => {
     const [email, setEmail] = useState("")
     const [nickname, setNickname] = useState("")
     const [warn, setWarn] = useState("")
-    const {setAuthTokens} = useAuth()
     const onChangeUsername = (username) => {
         setWarn("")
         setUsername(()=>username)
@@ -48,15 +47,11 @@ const Signup = () => {
         postUser({username: username, password: password, email: email, nickname: nickname})
             .then(res => {
                 setWarn("")
-                //res 는 user info이므로 redux에 저장하기
                 console.log(res);
                 console.log("token");
                 console.log(res.token);
                 dispatch(setUserInfo({payload: res}))
                 dispatch(Login({token : res.token}))
-                // const token = `Token ${res.token}`
-                // const logged_in = true
-                // setAuthTokens({token, logged_in})
                 console.log("Successfully Logged in ");
             })
             .catch(error => {

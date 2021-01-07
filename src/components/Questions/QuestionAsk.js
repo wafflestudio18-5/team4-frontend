@@ -6,12 +6,10 @@ import QuestionAskGuide from './QuestionAskGuide'
 import {postQuestion} from '../../axios.ts'
 import MDEditor from '@uiw/react-md-editor'
 import TagEditor from 'react-tageditor'
-import {useAuth} from '../../context/auth'
 import {useSelector, useDispatch} from 'react-redux'
 
 
 const QuestionAsk = () =>  {
-    const {authTokens, setAuthTokens} = useAuth()
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
 
