@@ -43,7 +43,7 @@ const AnswerBox = (Ans) => {
 
     const upVote = () => {
         if (isLoggedin) {
-            instance.put(`/rate/answer/${Answer.id}`, {rating: 1})
+            instance.put(`/rate/answer/${Answer.id}/`, {rating: 1})
                 .then(res => {
                     console.log(res);
                 })
