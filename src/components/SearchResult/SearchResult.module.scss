@@ -69,7 +69,7 @@
 
     position: absolute;
     width: 40%;
-    height: fit-content;
+    height: max-content;
     left: 210px;
     top: 53px;
 
@@ -248,7 +248,7 @@ margin: 0px 0px;
 
 .result_list {
 display: flex;
-flex-direction:row;
+flex-direction: column;
 align-items: flex-start;
 padding: 0px;
 margin: 0px;
@@ -270,7 +270,9 @@ margin: 0px 0px;
 
 
     /* Auto Layout */
-
+    padding: 100px;
+    margin-top: 200px;
+    align-content: center;
     display: flex;
     flex-direction:row;
     align-items: flex-end;

@@ -1,8 +1,9 @@
 .board {
     display: flex;
     flex-direction: column;
-    width: fit-content;
+    width: max-content;
     height: 34px;
+    margin-bottom: 5px;
     align-self:stretch;
 }
 
@@ -13,17 +14,37 @@
 }
 
 .author_profile_bottom {
-
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+    align-self: flex-end;
 }
 
 .author_pic  {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
 }
 
 .img {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     object-fit: scale-down;
+    border-radius: 2px;
 }
 
+.author_info {
+    display: flex;
+    flex-direction: column;
+    color: #0077CC;
+    margin: 3px 3px 3px 15px;
+    padding-bottom: 10px;
+}
+
+.author_nickname {
+    font: 12px Arial;
+}
+
+.author_reputation {
+    color: #848d95;
+    font: 12px Arial
+}
