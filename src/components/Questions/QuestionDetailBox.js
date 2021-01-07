@@ -229,7 +229,6 @@ const QuestionDetailBox = (match) => {
                     </div>
                 </div>
                 {isLoggedin && user_id === question.author.id? <button onClick={() => {goEdit()}}>Edit</button> : null} 
-                {isLoggedin && is_author? <button onClick={() => {DeleteQuestion()}}>Delete</button> : null}     
                 </div>
                 <div className="q_main_comment_box">
                         {/* <CommentList comments_all={comments}/> */}

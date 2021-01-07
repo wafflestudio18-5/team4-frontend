@@ -3,7 +3,7 @@
     flex-direction: column;
     width: fit-content;
     height: 34px;
-    align-self: flex-end;
+    align-self:stretch;
 }
 
 .created_date {
@@ -14,4 +14,15 @@
 
 .author_profile_bottom {
 
+}
+
+.author_pic  {
+    width: 20px;
+    height: 20px;
+}
+
+.img {
+    width: 20px;
+    height: 20px;
+    object-fit: scale-down;
 }
