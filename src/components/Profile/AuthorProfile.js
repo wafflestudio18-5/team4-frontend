@@ -44,7 +44,7 @@ const AuthorProfile = (data) => {
                     <img src={Author.picture? Author.picture:defaultPicture} className={styles.img} alt={`Author:${Author.nickname}`}/>
                 </div>
                 <div className={styles.author_info}>
-                    <div className={styles.author_username}>{Author.nickname}</div>
+                    <div className={styles.author_nickname}>{Author.nickname}</div>
                     <div className={styles.author_reputation}>reputation: {Author.reputation}</div>
                 </div>
             </div>
