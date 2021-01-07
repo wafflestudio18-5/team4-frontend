@@ -54,16 +54,16 @@ export const Signin = () => {
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://localhost:8000/api/"
+            redirect_uri: "http://www.wafflow.com/api/"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('http://localhost:8000/api/user/login', {params:{'github_token' : token}})
+            await axios.put('http://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
                 .then(res => {
 
-                    dispatch(setUserInfo({payload: res}))
+                    dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
 
                 })
@@ -92,7 +92,7 @@ export const Signin = () => {
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://localhost:8000/api/"
+            redirectUri="http://www.wafflow.com/api/"
             buttonText="Login with Github"/>
             
 
