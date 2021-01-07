@@ -14,7 +14,7 @@ import Signup from './components/Auth/Signup';
 import User from './components/User/User';
 import Search from './components/SearchResult/Search';
 import styles from './AppStyles.module.scss'
-
+import Footer from './components/Banner/Footer'
 
 function App() {
 
@@ -41,6 +41,7 @@ function App() {
           <Route path="/users/:id" component={User}/>
           <Route exact path="/users" component={Users}/>
       </Switch>
+      <Footer/>
     </div>
   );
 }
