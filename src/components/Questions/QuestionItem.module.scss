@@ -15,7 +15,7 @@
     margin-top: 12px;
     margin-bottom: auto;
     height: fit-content;
-    padding: 12px;
+    padding: 0px;
     border-bottom: 1px solid;
     border-bottom-color: #EFEFEF;
 }
@@ -24,7 +24,7 @@
     display: flex;
     flex-direction: column;
     align-items:center;
-    width: 17%;
+    width: fit-content;
     height:fit-content;
 }
 
@@ -33,9 +33,9 @@
     display: flex;
     flex-direction: column;
     height: fit-content;
-    width: 100%;
+    width: fit-content;
     margin-left: 5px;
-    margin-right: 5px;
+    margin-right: 15px;
     padding: 5px;
 }
 

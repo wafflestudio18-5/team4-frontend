@@ -3,6 +3,7 @@
 .banner {
     display: flex;
     flex-direction: row;
+    justify-content:left;
     align-items: flex-start;
 }
 
@@ -52,6 +53,12 @@
 
 .divider25{
     width:15px;
+    height:auto;
+    display:inline-block;
+}
+
+.divider25{
+    width:100px;
     height:auto;
     display:inline-block;
 }
@@ -265,6 +272,14 @@ flex-grow: 0;
 margin: 0px 0px;
 }
 
+.page_center {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    width: 100%;
+}
+
+
 .select_page_box {
         /* Frame 18 */
 
@@ -275,12 +290,12 @@ margin: 0px 0px;
     align-content: center;
     display: flex;
     flex-direction:row;
-    align-items: flex-end;
+    align-items: center;
     padding: 0px;
     align-self: flex-end;
     position: static;
     width: 100%;
-    height: fit-content;
+    height: 50px;
     left: 10px;
     top: 63px;
 

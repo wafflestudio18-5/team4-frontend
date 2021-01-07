@@ -245,77 +245,86 @@ export const  SearchResultKeywords = ({location}) => {
 
     
     return (
-        <>
-            <div className="search-result-head">
-                <div className="search-result-top">
-                    <div className="search-result-title">
-                        Search Results
-                    </div>
-                    <div className="search-result-top-right-box">
-                        <div className="advanced-tip-box" /*TODO: <a> tag*/>
-                            Advanced Question
-                        </div>
-                        <div className="ask-q-box">
-                            <button className="ask-q-btn" /*TODO: onClick*/>Ask a Question</button>
-                        </div>
-                    </div>                
+        <div className={styles.banner}>
+            <div className={styles.nav}>
+                <LeftBanner/>
+            </div>
+            
+        <div className={styles.board}>
+            <div className={styles.search_result_head}>
+                <div className="search_result_top">              
                 </div>
-                <div className="result-head-sub">
+                <div className={styles.divider15}/>
+                <div className="result_head_sub">
                     Results for keywords {keywords_form}
                 </div>
             </div>
-            <div className="search-result-body">
-                    <div className="result-body">
-                        <div className="search-bar-box">
-                            <div className="search-input">
-                                <input placeholder="input keywords/tags"/>
+            <div className={styles.search_result_body}>
+                        <div className={styles.results_info_box}>
+                            <div className={styles.sort_btn_box}>
+                                <div className={styles.sort_text}>
+                                    Sort by  
+                                </div>
+                                <div className={styles.divider15}/>
+                                <div className={styles.sort_newest}>
+                                    <Button title="new" onClick = {() => changeSort("newest")}>new</Button>
+                                </div>
+                                <div className={styles.divider5}/>
+                                <div className="sort_update">
+                                    <Button title="update" onClick = {() => changeSort("recent_activity")}>update</Button>
+                                </div>
+                                <div className={styles.divider5}/>
+                                <div className="sort_votes">
+                                    <Button title="vote" onClick = {() => changeSort("most_votes")}>votes</Button>
+                                </div>
+                                <div className={styles.divider5}/>
+                                <div className="sort_views">
+                                    <Button title="view" onClick = {() => changeSort("most_frequent")}>views</Button>
+                                </div>
+                                <div className={styles.divider10}/>
                             </div>
-                            <div className="search-btn-box">
-                                <button className="search-btn" /*TODO: 나중에 tags, keywords 합칠 거라서 아직 구현 안함*/>Search</button>
-                            </div>
-                        </div>
-                        <div className="results-info-box">
-                            <div className="results-num-box">
-                            </div>
-                            <div className="sort-btn-box" /*TODO: 두 개는 dropdown?*/>
-                                <div className="sort-newest">
-                                    <button className="new-btn" onClick = {() => changeSort("newest")}>new</button>
+                            <div className={styles.filter_select_box}>
+                            <div className={styles.sort_text}>
+                                   Filter by
                                 </div>
-                                <div className="sort-update">
-                                    <button className="update-btn" onClick = {() => changeSort("recent_activity")}>update</button>
+                                <div className={styles.divider5}/>
+                                <div className={styles.filter_no_answer}>
+                                    <Button title="no answer" onClick={() => {changeFilter("no_answer")}}>no answer</Button>
                                 </div>
-                                <div className="sort-votes">
-                                    <button className="vote-btn" onClick = {() => changeSort("most_votes")}>votes</button>
-                                </div>
-                                <div className="sort-views">
-                                    <button className="view-btn" onClick = {() => changeSort("most_frequent")}>views</button>
-                                </div>
-                            </div>
-                            <div className="filter_select-box">
-                                <div className="filter-no-answer">
-                                    <button onClick={() => {changeFilter("no_answer")}}>no answer</button>
-                                </div>
+                                <div className={styles.divider5}/>
                                 <div className="filter-no_accepted_answer">
-                                    <button onClick={() => {changeFilter("no_accepted_answer")}}>no accepted answer</button>
+                                    <Button title="none accepted" onClick={() => {changeFilter("no_accepted_answer")}}>no accepted answer</Button>
                                 </div>
+                                <div className={styles.divider5}/>
                                 <div className="filter-none">
-                                    <button onClick={() => {changeFilter(null)}}>no filters</button>
+                                    <Button title="none" onClick={() => {changeFilter(null)}}>no filters</Button>
                                 </div>
+                                <div className={styles.divider5}/>
+                            </div>                      
+                            
+                        </div>
+                        <div className={styles.title_line_box}>
+                            <hr className={styles.title_line}/>  
+                        </div>
+                        
+                        <div className={styles.result_list}>
+                            <QuestionList Questions={result}/>
+                            <div className={styles.page_center}>
+                            <div className={styles.select_page_box}>
+                                <Button title="prev page" onClick = {() => {changePage(page===1? 1 : page-1)}}/>
+                                <div className={styles.divider15}/>
+                                <div className="page_number">
+                                    {page}
+                                </div>
+                                <div className={styles.divider15}/>
+                                <Button title="next page" onClick = {() => {changePage(page===max_page? max_page : page+1)}}/>
+                            </div>
                             </div>
                         </div>
-                    </div>
             </div>
-                <QuestionList Questions={result}/> 
-            <div className="select-page-box">
-                <div className="page-plus-btn-box">
-                    <button className="page-plus-btn" onClick = {() => {changePage(page===max_page? max_page : page+1)}}>next page</button>
-                </div>
-                    {page}
-                <div className="page-minus-btn-box">
-                    <button className="page-minus-btn" onClick = {() => {changePage(page===1? 1 : page-1)}}>prev page</button>
-                </div>
-            </div>
-        </>
+           
+        </div>
+    </div>
     )
     
 }
