@@ -131,7 +131,7 @@ export const SearchResultTags = ({location}) => {
                             </div>
                             <div className={styles.filter_select_box}>
                             <div className={styles.sort_text}>
-                                   Filter by 
+                                   Filter by
                                 </div>
                                 <div className={styles.divider5}/>
                                 <div className={styles.filter_no_answer}>

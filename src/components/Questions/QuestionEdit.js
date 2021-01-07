@@ -60,8 +60,8 @@ const QuestionEdit = (match) => {
     function submit() {
         console.log(title);
         console.log(body);
-        console.log(tags.replace(' ', '+'));
-        instance.put(`question/${question_id}/`, {title: title, content: body, tags: tags.replace(' ', '+')})
+        console.log(tags.replace('+','%2b').replace(' ', '+'));
+        instance.put(`question/${question_id}/`, {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
             .then(res => {
                 console.log(res);
                 history.go(-1)
