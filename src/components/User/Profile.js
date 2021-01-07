@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import defaultPicture from '../../profile_image.png'
 
-import {getUserMe} from '../../axios'
-import axios from 'axios'
-import {useSelector, useDispatch} from 'react-redux'
 //to be modified for all users
 
 import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser} from '../../axios'
@@ -44,7 +42,7 @@ const Profile = ({user}) => {
         <>
         <div className="user-card">
             <div>
-                <img width="100px" height="100px" src={user.picture} alt={`user:${user.nickname}`}/>
+                <img width="100px" height="100px" src={user.picture? user.picture:defaultPicture} alt={`user:${user.nickname}`}/>
                 <span>{user.reputation}</span>
             </div>
         </div>
