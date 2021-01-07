@@ -16,7 +16,8 @@ const AnswerBox = (Ans) => {
     console.log(Answer);
     const [comment, setComment] = useState(null)
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.user.id)
+    const token = useSelector(state => state.userInfoReducer.user.token)
+    const user_id = useSelector(state => state.userInfoReducer.user.id)
 
     const instance = axios.create({
         baseURL: 'http://localhost:8000/api/',
@@ -50,6 +51,17 @@ const AnswerBox = (Ans) => {
                     console.log(e);
                 })
         }
+    }
+
+    const deleteAnswer = () => {
+        instance.delete(`/answer/${Answer.id}/`)
+            .then(res => {
+                console.log(res);
+                history.go(0);
+            })
+            .catch (e => {
+                console.log(e);
+            })
     }
 
     const downVote = () => {
@@ -86,6 +98,7 @@ const AnswerBox = (Ans) => {
                 <div className="ans-accepted-box">
                     is accepted: {Answer.is_accepted.toString()}
                 </div>
+                {isLoggedin && Answer.author.id === user_id? <button onClick={() => {deleteAnswer()}}>Delete</button> : null}     
            </div>
            <div className="ansbox-right-box">
                <div className="ansbox-content-box">

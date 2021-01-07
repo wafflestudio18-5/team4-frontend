@@ -1,8 +1,9 @@
 import React from 'react';
 import AnswerBox from './AnswerBox'
 
-const AnswerList = (Answers, num) => {
+const AnswerList = (Answers, num, is_author) => {
     console.log(num);
+    console.log(is_author);
     console.log(Answers.Answers);
     console.log(Answers.Answers.length);
     const len = Answers.Answers.length

@@ -19,7 +19,7 @@ export const SearchResultTags = ({location}) => {
     const [sort, setSort] = useState(query.hasOwnProperty("filter_by")? query.sorted_by : "newest")
     const [page, setPage] = useState(query.hasOwnProperty("filter_by")? parseInt(query.page) : 1)
     const [filter_by, setFilter] = useState(query.hasOwnProperty("filter_by")? query.filter_by : null)   
-    const tags_form = query.tags.replace(' ', '+')
+    const tags_form = query.tags.replace('+','%2b').replace(' ', '+')
     console.log(query.tags);
     console.log(tags_form);
     console.log(sort);
@@ -57,8 +57,14 @@ export const SearchResultTags = ({location}) => {
 
     const changeFilter = (n_filter) => {
         setFilter(n_filter)
-        history.push(`?tags=${tags_form}&page=${n_filter}&sorted_by=${sort}`)
+        if (n_filter === null) {
+            history.push(`?tags=${tags_form}&page=${page}&sorted_by=${sort}`)
+            history.go(0);
+        }
+        else {
+        history.push(`?tags=${tags_form}&page=${page}&sorted_by=${sort}&filter_by=${n_filter}`)
         history.go(0);
+        }
     } 
 
     useEffect(() => {
@@ -174,7 +180,7 @@ export const  SearchResultKeywords = ({location}) => {
     console.log(query);
     const [sort, setSort] = useState(query.hasOwnProperty("filter_by")? query.sorted_by : "newest")
     const [page, setPage] = useState(query.hasOwnProperty("filter_by")? parseInt(query.page) : 1)
-    const keywords_form = query.keywords.replace(' ', '+')
+    const keywords_form = query.keywords.replace('+','%2b').replace(' ', '+')
     const [result, setResult] = useState(null)
     const [filter_by, setFilter] = useState(query.hasOwnProperty("filter_by")? query.filter_by : null)
     //const max_page = result.questions.count()/30
@@ -184,20 +190,20 @@ export const  SearchResultKeywords = ({location}) => {
     const changeSort = (n_sort) => {
         setSort(n_sort)
 
-        history.push(`?keywords=${keywords_form}&page=${page}&sorted_by=${n_sort}`)
+        history.push(`?keywords=${keywords_form}&page=${page}&sorted_by=${n_sort}/`)
         history.go(0);
     }
 
     const changePage = (n_page) => {
         setPage(n_page)
 
-        history.push(`?keywords=${keywords_form}&page=${n_page}&sorted_by=${sort}`)
+        history.push(`?keywords=${keywords_form}&page=${n_page}&sorted_by=${sort}/`)
         history.go(0);
     }
 
     const changeFilter = (n_filter) => {
         setFilter(n_filter)
-        history.push(`?keywords=${keywords_form}&page=${n_filter}&sorted_by=${sort}`)
+        history.push(`?keywords=${keywords_form}&page=${page}&sorted_by=${sort}@filter_by=${n_filter}/`)
         history.go(0);
     } 
 

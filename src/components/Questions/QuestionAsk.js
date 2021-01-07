@@ -33,8 +33,8 @@ const QuestionAsk = () =>  {
     function submit() {
         console.log(title);
         console.log(body);
-        console.log(tags.replace(' ', '+'));
-        instance.post("question/", {title: title, content: body, tags: tags.replace(' ', '+')})
+        console.log(tags.replace('+','%2b').replace(' ', '+'));
+        instance.post("question/", {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
             .then(res => {
                 console.log(res);
                 history.go(-1)

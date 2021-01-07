@@ -40,6 +40,8 @@ const QuestionDetailBox = (match) => {
     const [max_page, setMaxPage] = useState(1)
     const [max_comment, setMaxComment] = useState(1)
     const [bookmark_user, setBookmark] = useState([])
+    const [is_author, setIsAuthor] = useState(false)
+    console.log(is_author);
 
     useEffect(() => {
         if (question.title === undefined) {
@@ -47,13 +49,17 @@ const QuestionDetailBox = (match) => {
             .then((res) => {
                 console.log(res);
                 setQuestion(res.data)
+                console.log(res.data.author);
                 setMaxPage(question.answer_count/30)
+                if (res.data.author.id === user_id) {
+                    setIsAuthor(true)
+                }
             })
             .catch((e) => {
                 console.log(e);
                 alert(e.message)
             })
-        instance.get(`comment/question/${id}/?page=${comment_page}`)
+        instance.get(`comment/question/${id}/?page=${comment_page}/`)
             .then((res) => {
                 console.log(res);
 
@@ -135,12 +141,23 @@ const QuestionDetailBox = (match) => {
     }
 
     const goEdit = () => {
-        history.push(`/question/edit/${question.id}`)
+        history.push(`/question/edit/${question.id}/`)
     }
 
     // const bookmark_change = () => {
     //     if (isLoggedin) 
     // }
+
+    const DeleteQuestion = () => {
+        instance.delete(`/question/${question.id}/`)
+            .then(res => {
+                console.log(res);
+                history.go(-1);
+            })
+            .catch (e => {
+                console.log(e);
+            })
+    }
 
     console.log(question.author.id);
     console.log(user_id);
@@ -211,7 +228,8 @@ const QuestionDetailBox = (match) => {
                             </div>
                     </div>
                 </div>
-                {isLoggedin && user_id === question.author.id? <button onClick={() => {goEdit()}}>Edit</button> : null}   
+                {isLoggedin && user_id === question.author.id? <button onClick={() => {goEdit()}}>Edit</button> : null} 
+                {isLoggedin && is_author? <button onClick={() => {DeleteQuestion()}}>Delete</button> : null}     
                 </div>
                 <div className="q_main_comment_box">
                         {/* <CommentList comments_all={comments}/> */}
@@ -233,7 +251,7 @@ const QuestionDetailBox = (match) => {
                         <button onClick={() => {set_answer_sort("activity")}}>activity</button>
                         <button onClick={() => {set_answer_sort("newest")}}>newest</button>
                     </div>
-                    <AnswerList Answers={answers} num = {question.answer_count}/>
+                    <AnswerList Answers={answers} num = {question.answer_count} is_author = {is_author}/>
                     <div className="ans_page_btn">
                         <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
                         <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page - 1)}}>prev page</button>

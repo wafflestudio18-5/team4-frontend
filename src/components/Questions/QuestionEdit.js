@@ -70,6 +70,11 @@ const QuestionEdit = (match) => {
                 console.log(e);
             })
     }
+
+    function cancel() {
+        history.go(-1);
+    }
+
     return (
         <div>
             {!(permit)? 
@@ -115,7 +120,10 @@ const QuestionEdit = (match) => {
 
                     <div className="qask-body-left-buttonbox">
                         <button onClick = {submit} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
-                            Post Your Question
+                            Save your Edit
+                        </button>
+                        <button onClick = {cancel} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
+                            Cancel
                         </button>
                     </div>
                 </div>
