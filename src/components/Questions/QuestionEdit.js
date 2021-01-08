@@ -3,6 +3,7 @@ import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import MDEditor from '@uiw/react-md-editor'
+import styles from '../Questions/QuestionAsk.module.scss'
 
 
 const QuestionEdit = (match) => {
@@ -27,16 +28,19 @@ const QuestionEdit = (match) => {
     useEffect( () => {
         if (!isLoggedin) {
             setPermit(false)
-            history.go(-1);
+            console.log("not logged in");
+            // history.go(-1);
         }
         if (body === "") {
-            instance.get(`question/${question_id}`)
+            instance.get(`question/${question_id}/`)
                 .then(res => {
                     console.log(res);
                     const question = res.data
                     if (question.author.id !== user_id) {
                         setPermit(false)
-                        history.go(-1)
+                        console.log(question.author);
+                        console.log(user_id);
+                        // history.go(-1)
                     }
                     else {
                         setBody(question.content)
@@ -52,7 +56,7 @@ const QuestionEdit = (match) => {
                 })
                 .catch(e => {
                     console.log(e);
-                    history.go(-1)
+                    // history.go(-1)
                 })
         }
     })
@@ -61,7 +65,7 @@ const QuestionEdit = (match) => {
         console.log(title);
         console.log(body);
         console.log(tags.replace('+','%2b').replace(' ', '+'));
-        instance.put(`question/${question_id}/`, {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
+        instance.put(`question/${question_id}/`, {title: title, content: body, tags: tags.split(' ')})
             .then(res => {
                 console.log(res);
                 history.go(-1)
@@ -83,50 +87,60 @@ const QuestionEdit = (match) => {
             </div>    
             
             :
-        <div>
-            <div className="qask-banner-top">
-                <div className="qask-banner-top-title">
-                    Ask a public question
-                </div>
-            </div>
-            <div className="qask-body">
-                <div className="qask-body-left">
-                    
-
-            <div className="qask-title-box">
-                <div className="qask-title">Title</div>
-                <div className="qask-title-sub">Be specific and imagine you’re asking a question to another person</div>
-                <div className="qask-title-input-box">
-                    <input className="qask-title-input" value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
-
-                </div>
-            </div>
-            <div classNameName="qask-body-box">
-                <div className="qask-body">Body</div>
-                <div className="qask-body-sub">Include all the information someone would need to answer your question</div>
-                <MDEditor 
-                value={body}
-                onChange={(e) => {console.log(e); setBody(e)}}
-                />
-            </div>
-
-          <div className="qask-tags-box">
-                <div className="qask-tags">Tags</div>
-                <div className="qask-tags-sub">Add up to 5 tags to describe what your question is about</div>
-                <div className="qask-tags-input-box">
-                <input className="qask-title-input" value={tags} placeholder="Input tags, seperated by space" onChange={(e)=>{setTags(e.target.value)}}/>
-                </div>
-            </div>
-
-                    <div className="qask-body-left-buttonbox">
-                        <button onClick = {submit} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
-                            Save your Edit
-                        </button>
-                        <button onClick = {cancel} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
-                            Cancel
-                        </button>
+            <div className={styles.board_all}>
+            <div className={styles.box_top}>
+                <div classNam={styles.box}>
+                <div className={styles.top_sub1}>
+                        Edit this question
                     </div>
                 </div>
+            </div>
+            <div className={styles.box}>
+            
+            <div className={styles.board}>
+                <div className={styles.top}>
+
+                </div>
+                <div className={styles.body}>
+                    <div className={styles.body_sub}>
+                        
+    
+                    <div className={styles.title_box}>
+                    <div className={styles.top_sub}>Title</div>
+                    <div className={styles.help1}>Be specific and imagine you’re asking a question to another person</div>
+                    <div className={styles.input_box}>
+                        <input className={styles.input_title} value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
+    
+                    </div>
+                </div>
+                <div classNameName="qask-body-box">
+                    <div className={styles.top_sub}>Body</div>
+                    <div className={styles.help1}>Include all the information someone would need to answer your question</div>
+                    <MDEditor 
+                    value={body}
+                    onChange={(e) => {console.log(e); setBody(e)}}
+                    />
+                </div>
+    
+              <div className={styles.up_margin}>
+                    <div className={styles.top_sub}>Tags</div>
+                    <div className={styles.help1}>Add up to 5 tags to describe what your question is about</div>
+                    <div className="qask-tags-input-box">
+                    <input className={styles.input_title} value={tags} placeholder="Input tags, seperated by space" onChange={(e)=>{setTags(e.target.value)}}/>
+                    </div>
+                </div>
+    
+                        
+                    </div>
+    
+                </div>
+                <div className="qask-body-left-buttonbox">
+                            <div onClick = {() => {submit()}} className={styles.btn} /*TODO: Review and Post are divided in the original site*/>
+                                Save Edit
+                            </div>
+                        </div>
+            </div>
+           
             </div>
         </div>
     }

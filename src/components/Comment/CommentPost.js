@@ -2,10 +2,12 @@ import {useState, Fragment} from 'react'
 import axios from 'axios'
 import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
+import styles from './CommentPost.module.scss'
 
 export const CommentPostQuestion = (id_q) => {
     const [content, setContent] = useState("")
     console.log(id_q.id);
+    const history = useHistory();
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.userInfoReducer.user.token)
@@ -20,14 +22,15 @@ export const CommentPostQuestion = (id_q) => {
     const instance = axios.create({
       baseURL: 'http://localhost:8000/api/',
 
-      Authorization : 'Token ' + token
+      headers: {Authorization : 'Token ' + token}
     });
 
     const postCommentonQuestion = () => {
         console.log(content);
         instance.post(`comment/question/${id_q.id}/`, {content: content})
             .then(res => {
-                console.log();
+                console.log(res);
+                history.go(0);
             })
             .catch(e =>{
                 console.log(e);
@@ -37,13 +40,15 @@ export const CommentPostQuestion = (id_q) => {
 
     return(
         <Fragment>
-            <form onSubmit={() => {postCommentonQuestion()}}>
-            <div className="comment-content">   
-                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
-            </div>
-                <button className="comment-submit-btn" type="submit">Submit</button>
-            </form>
-        </Fragment>
+        <div className={styles.board}>
+        <div className="comment-content">   
+            <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
+        </div>
+        <div className={styles.submit_button} onClick={() => {postCommentonQuestion()}}>
+            Submit
+        </div>
+        </div>
+    </Fragment>
     )
 }
 
@@ -60,15 +65,16 @@ export const CommentPostAnswer = (id_a) => {
     const instance = axios.create({
       baseURL: 'http://localhost:8000/api/',
 
-      Authorization : 'Token ' + token
+      headers: {Authorization : 'Token ' + token}
     });
 
-    const postCommentonQuestion = () => {
+    const postCommentonAnswer = () => {
         if (isLoggedin) {
         console.log(content);
         instance.post(`comment/answer/${id_a.id}/`, {content: content})
             .then(res => {
                 console.log();
+                // history.go(0)
             })
             .catch(e =>{
                 console.log(e);
@@ -79,12 +85,14 @@ export const CommentPostAnswer = (id_a) => {
 
     return(
         <Fragment>
-            <form onSubmit={() => {postCommentonQuestion()}}>
+            <div className={styles.board}>
             <div className="comment-content">   
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-                <button className="comment-submit-btn" type="submit">Submit</button>
-            </form>
+            <div className={styles.submit_button} onClick={() => {postCommentonAnswer()}}>
+                Submit
+            </div>
+            </div>
         </Fragment>
     )
 }

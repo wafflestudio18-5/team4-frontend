@@ -26,7 +26,7 @@ const Signup = () => {
     const [email, setEmail] = useState("")
     const [nickname, setNickname] = useState("")
     const [warn, setWarn] = useState("")
-    const {setAuthTokens} = useAuth()
+
     const onChangeUsername = (username) => {
         setWarn("")
         setUsername(()=>username)

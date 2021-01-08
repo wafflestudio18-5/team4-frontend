@@ -41,7 +41,7 @@ export const CommentBox =  (comment) => {
        <div className={styles.board}>
         <div className={styles.comment_vote_box}>
             <div onClick={() => {upvote()}}>
-                UpVote
+                upVote
             </div>
             <div onClick={() => {downvote()}}>
                 downVote

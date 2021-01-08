@@ -1,0 +1,15 @@
+.board {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    padding: 5px;
+}
+
+.submit_button {
+    font: 13px Arial;
+    margin-left: 7px;
+    color: #848D95;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
