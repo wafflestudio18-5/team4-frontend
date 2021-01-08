@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {getQuestionsWithTags, getQuestionsWithKeywords, getQuestionsOfUser, getUser} from '../../axios.ts'
+import {getQuestionsWithTags, getQuestionsWithKeywords, getQuestionsOfUser} from '../../axios.ts'
 
 import QuestionList from '../Questions/QuestionList'
-import {useHistory} from 'react-router-dom'
-import qs from 'qs';
 import Button from '../Button_search'
 import styles from './SearchResult.module.scss'
 import LeftBanner from '../Banner/LeftBanner'
@@ -15,9 +13,7 @@ export const SearchResultTags = ({query}) => {
     const [sortedBy, setSortedBy] = useState(query.sorted_by)
     const [page, setPage] = useState(query.page)
     const [filterBy, setFilterBy] = useState('')
-    const [loading, setLoading] = useState(true)
     const [maxPage, setMaxPage] = useState(1)
-    const history = useHistory();
     
     const changeSort = (sortedBy) => {
         setSortedBy(sortedBy)
@@ -35,7 +31,6 @@ export const SearchResultTags = ({query}) => {
             .then(questions => {
                 setResult(()=>questions)
                 setMaxPage(()=>!questions.length? 1: Math.ceil(questions.length/30))
-                setLoading(()=>false)
             })
             .catch(console.log)
     },[query, filterBy, sortedBy, page])
@@ -136,7 +131,6 @@ export const  SearchResultKeywords = ({query}) => {
     const [page, setPage] = useState(query.page)
     const [result, setResult] = useState([])
     const [filterBy, setFilterBy] = useState('')
-    const [loading, setLoading] = useState(true)
     const [maxPage, setMaxPage] = useState(1)
 
     const changeSort = (sortedBy) => {
@@ -156,7 +150,6 @@ export const  SearchResultKeywords = ({query}) => {
             .then(questions => {
                 setResult(()=>questions)
                 setMaxPage(()=>!questions.length? 1: Math.ceil(questions.length/30))
-                setLoading(()=>false)
             })
             .catch(console.log)
     },[query, filterBy, sortedBy, page])
@@ -255,7 +248,6 @@ export const SearchResultUser = ({query}) => {
     const [sortedBy, setSortedBy] = useState(query.sorted_by)
     const [page, setPage] = useState(query.page)
     const [result, setResult] = useState([])
-    const [loading, setLoading] = useState(true)
     const [maxPage, setMaxPage] = useState(1)
     console.log(result);
     
@@ -264,7 +256,6 @@ export const SearchResultUser = ({query}) => {
             .then(questions => {
                 setResult(()=>questions)
                 setMaxPage(()=>!questions.length? 1: Math.ceil(questions.length/30))
-                setLoading(()=>false)
             })
             .catch(console.log)
     },[query, sortedBy, page])

@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import {logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
-import axios from 'axios'
 import logo from '../../logo.png'
 import defaultPicture from '../../profile_image.png'
 

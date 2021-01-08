@@ -1,6 +1,4 @@
 import React, {useState} from 'react'
-import {useAuth} from '../../context/auth'
-
 import {useHistory, Redirect} from 'react-router-dom'
 
 import GitHubLogin from 'react-github-login';
@@ -10,8 +8,6 @@ import * as config from '../../config'
 import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
 import styles from './Signin.module.scss'
-import profileimage from '../../profile_image.png'
-import { withStyles } from '@material-ui/core';
 
 export const Signin = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
@@ -98,12 +94,12 @@ export const Signin = () => {
             buttonText="Login with Github"/>
             
 
-            <div className={styles.board}>
+            <form onSubmit={e=>signin(e)} className={styles.board}>
                 <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
                 <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
                 <button className="login-button">Login</button>
                 <div className="warn" >{warn}</div>
-            </div>
+            </form>
         </div>
        
     )
