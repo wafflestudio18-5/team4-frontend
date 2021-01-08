@@ -60,7 +60,6 @@ function UserTabs({isMe, userId}) {
   }
 //Me랑 통합하기
 const User = () => {
-    let history = useHistory();
     let match = useRouteMatch();
     let {id} = useParams();
     const [loading, setLoading] = useState(true)
