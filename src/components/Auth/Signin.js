@@ -11,6 +11,7 @@ import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
 import styles from './Signin.module.scss'
 import profileimage from '../../profile_image.png'
+import { withStyles } from '@material-ui/core';
 
 export const Signin = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
@@ -55,7 +56,7 @@ export const Signin = () => {
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://localhost:8000/api/"
+            redirect_uri: "http://wafflow.com"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
@@ -89,12 +90,23 @@ export const Signin = () => {
         )
     }
     return (
-        <> 
+        <div className={styles.box}> 
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://localhost:8000/api/"
-            buttonText={<img src={profileimage}></img>}/>
+            redirectUri="http://wafflow.com"
+            // buttonText={
+            //     <div className={styles.profile_box}>
+            //         <div className={styles.image_box}>
+            //             <img className={styles.image} src={profileimage}></img>
+            //         </div>
+            //         <div className={styles.text}>
+            //             Login with Github
+            //         </div>
+            //     </div>
+            
+            // }
+            />
             
 
             <div className={styles.board}>
@@ -103,7 +115,7 @@ export const Signin = () => {
                 <button className="login-button">Login</button>
                 <div className="warn" >{warn}</div>
             </div>
-        </>
+        </div>
        
     )
 }
