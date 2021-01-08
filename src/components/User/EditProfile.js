@@ -5,18 +5,55 @@ import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
 import {setUserInfo} from '../../modules/AuthRedux'
 import defaultPicture from '../../profile_image.png'
-import EditProfileBox from './Components/EditProfileBox';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import FilledInput from '@material-ui/core/FilledInput';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import TextField from '@material-ui/core/TextField'
-//PUT /user/me
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+function SuccessSnackbar({save}) {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  useEffect(()=>{
+      if(save) setOpen(true)
+  },[save])
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  return (
+    <div className={classes.root}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+            Your profile has been saved successfully.
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+}
 const EditProfile = () => {
     //const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.isLoggedReducer.token)
@@ -33,6 +70,7 @@ const EditProfile = () => {
     const [title, setTitle] = useState('');
     const [intro, setIntro] = useState('');
     const [picture, setPicture] = useState(null);
+    const [save, setSave] = useState('')
     useEffect(()=> {
             //setPicture(()=>user.picture)
             setEmail(()=>user.email)
@@ -43,6 +81,7 @@ const EditProfile = () => {
     useEffect(()=>{
         setIsValid(!password || password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$/))
     })
+    useEffect(()=>{if(save) setTimeout(setSave(''),100)},[save])
     const saveChange = (e) => {
         e.preventDefault()
         console.log('change')
@@ -56,7 +95,8 @@ const EditProfile = () => {
         editUserMe(formData)
             .then(user => {
                 dispatch(setUserInfo(user))
-                alert("Change saved.")})
+                setSave('SUCCESS')
+            })
             .catch(e=>console.log(e))    
         ;
 
@@ -116,6 +156,7 @@ const EditProfile = () => {
         <Button variant="contained" onClick={()=>history.push("/users/me/activity")}>Cancel</Button>
         </div>
     </form>
+    <SuccessSnackbar save={save}/>
     </>
     )
 }
