@@ -12,6 +12,7 @@ import styles from './QuestionDetailBox.module.scss'
 import MDEditor from '@uiw/react-md-editor';
 import LeftBanner from '../Banner/LeftBanner'
 import { getAllJSDocTagsOfKind } from 'typescript';
+import AuthorProfile from '../Profile/AuthorProfile'
 
 
 const QuestionDetailBox = (match) => {
@@ -38,11 +39,14 @@ const QuestionDetailBox = (match) => {
     const [answer_page, set_answer_page] = useState(1)
     const [question, setQuestion] = useState({})
     const [answers , setAnswers] = useState({})
-    const [comments, setComments] = useState({})
+    const [comments, setComments] = useState([])
     const [max_page, setMaxPage] = useState(1)
     const [max_comment, setMaxComment] = useState(1)
-    const [bookmark_user, setBookmark] = useState([])
+    const [bookmarked, setBookmark] = useState(false)
     const [is_author, setIsAuthor] = useState(false)
+    const [vote, setVote] = useState(0)
+    const [postComment, setPostCommment] = useState(false)
+
     console.log(is_author);
 
     useEffect(() => {
@@ -56,17 +60,20 @@ const QuestionDetailBox = (match) => {
                 if (res.data.author.id === user_id) {
                     setIsAuthor(true)
                 }
+                setBookmark(res.data.bookmark)
+                setVote(res.data.vote)
             })
             .catch((e) => {
                 console.log(e);
                 alert(e.message)
             })
-        instance.get(`comment/question/${id}/?page=${comment_page}/`)
+        instance.get(`comment/question/${id}/?page=${comment_page}`)
             .then((res) => {
                 console.log(res);
 
                 setComments(res.data.comments)
                 setMaxComment(question.comment_count)
+                console.log(max_comment);
             })
             .catch((e) => {
                 console.log(e);
@@ -121,6 +128,8 @@ const QuestionDetailBox = (match) => {
         instance.put(`rate/question/${question.id}/`, {rating: 1})
             .then(res => {
                 console.log(res);
+                setVote(vote+1)
+
             })
             .catch(e => {
                 console.log(e);
@@ -136,14 +145,39 @@ const QuestionDetailBox = (match) => {
         instance.put(`rate/question/${question.id}/`, {rating: -1})
             .then(res => {
                 console.log(res);
+                setVote(vote-1)
             })
             .catch(e => {
                 console.log(e);
             })
     }
 
+    const bookmark_change = () => {
+        if (bookmarked) {
+            setBookmark(false)
+            instance.delete(`/bookmark/question/${id}/`)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+        else {
+            setBookmark(true)
+            instance.post(`/bookmark/question/${id}/`)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    console.log(e);
+        })
+    }
+}
+
+
     const goEdit = () => {
-        history.push(`/question/edit/${question.id}/`)
+        history.push(`/question/edit/${question.id}`)
     }
 
     // const bookmark_change = () => {
@@ -151,7 +185,7 @@ const QuestionDetailBox = (match) => {
     // }
 
     const DeleteQuestion = () => {
-        instance.delete(`/question/${question.id}/`)
+        instance.delete(`/question/${question.id}`)
             .then(res => {
                 console.log(res);
                 history.go(-1);
@@ -168,6 +202,10 @@ const QuestionDetailBox = (match) => {
         else {
             history.push('/signin')
         }
+    }
+
+    const goTags = (tag_name) => {
+        history.push(`/question/tagged/?tags=${tag_name}&page=1&sorted_by=newest`);
     }
 
     console.log(question.author.id);
@@ -214,16 +252,31 @@ const QuestionDetailBox = (match) => {
                 <div className={styles.q_main_content_box}>
                 <div className = {styles.QdetailBoxLeft}>
                 <div className={styles.VoteBox}>
-                    <Button onClick = {e => {q_upvote()}}>UpVote</Button>
-                    <div className={styles.votes}>
-                        {question.vote}
+                    <div className={styles.arrowbox} onClick={() => {q_upvote()}}>
+                        <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
+                            <path d="M2 26h32L18 10 2 26z" className={styles.arrow}></path>
+                        </svg>
                     </div>
-                    <Button onClick={e => {q_downvote()}}>DownVote</Button>
+                
+                    <div className={styles.votes}>
+                        {vote}
+                    </div>
+                    <div className={styles.arrowbox} onClick={() => {q_downvote()}}>
+                        <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
+                        <path d="M2 10h32L18 26 2 10z" className={styles.arrow}></path>
+                        </svg>
+                    </div>
                 </div>
                 <div className={styles.bookmark_box}>
-                        <div className={styles.bookmark}>
-                            {question.bookmark_count}
+                        <div className={styles.bookmark} onClick={() => {bookmark_change()}}>
+                        <svg aria-hidden="true" class="svg-icon iconBookmark" width="18" height="18" viewBox="0 0 18 18">
+                        {bookmarked? <path d="M6 1a2 2 0 00-2 2v14l5-4 5 4V3a2 2 0 00-2-2H6zm3.9 3.83h2.9l-2.35 1.7.9 2.77L9 7.59l-2.35 1.7.9-2.76-2.35-1.7h2.9L9 2.06l.9 2.77z" className= {styles.bookmarkOn_svg}></path>
+                        :
+                        <path d="M6 1a2 2 0 00-2 2v14l5-4 5 4V3a2 2 0 00-2-2H6zm3.9 3.83h2.9l-2.35 1.7.9 2.77L9 7.59l-2.35 1.7.9-2.76-2.35-1.7h2.9L9 2.06l.9 2.77z" className= {styles.bookmark_svg}></path>
+                        }  
+                        </svg>
                         </div>
+                        {bookmarked? <div className={styles.bookmark_number}>1</div> : null}
                     </div>
                 </div> 
                 <div className={styles.QdetailBoxRight}>
@@ -232,43 +285,64 @@ const QuestionDetailBox = (match) => {
                         <MDEditor.Markdown source={question.content} /> 
                     </div>
                     <div className={styles.questionTags}>
-                        {question.tags.map((tag) => {return <div className={styles.tag_element}><Link to={`/question/tagged/?tags=${tag.name}&sorted_by=newest&page=1`} ><span className="tagInfo">{tag.name}</span></Link></div>})}
+                        {question.tags.map((tag) => {return  <div className={styles.tags} onClick={() => {goTags(tag.name)}}>{tag.name}</div>})}
                     </div>
                     <div className={styles.questionbottomBox}>
-                            <div className={styles.author_profile_bottom}>
-                                <div className={styles.author_pic}>
-                                    <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
-                                </div>
-                                <div className="author_info">
-                                    <div className="author_username">{Author.nickname===undefined? null : Author.nickname}</div>
-                                    <div className="author_reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
-                                </div>
+                        <div className={styles.editbox}>
+                            <div className={styles.edit_btn} onClick={() => {goEdit()}}>
+                                Edit
                             </div>
+                            <div className={styles.created_at_text}>
+                                {question.updated_at? `editted ${question.updated_at.substring(0,10)}` : null}
+                            </div>
+                        </div>
+                        <div className={styles.profile_box}>
+                            <AuthorProfile question={question}/>
+                        </div>
                     </div>
-                </div>
-                {isLoggedin && user_id === question.author.id? <button onClick={() => {goEdit()}}>Edit</button> : null} 
-                </div>
-                <div className="q_main_comment_box">
-                        {/* <CommentList comments_all={comments}/> */}
+                    <div className="q_main_comment_box">
+                        <CommentList comments_all={comments}/>
 
-                    <div className="comments_page_btn">
-                            <Button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</Button>
-                            <Button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page - 1)}}>prev page</Button>
+                    <div className={styles.page_box}>
+                        {comment_page === 1? <div className={styles.page_click_no}>prev page</div> 
+                        :
+                        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page-1)}} >prev page</div> }
+                        <div className={styles.page}>
+                            {comment_page}
+                        </div>
+                        {comment_page > max_comment/30 + 1? <div className={styles.page_click_no} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> 
+                        :
+                        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> }
                     </div>
                     <div className="comment_post_box_q">
-                        <CommentPostQuestion id={id}/>
+                        { postComment?
+                        <CommentPostQuestion id={id} func={setPostCommment(false)}/> : 
+                            <div className={styles.post_comment_msg} onClick={() => {setPostCommment(true)}}    >
+                                post a comment
+                            </div>
+                        }
+                        
                     </div>
                 </div>
-                <div className="ans_box">
-                    <div className="ans_box_head">
-                        {question.answer_count} Answers
+                </div>
+                </div>
+               
+                <div className={styles.ans_box}>
+                    <div className={styles.ans_head}>
+                        {question.answer_count} Answer
                     </div>
-                    <div className="sort_by_btn">
+                    <div className={styles.answer_container}>
+                        <div className="sort_by_btn">
                         <button onClick={() => {set_answer_sort("votes")}} >votes</button>
                         <button onClick={() => {set_answer_sort("activity")}}>activity</button>
                         <button onClick={() => {set_answer_sort("newest")}}>newest</button>
                     </div>
-                    <AnswerList Answers={answers} num = {question.answer_count} is_author = {is_author}/>
+                    <div>
+                        <AnswerList Answers={answers} num = {question.answer_count} is_author = {is_author}/>
+                    </div>
+                    </div>
+                    
+                    
                     <div className="ans_page_btn">
                         <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
                         <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page - 1)}}>prev page</button>
@@ -276,6 +350,7 @@ const QuestionDetailBox = (match) => {
                     <AnswerPost id={id}/>
                 </div>
             </div>
+           
         </div>
     </div>
     )

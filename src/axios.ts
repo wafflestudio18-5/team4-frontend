@@ -198,21 +198,21 @@ export const deleteAnswerAcceptance = (id: number) =>
 //GET comment
 export const getComment = (id: number) => 
     new Promise((resolve,reject) => {
-        axios.get(`api/comment/${id}/`)
+        axios.get(`api/comment/${id}`)
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
 )
 export const getCommentsOfAnswer = (id: number, page: Number) => 
     new Promise((resolve,reject) => {
-        axios.get(`api/comment/answer/${id}/?page=${page}/`)
+        axios.get(`api/comment/answer/${id}/?page=${page}`)
             .then(response => resolve(response))
             .catch(e=>reject(logError(e)))
     }
 )
 export const getCommentsOfQuestion = (id: number, page: Number) => 
     new Promise((resolve,reject) => {
-        axios.get(`api/comment/question/${id}/`)
+        axios.get(`api/comment/question/${id}`)
             .then(response => resolve(response.data.comments))
             .catch(e=>reject(logError(e)))
     }

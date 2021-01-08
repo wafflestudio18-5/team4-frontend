@@ -1,6 +1,6 @@
 import {useState, Fragment} from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
 
 export const CommentPostQuestion = (id_q) => {
@@ -47,44 +47,39 @@ export const CommentPostQuestion = (id_q) => {
     )
 }
 
-export const CommentPostAnswer = (id_ans) => {
 
-    console.log(id_ans.id);
+export const CommentPostAnswer = (id_a) => {
+    const history = useHistory();
     const [content, setContent] = useState("")
+    console.log(id_a.id);
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.userInfoReducer.user.token)
 
-    if (!isLoggedin) {
-        return (<div>
-            Something to say about the Answer? Sign in to leave a Comment 
-            <Link to="/signin">Signin</Link>
-        </div>)
-    }
 
     const instance = axios.create({
       baseURL: 'http://localhost:8000/api/',
 
-      headers: { 'Authorization' : 'Token ' + token },
+      Authorization : 'Token ' + token
     });
 
-    const postCommentonAnswer = () => {
+    const postCommentonQuestion = () => {
+        if (isLoggedin) {
         console.log(content);
-        instance.post(`comment/answer/${id_ans.id}/`, {content: content})
+        instance.post(`comment/answer/${id_a.id}/`, {content: content})
             .then(res => {
                 console.log();
             })
             .catch(e =>{
                 console.log(e);
             })
+        }
     }
-
 
 
     return(
         <Fragment>
-            
-            <form onSubmit={() => {postCommentonAnswer()}}>
+            <form onSubmit={() => {postCommentonQuestion()}}>
             <div className="comment-content">   
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
@@ -92,4 +87,5 @@ export const CommentPostAnswer = (id_ans) => {
             </form>
         </Fragment>
     )
-    }
+}
+

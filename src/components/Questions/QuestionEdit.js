@@ -30,7 +30,7 @@ const QuestionEdit = (match) => {
             history.go(-1);
         }
         if (body === "") {
-            instance.get(`question/${question_id}/`)
+            instance.get(`question/${question_id}`)
                 .then(res => {
                     console.log(res);
                     const question = res.data
