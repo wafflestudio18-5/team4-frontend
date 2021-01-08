@@ -11,9 +11,8 @@ const logError = (error: any) => {
     console.log(`${log?.config?.method} ${log?.config?.url}`)
     return log?.data
 }
+axios.defaults.headers["Accept"] = "application/json";
 axios.defaults.baseURL = "https://www.wafflow.com/";
-
-
 //User APIs
 //GET user
 export const getUserMe = () => new Promise((resolve, reject) => {
@@ -89,21 +88,21 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
     }
 )
 
-export const getQuestionsWithTags = (tags: string, sorted_by: string, page: Number, filter_by?: string, user_id? : Number) => 
+export const getQuestionsWithTags = (tags: string[], sorted_by: string="newest", page: Number=1, filter_by?: string, user? : Number) => 
     new Promise((resolve,reject) => {
         axios.get(`api/question/tagged/`,
-                    {params:{ user_id, tags, filter_by, sorted_by, page}})
+                    {params:{ user, tags:tags.join(' '), filter_by, sorted_by, page}})
 
             .then(response => resolve(response.data.questions))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
 )
 
-export const getQuestionsWithKeywords = (keywords: string, sorted_by: string, page: Number, filter_by?: string) => 
+export const getQuestionsWithKeywords = (keywords: string[], sorted_by: string, page: Number =1, filter_by?: string) => 
     new Promise((resolve,reject) => {
+        console.log(keywords, filter_by, sorted_by, page)
         axios.get(`api/question/search/keywords/`,
-                    {params:{'keywords':keywords, filter_by, sorted_by, page}})
-
+                    {params:{'keywords':keywords.join(' '), filter_by, sorted_by, page}})
             .then(response => resolve(response.data.questions))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }

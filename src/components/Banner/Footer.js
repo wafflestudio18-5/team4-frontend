@@ -8,7 +8,7 @@ import Link from '@material-ui/core/Link';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary">
-      {'Copyright © '}
+      {'Copyleft ©'}
       <Link color="inherit" href="https://facebook.com/wafflestudio">
         Waffle Studio
       </Link>{' '}
