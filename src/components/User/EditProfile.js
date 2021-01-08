@@ -108,7 +108,7 @@ const EditProfile = () => {
             <div style={{minWidth:'14rem', width:'30%', paddingRight:'2rem', display:'flex', flexDirection:'column', alignItems:'center'}}>
                 <img width='100%' style={{objectFit:'cover'}} src={user.picture? user.picture: defaultPicture} alt="user"/>
                 <Button  style={{width:'100%', textTransform:'capitalize'}} variant="contained" component="label">
-                    Change Picture
+                    Choose Picture
                 <input hidden name="picture" type="file" accept="image/png, image/jpeg" onChange={e => setPicture(e.target.files[0])}/>
                 </Button>
             </div>

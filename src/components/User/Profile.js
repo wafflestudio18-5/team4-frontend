@@ -19,7 +19,8 @@ import Chip from '@material-ui/core/Chip';
 const useCardStyles = makeStyles({
   root: {
     minWidth: 345,
-    height: 'fit-content'
+    height: 'fit-content',
+    marginRight:'3rem'
   },
   media: {
     height: '150px',
@@ -162,7 +163,7 @@ const Profile = ({user}) => {
         <div style={{padding:'1rem 0 0.5rem 0.5rem', display:'flex', flexFlow:'row wrap', alignItems:'center', alignContent:'space-between', justifyContent:'space-between'}}>
             <Button style={{height:'1rem', marginBottom:'0.5rem', textTransform:'initial'}} onClick={()=>{history.push(`/search?q=user:${user.id}`)}} size='large' color="primary">{`Top Posts`}</Button>
             <div>
-            <ButtonGroup  style={{height:'1.5rem', marginBottom:'0.5rem'}} size="small" aria-label="small outlined button group">
+            <ButtonGroup  style={{height:'1.5rem', margin:'0 0.5rem 0.5rem 0'}} size="small" aria-label="small outlined button group">
                 <Button  style={{textTransform:'lowercase'}}  onClick={(e)=>{setCategory('Questions')}}>Questions</Button>
                 <Button  style={{textTransform:'lowercase'}}  onClick={(e)=>{setCategory('Answers')}}>Answers</Button>
             </ButtonGroup>
