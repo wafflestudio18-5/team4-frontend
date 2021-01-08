@@ -1,10 +1,7 @@
-import { StylesProvider } from '@material-ui/core'
-import {useHistory} from 'react-router-dom'
 import styles from '../AppStyles.module.scss'
 import LeftBanner from './Banner/LeftBanner'
 //The Main Page needs many Components : TopBar, List of Questions, ...etc
 const Main = () => {
-    const history = useHistory()
     return(
         <div className={styles.banners}>
             <LeftBanner/> 

@@ -4,7 +4,7 @@ import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
 import styles from './CommentPost.module.scss'
 
-export const CommentPostQuestion = (id_q) => {
+export const CommentPostQuestion = (id_q, func) => {
     const [content, setContent] = useState("")
     console.log(id_q.id);
     const history = useHistory();
@@ -20,7 +20,7 @@ export const CommentPostQuestion = (id_q) => {
     }
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
+      baseURL: 'https://www.wafflow.com/api/',
 
       headers: {Authorization : 'Token ' + token}
     });
@@ -49,6 +49,7 @@ export const CommentPostQuestion = (id_q) => {
         </div>
         </div>
     </Fragment>
+
     )
 }
 
@@ -63,7 +64,7 @@ export const CommentPostAnswer = (id_a) => {
 
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
+      baseURL: 'https://www.wafflow.com/api/',
 
       headers: {Authorization : 'Token ' + token}
     });

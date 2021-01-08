@@ -1,36 +1,67 @@
 import React, {useState, useEffect} from 'react';
 import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser, getBookmarksOfUser} from '../../axios'
-//Answers, Questions, Tags, Badges, Bookmarks, Follwing, Bounties, Reputation, All actions, Responses, Votes
+import { Button, ButtonGroup } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor:'#ffffff',
+    borderRadius:'0.5rem'
+    //maxWidth: 752,
+  },
+  demo: {
+    //backgroundColor: theme.palette.background.paper,
+  },
+  title: {
+    margin: theme.spacing(4, 0, 2),
+  },
+}));
+
+function ItemList({activity, items}) {
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+          <div className={classes.demo}>
+            <List style={{display:'flex', flexFlow:'row wrap'}} dense={true}>
+                {!items.length?  
+                    <ListItem key={0}>
+                        <ListItemText style={{paddingLeft:'1rem'}} primary={`There is no ${activity.slice(0,-1).toLowerCase()}.`}/>
+                    </ListItem>:
+                activity==='Tags'?
+                    items.map(item => 
+                        <ListItem key={item.id}>
+                        <Button style={{height:'1.5rem', fontSize:'1rem', color:'#5eba7d', borderColor:'#5eba7d'}} disabled variant="outlined" size='small' component='label'>{item.score}</Button>
+                            <ListItemText style={{paddingLeft:'1rem'}} primary={item.name}/>
+                            <ListItemText style={{paddingLeft:'1rem', textAlign:'right'}} primary={`${item.posts} posts`}/>
+                        </ListItem>
+                    ):
+                    items.map(item => 
+                        <ListItem key={item.id}>
+                            <Button style={{height:'1.5rem', fontSize:'1rem', color:'#5eba7d', borderColor:'#5eba7d'}} disabled variant="outlined" size='small' component='label'>{item.vote}</Button>
+                            <ListItemText style={{paddingLeft:'1rem'}} primary={item.title}/>
+                        </ListItem>
+                    )
+                }
+            </List>
+          </div>
+    </div>
+  );
+}
+
 const activities = ["Answers", "Questions", "Tags","Bookmarks"];
 const data = activities.map((activity) => {
     return {name: activity, data: {}};
 })
-const Section = ({activity,user,data}) => {
+
+const Section = ({activity, user, setCategory}) => {
     let key = activity.substring(0,activity.length-1).toLowerCase()+'_count'
     const[list, setList] = useState([]);
     const[sortedBy,setSortedBy] = useState('votes')
-    /*
-    const comp = (a,b)=>{
-        let criterion = 'votes';
-        switch(sortedBy) {
-            case 'votes': criterion = 'vote';break;
-            case 'newest': criterion = 'created_at';break;
-            case 'activity': criterion = 'updated_at';break;
-            default: criterion = 'vote';break;
-        }
-        if(a[criterion] > b[criterion]) return -1;
-        if(a[criterion] < b[criterion]) return 1;
-        if(a.created_at < b.created_at) return -1;
-        if(a.created_at > b.created_at) return 1;
-        console.log('equal')
-        return 0;
-    }*/
     useEffect(()=>{
-        // if(list.length !== 0) {
-        //     setList(()=>JSON.parse(JSON.stringify(list)).sort(comp));
-        //     return;
-        // }
-        //console.log(user)
         switch(activity) {
             case 'Answers':
                 getAnswersOfUser(user.id,sortedBy)
@@ -54,33 +85,24 @@ const Section = ({activity,user,data}) => {
 
 
     return(
-    <>
-    <h3 className="activity-section-activity">{activity} ({user === undefined? "undefined": key in user? user[key]:"no key"})</h3>
-    <button onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Votes</button>
+    <div style={{width:'50%', padding:'0 3rem 3rem 0'}}>
+    <div style={{display:'flex', flexFlow:'row wrap', alignItems:'center', alignContent:'space-between', justifyContent:'space-between'}}>
+    <Button style={{height:'1rem', marginBottom:'0.5rem', textTransform:'initial'}}size='large' color="primary" onClick={()=>setCategory(activity)}>{`${activity} (${user[key]})`}</Button>
+    <ButtonGroup  style={{height:'1.5rem', marginBottom:'0.5rem'}} size="small" aria-label="small outlined button group">
+    <Button  style={{textTransform:'lowercase'}}  onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Votes</Button>
     {activity === 'Tags'? 
-    <button onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Name</button>:
-    <>
-    <button onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Activity</button>
-    <button onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Newest</button>
-    </>
+    <Button  style={{textTransform:'lowercase'}}  onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Name</Button>:
+    <Button  style={{textTransform:'lowercase'}}  onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Activity</Button>}
+    {activity === 'Tags'? 
+    <></>:
+    <Button  style={{textTransform:'lowercase'}}  onClick={(e)=>{setSortedBy(e.target.innerHTML.toLowerCase())}}>Newest</Button>
     }
-    <hr/>
-    <div className="activity-section-content">
-    {activity==='Tags'?
-    list.map(item => 
-        <div key={item.id} style={{display:'flex'}}>
-            <div>{item.score}</div><div>{item.name}</div><div>{item.posts}</div>
-        </div>
-    ):
-    list.map(item => 
-        <div key={item.id} style={{display:'flex'}}>
-            <div>{item.vote}</div><div>{item.title}</div>
-        </div>
-        )
-    }
-    
+    </ButtonGroup>
     </div>
-    </>
+    <div className="activity-section-content">
+    <ItemList activity={activity} items={list}/>
+    </div>
+    </div>
     );
 }
 
@@ -90,25 +112,26 @@ const Activity = ({user}) => {
     <>
     {!user?<></>:
         <div className="activity-header">
-        <div>
-            <button key="Summary" onClick={()=>{setCategory("Summary")}}>Summary</button>
+        <ButtonGroup style={{margin:'1rem 0'}} size='small' aria-label="activity-menu">
+            <Button key='summary' style={{borderWidth:'2px'}} onClick={()=>{setCategory("Summary")}}>Summary</Button>
             {activities.map(activity => 
-                <button key={activity} onClick={()=>{setCategory(activity)}}>{activity}</button>
+                <Button key={activity} style={{borderWidth:'2px'}} onClick={()=>{setCategory(activity)}}>{activity}</Button>
                 )
             }
-
-        </div>
+        </ButtonGroup>
+        <div style={{display:'flex', flexFlow:'row wrap'}}>
         {category === "Summary"? 
-            data.map(({name, data}) => (
-                <Section key={name} user={user} activity={name} data={data}/>
+            data.map(({name}) => (
+                <Section key={name} user={user} activity={name} setCategory={category=>setCategory(category)}/>
             ))
             :
-            data.map(({name, data}) => {
+            data.map(({name}) => {
                 if(name===category) {
-                    return (<Section key={name} user={user} activity={name} data={data}/>
+                    return (<Section key={name} user={user} activity={name} setCategory={category=>setCategory(category)}/>
                 )}
             })
         }
+        </div>
         </div>
     }
     </>

@@ -7,7 +7,6 @@ import QuestionAskGuide from './QuestionAskGuide'
 import {postQuestion} from '../../axios.ts'
 import MDEditor from '@uiw/react-md-editor'
 import TagEditor from 'react-tageditor'
-import {useAuth} from '../../context/auth'
 import {useSelector, useDispatch} from 'react-redux'
 import { StylesProvider } from '@material-ui/core'
 import styles from './QuestionAsk.module.scss'
@@ -20,10 +19,11 @@ const QuestionAsk = () =>  {
     console.log(isLoggedin);
     console.log(token);
 
+
     const history = useHistory();
 
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api/',
+        baseURL: 'https://www.wafflow.com/api/',
         headers: { 'Authorization' : 'Token ' + token},
       });
 

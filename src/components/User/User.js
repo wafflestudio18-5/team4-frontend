@@ -10,10 +10,56 @@ import Activity from './Activity';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
 import {useSelector} from 'react-redux'
-
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+  
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+      
+    },
+  }));
+  
+function UserTabs({isMe, userId}) {
+    let history = useHistory();
+    const classes = useStyles();
+    const [value, setValue] = React.useState(0);
+  
+    const handleChange = (event, newValue) => {
+        let tab;
+        switch(newValue){
+            case 0: tab = 'profile';break;
+            case 1: tab = 'activity';break;
+            case 2: tab = 'edit';break;
+        }
+        
+        history.push(`/users/${userId}/${tab}`)
+        setValue(newValue);
+    };
+  
+    return (
+      <div className={classes.root}>
+        <AppBar style={{boxShadow: 'none'}}position="static" color='default'>
+          <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" aria-label="user-tabs">
+            <Tab label="Profile" {...a11yProps(0)} />
+            <Tab label="Activity" {...a11yProps(1)} />
+            {isMe?<Tab label="Edit Profile" {...a11yProps(2)} />:<></>}
+          </Tabs>
+        </AppBar>
+      </div>
+    );
+  }
 //Me랑 통합하기
 const User = () => {
-    let history = useHistory();
     let match = useRouteMatch();
     let {id} = useParams();
     const [loading, setLoading] = useState(true)
@@ -32,17 +78,8 @@ const User = () => {
     },[loading, id]);
     return (
         loading? <></>:
-        <>
-        <div className="activity-header">
-        <div>
-        <button onClick={()=>{history.push(`/users/${id}/profile`)}}>Profile</button>
-        <button onClick={()=>{history.push(`/users/${id}/activity`)}}>Activity</button>
-        {isLoggedin && user.id === me.id?
-        <button onClick={()=>{history.push(`/users/${id}/edit`)}}>Edit</button>
-        :<></>
-        }</div>
-        <hr/>
-        </div>
+        <div style={{padding:'2rem', margin: 'auto', width:'1190px', maxWidth:'100%'}}>
+        <UserTabs isMe={isLoggedin && user.id === me.id} userId={user.id}/>
         <Switch>
         <Route exact path={match.path}>
             <Profile user={user}/>
@@ -61,7 +98,7 @@ const User = () => {
         </Route>
         {/*default*/} 
         </Switch>
-        </>
+        </div>
     )
 }
 export default User;

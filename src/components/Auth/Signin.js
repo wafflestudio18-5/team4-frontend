@@ -1,6 +1,4 @@
 import React, {useState} from 'react'
-import {useAuth} from '../../context/auth'
-
 import {useHistory, Redirect} from 'react-router-dom'
 
 import GitHubLogin from 'react-github-login';
@@ -9,6 +7,7 @@ import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
+
 import styles from '../Questions/QuestionAsk.module.scss'
 import profileimage from '../../profile_image.png'
 
@@ -62,10 +61,10 @@ export const Signin = () => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('http://localhost:8000/api/user/login', {params:{'github_token' : token}})
+            await axios.put('https://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
                 .then(res => {
 
-                    dispatch(setUserInfo({payload: res}))
+                    dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
 
                 })
@@ -90,6 +89,7 @@ export const Signin = () => {
         )
     }
     return (
+
         <div>
         <div className={styles.box12}> 
             <div className={styles.board_all12}>
@@ -136,6 +136,7 @@ export const Signin = () => {
            
             </div>
         </div>
+
         </div>
 </div>       
     )
