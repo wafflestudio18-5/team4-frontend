@@ -49,10 +49,10 @@ export const Header = () => {
       <div className={styles.rightNav}>
 
         {!(isLoggedin) || !user ?
-        <>
+        <div style={{minWidth:'180px', height:'100%', display:'flex', justifyContent:'space-between', alignItems:'stretch'}}>
         <Button title="Signin" onClick={() => {history.push("/signin/")}}>Sign In</Button>
         <Button title="Signup" onClick={() => {history.push("/signup/")}}>Sign Up</Button>
-        </>
+        </div>
         :
         <>
         <div className={styles.menus}>

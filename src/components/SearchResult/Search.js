@@ -1,6 +1,8 @@
 import React from 'react'
 import qs from 'qs'
 import { SearchResultKeywords, SearchResultTags, SearchResultUser } from './SearchResults';
+import Typography from '@material-ui/core/Typography'
+import LeftBanner from '../Banner/LeftBanner';
 const Search = ({location}) => {
     const q = qs.parse(location.search, {ignoreQueryPrefix: true});
     console.log(q);
@@ -31,16 +33,21 @@ const Search = ({location}) => {
     }
     console.log(query)
     return(
-        <>
-            <h3>Search result {
-                query.user? query.tags.length? <>with tags [{query.tags.toString()}] by User {query.user} </>
-                :<>by User {query.user}</>
-                :query.tags.length? query.keywords.length? <>for {query.keywords.toString()} with tags [{query.tags.toString()}]</>
-                :<>with tags [{query.tags.toString()}]</>
-                :<>for {query.keywords.toString()}</>
-            }</h3>
+        <div style={{display:'flex', flexDirection:'column'}}>
+            <Typography variant="h5" component='h3'>
+                Search result {
+                    query.user? query.tags.length? <>with tags [{query.tags.toString()}] by User {query.user} </>
+                    :<>by User {query.user}</>
+                    :query.tags.length? query.keywords.length? <>for {query.keywords.toString()} with tags [{query.tags.toString()}]</>
+                    :<>with tags [{query.tags.toString()}]</>
+                    :<>for {query.keywords.toString()}</>
+                }
+            </Typography>
+            <div style={{display:'flex', alignItems:'flex-start'}}>
+            <LeftBanner/>
             <SearchResult query={query}/>
-        </>
+            </div>
+        </div>
     )
 }
 
