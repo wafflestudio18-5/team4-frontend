@@ -12,6 +12,7 @@ const logError = (error: any) => {
     return log?.data
 }
 axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.headers["Accept"] = "application/json";
 
 
 //User APIs
@@ -99,11 +100,11 @@ export const getQuestionsWithTags = (tags: string, sorted_by: string="newest", p
     }
 )
 
-export const getQuestionsWithKeywords = (keywords: string, sorted_by: string, page: Number =1, filter_by?: string) => 
+export const getQuestionsWithKeywords = (keywords: string[], sorted_by: string, page: Number =1, filter_by?: string) => 
     new Promise((resolve,reject) => {
+        console.log(keywords, filter_by, sorted_by, page)
         axios.get(`api/question/search/keywords/`,
-                    {params:{'keywords':keywords, filter_by, sorted_by, page}})
-
+                    {params:{'keywords':keywords.join('+'), filter_by, sorted_by, page}})
             .then(response => resolve(response.data.questions))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
