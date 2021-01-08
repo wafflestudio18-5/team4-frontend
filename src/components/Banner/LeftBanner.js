@@ -9,8 +9,8 @@ const LeftBanner = () => {
         history.push('/')
     }
 
-    const goAsk = () => {
-        history.push('/question/ask')
+    const goTags = () => {
+        history.push('/tags')
     }
 
     const goUsers = () => {
@@ -24,7 +24,7 @@ const LeftBanner = () => {
                     <Button onClick={() => {goHome()}}>Home</Button>
                 </div>
                 <div className={styles.tags_Button}>
-                    <Button onClick={() => {goAsk()}}>Ask</Button>
+                    <Button onClick={() => {goTags()}}>Tags</Button>
                 </div>
                 <div className={styles.users_Button}>
                     <Button onClick={() => {goUsers()}}>Users</Button>

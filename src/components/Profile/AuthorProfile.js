@@ -5,14 +5,14 @@ import defaultPicture from '../../profile_image.png'
 
 const AuthorProfile = (data) => {
     console.log(data);
-    const id = data.question.author.id
+    const id = data.question.id
     const created_date = data.question.created_at
     const [Author, setAuthor] = useState(null)
     const [picture, setPicture] = useState(null)
 
     useEffect(() => {
         if (Author === null) {
-        getUser(data.question.author.id)
+        getUser(data.question.id)
         .then(res => {
             console.log(res);
             setAuthor(res)

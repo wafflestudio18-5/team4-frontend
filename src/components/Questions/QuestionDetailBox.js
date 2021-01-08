@@ -25,7 +25,6 @@ const QuestionDetailBox = (match) => {
     console.log(user_id);
 
     console.log("renders!");
-
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
 
@@ -68,7 +67,7 @@ const QuestionDetailBox = (match) => {
                 console.log(e);
                 alert(e.message)
             })
-        instance.get(`comment/question/${id}/?page=${comment_page}/`)
+        instance.get(`comment/question/${id}/?page=${comment_page}`)
             .then((res) => {
                 console.log(res);
 
@@ -206,7 +205,7 @@ const QuestionDetailBox = (match) => {
     }
 
     const goTags = (tag_name) => {
-        history.push(`/search/q=[${tag_name}]`);
+        history.push(`/question/tagged/?tags=${tag_name}&page=1&sorted_by=newest`);
     }
 
     console.log(question.author.id);
@@ -311,13 +310,13 @@ const QuestionDetailBox = (match) => {
                         <div className={styles.page}>
                             {comment_page}
                         </div>
-                        {comment_page +1 > max_page?  <div className={styles.page_click_no}>next page</div> 
+                        {comment_page > max_comment/30 + 1? <div className={styles.page_click_no} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> 
                         :
-                        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page + 1 > max_page ? max_comment : comment_page+1)}} >next page</div> }
+                        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> }
                     </div>
                     <div className="comment_post_box_q">
                         { postComment?
-                        <CommentPostQuestion id={id}/> : 
+                        <CommentPostQuestion id={id} func={setPostCommment(false)}/> : 
                             <div className={styles.post_comment_msg} onClick={() => {setPostCommment(true)}}    >
                                 post a comment
                             </div>
