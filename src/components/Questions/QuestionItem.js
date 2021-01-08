@@ -28,7 +28,7 @@ const QuestionItem= (Question) => {
     }
 
     const goTags = (tag_name) => {
-        history.push(`/question/tagged/?tags=${tag_name}&page=1&sorted_by=newest/`);
+        history.push(`/search/q=[${tag_name}]`);
     }
 
 

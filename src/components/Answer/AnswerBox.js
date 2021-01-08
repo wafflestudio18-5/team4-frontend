@@ -8,11 +8,15 @@ import {useSelector} from 'react-redux'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import styles from './AnswerBox.module.scss'
-import AuthorProfile from '../Profile/AuthorProfile'
+import AnswerProfile from '../Profile/AnswerProfile'
 import {CommentPostQuestion} from '../Comment/CommentPost'
 
 const AnswerBox = (Ans) => {
     const history = useHistory();
+
+    console.log("renders!");
+    
+
     console.log("Answer box");
     console.log(Ans);
     const Answer = Ans.Answer
@@ -24,7 +28,10 @@ const AnswerBox = (Ans) => {
     const [comment_page, setCommentPage] = useState(1)
     const [vote, setVote] = useState(Answer.vote)
     const [max_comment, set_comment_page] = useState(0)
-
+    const [edit, setEdit] = useState(false)
+    const [editText, setEditText] = useState("")
+    const [user, setUser] = useState(null)
+ 
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
 
@@ -32,19 +39,28 @@ const AnswerBox = (Ans) => {
       });
 
     useEffect(() => {
-        if (comment !== null) {
-            console.log(comment);
+        if (user === null) {
+            instance.get(`comment/answer/${Answer.id}/?page=${comment_page}`)
+            .then(res => {
+                console.log(res);
+                console.log("Comment of Answer");
+                console.log(Answer.id);
+                console.log(comment_page);
+                setComment(res.data.comments)
+                set_comment_page(1)
+            })           
+            .catch(e => {
+                console.log(e);
+            })
+            instance.get(`answer/${Answer.id}/`)
+            .then(res => {
+                setUser(res)
+            })
+            .catch(e => {
+                console.log(e);
+            })
         }
         else {
-        getCommentsOfAnswer(Answer.id, comment_page)
-        .then(res => {
-            console.log(res);
-            setComment(res.data)
-            set_comment_page(res.data.length/30)
-        })
-        .catch(e => {
-            console.log(e);
-        })
         }
     })
 
@@ -86,13 +102,107 @@ const AnswerBox = (Ans) => {
     }
 
     const goEdit = () => {
-        history.push(`/question/edit/${Answer.id}`)
+        setEdit(true)
+        setEditText(Answer.content)
         
+    }
+
+    const goDelete = () => {
+        if (isLoggedin) {
+            instance.delete(`answer/${Answer.id}/`)
+                .then(res => {
+                    console.log(res);
+                    history.go(0)
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+    }
+
+    const editSubmit = () => {
+        instance.put(`answer/${Answer.id}/`, {content: editText})
+            .then(res => {
+                console.log(res);
+                history.go(0)
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
     
 
 
     return(
+        <>
+        { edit?
+
+
+<div className={styles.box}>
+<div className={styles.q_main_content_box}>
+<div className = {styles.QdetailBoxLeft}>
+<div className={styles.VoteBox}>
+    <div className={styles.arrowbox} onClick={() => {upVote()}}>
+        <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
+            <path d="M2 26h32L18 10 2 26z" className={styles.arrow}></path>
+        </svg>
+    </div>
+
+    <div className={styles.votes}>
+        {vote}
+    </div>
+    <div className={styles.arrowbox} onClick={() => {downVote()}}>
+        <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
+        <path d="M2 10h32L18 26 2 10z" className={styles.arrow}></path>
+        </svg>
+    </div>
+</div>
+</div> 
+<div className={styles.QdetailBoxRight}>
+
+    <div className = {styles.questionContent}>
+                <MDEditor
+                value={editText}
+                onChange={e => setEditText(e)}/> 
+    </div>
+    <div className={styles.questionbottomBox}>
+        <div className={styles.editbox}>         
+            <div className={styles.edit_confirm_button} onClick={() => {editSubmit()}}>
+                Save Edit
+            </div>
+        </div>
+        <div className={styles.profile_box}>
+            <AnswerProfile question={Answer}/>
+        </div>
+    </div>
+    <div className="q_main_comment_box">
+        {comment === 1? null : 
+        <CommentList comments_all={comment}/> 
+        }
+
+    <div className={styles.page_box}>
+        {comment_page === 1? <div className={styles.page_click_no}>prev page</div> 
+        :
+        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page-1)}} >prev page</div> }
+        <div className={styles.page}>
+            {comment_page}
+        </div>
+        {comment_page > max_comment/30 + 1? <div className={styles.page_click_no} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> 
+        :
+        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> }
+    </div>
+    <div className="comment_post_box_q">
+        <CommentPostQuestion id={Answer.id}/>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+:
+
+
         <div className={styles.box}>
             <div className={styles.q_main_content_box}>
             <div className = {styles.QdetailBoxLeft}>
@@ -123,12 +233,15 @@ const AnswerBox = (Ans) => {
                         <div className={styles.edit_btn} onClick={() => {goEdit()}}>
                             Edit
                         </div>
+                        <div className={styles.edit_btn} onClick={() => {goDelete()}}>
+                            Delete
+                        </div>
                         <div className={styles.created_at_text}>
                             {Answer.updated_at? `editted ${Answer.updated_at.substring(0,10)}` : null}
                         </div>
                     </div>
                     <div className={styles.profile_box}>
-                        <AuthorProfile question={Answer}/>
+                        <AnswerProfile question={Answer}/>
                     </div>
                 </div>
                 <div className="q_main_comment_box">
@@ -141,17 +254,19 @@ const AnswerBox = (Ans) => {
                     <div className={styles.page}>
                         {comment_page}
                     </div>
-                    {comment_page > max_comment/30 + 1? <div className={styles.page_click_no} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> 
+                    {comment_page + 1 > max_comment/30? <div className={styles.page_click_no}>next page</div> 
                     :
                     <div className={styles.page_click} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> }
                 </div>
                 <div className="comment_post_box_q">
-                    <CommentPostQuestion id={Answer.id}/>
+                    <CommentPostAnswer id={Answer.id}/>
                 </div>
             </div>
             </div>
             </div>
         </div>
+        }
+        </>
     )
 }
 

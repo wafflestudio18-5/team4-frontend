@@ -1,18 +1,18 @@
 import {useState, Fragment, useEffect} from 'react'
 import {getUser} from '../../axios.ts'
-import styles from './AuthorProfile.module.scss'
+import styles from './AnswerProfile.module.scss'
 import defaultPicture from '../../profile_image.png'
 
-const AuthorProfile = (data) => {
+const AnswerProfile = (data) => {
     console.log(data);
-    const id = data.question.author.id
+    const id = data.question.id
     const created_date = data.question.created_at
     const [Author, setAuthor] = useState(null)
     const [picture, setPicture] = useState(null)
 
     useEffect(() => {
         if (Author === null) {
-        getUser(data.question.author.id)
+        getUser(data.question.id)
         .then(res => {
             console.log(res);
             setAuthor(res)
@@ -37,7 +37,7 @@ const AuthorProfile = (data) => {
     return (
         <div className={styles.board}>
             <div className={styles.created_date}>
-                asked at {created_date.substring(0,10)}
+                replied at {created_date.substring(0,10)}
             </div>
             <div className={styles.author_profile_bottom}>
                 <div className={styles.author_pic}>
@@ -52,4 +52,4 @@ const AuthorProfile = (data) => {
     )
 }
 
-export default AuthorProfile
+export default AnswerProfile
