@@ -9,8 +9,7 @@
     text-align: center;
     padding-left: 40%;
     padding-top: 300px;
-    padding-bottom: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.1);;
+    
 }
 
 .image_box {
@@ -29,10 +28,12 @@
 }
 
 .board {
-    padding-top: 30px;
+    padding: 10px;
+    margin-top: 2px;
     width: 283px;
     height: 237px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.1);;
 }
 

@@ -13,6 +13,10 @@ import {CommentPostQuestion} from '../Comment/CommentPost'
 
 const AnswerBox = (Ans) => {
     const history = useHistory();
+
+    console.log("renders!");
+    
+
     console.log("Answer box");
     console.log(Ans);
     const Answer = Ans.Answer
@@ -26,7 +30,8 @@ const AnswerBox = (Ans) => {
     const [max_comment, set_comment_page] = useState(0)
     const [edit, setEdit] = useState(false)
     const [editText, setEditText] = useState("")
-
+    const [user, setUser] = useState(null)
+ 
     const instance = axios.create({
         baseURL: 'http://localhost:8000/api/',
 
@@ -34,19 +39,28 @@ const AnswerBox = (Ans) => {
       });
 
     useEffect(() => {
-        if (comment !== null) {
-            console.log(comment);
+        if (user === null) {
+            instance.get(`comment/answer/${Answer.id}/?page=${comment_page}`)
+            .then(res => {
+                console.log(res);
+                console.log("Comment of Answer");
+                console.log(Answer.id);
+                console.log(comment_page);
+                setComment(res.data.comments)
+                set_comment_page(1)
+            })           
+            .catch(e => {
+                console.log(e);
+            })
+            instance.get(`answer/${Answer.id}/`)
+            .then(res => {
+                setUser(res)
+            })
+            .catch(e => {
+                console.log(e);
+            })
         }
         else {
-        getCommentsOfAnswer(Answer.id, comment_page)
-        .then(res => {
-            console.log(res);
-            setComment(res.data.comments)
-            set_comment_page(1)
-        })
-        .catch(e => {
-            console.log(e);
-        })
         }
     })
 
@@ -91,6 +105,19 @@ const AnswerBox = (Ans) => {
         setEdit(true)
         setEditText(Answer.content)
         
+    }
+
+    const goDelete = () => {
+        if (isLoggedin) {
+            instance.delete(`answer/${Answer.id}/`)
+                .then(res => {
+                    console.log(res);
+                    history.go(0)
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
     }
 
     const editSubmit = () => {
@@ -149,7 +176,9 @@ const AnswerBox = (Ans) => {
         </div>
     </div>
     <div className="q_main_comment_box">
-        <CommentList comments_all={comment}/>
+        {comment === 1? null : 
+        <CommentList comments_all={comment}/> 
+        }
 
     <div className={styles.page_box}>
         {comment_page === 1? <div className={styles.page_click_no}>prev page</div> 
@@ -204,6 +233,9 @@ const AnswerBox = (Ans) => {
                         <div className={styles.edit_btn} onClick={() => {goEdit()}}>
                             Edit
                         </div>
+                        <div className={styles.edit_btn} onClick={() => {goDelete()}}>
+                            Delete
+                        </div>
                         <div className={styles.created_at_text}>
                             {Answer.updated_at? `editted ${Answer.updated_at.substring(0,10)}` : null}
                         </div>
@@ -222,7 +254,7 @@ const AnswerBox = (Ans) => {
                     <div className={styles.page}>
                         {comment_page}
                     </div>
-                    {comment_page > max_comment/30 + 1? <div className={styles.page_click_no} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> 
+                    {comment_page + 1 > max_comment/30? <div className={styles.page_click_no}>next page</div> 
                     :
                     <div className={styles.page_click} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> }
                 </div>

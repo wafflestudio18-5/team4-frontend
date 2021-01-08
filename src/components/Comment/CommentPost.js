@@ -69,17 +69,15 @@ export const CommentPostAnswer = (id_a) => {
     });
 
     const postCommentonAnswer = () => {
-        if (isLoggedin) {
         console.log(content);
         instance.post(`comment/answer/${id_a.id}/`, {content: content})
             .then(res => {
-                console.log();
+                console.log(res);
                 // history.go(0)
             })
             .catch(e =>{
                 console.log(e);
             })
-        }
     }
 
 

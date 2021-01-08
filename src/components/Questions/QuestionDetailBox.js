@@ -25,6 +25,7 @@ const QuestionDetailBox = (match) => {
     console.log(user_id);
 
     console.log("renders!");
+
     const instance = axios.create({
         baseURL: 'http://localhost:8000/api/',
 
@@ -67,7 +68,7 @@ const QuestionDetailBox = (match) => {
                 console.log(e);
                 alert(e.message)
             })
-        instance.get(`comment/question/${id}/?page=${comment_page}`)
+        instance.get(`comment/question/${id}/?page=${comment_page}/`)
             .then((res) => {
                 console.log(res);
 

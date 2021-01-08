@@ -9,9 +9,9 @@ import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
-import styles from './Signin.module.scss'
+import styles from '../Questions/QuestionAsk.module.scss'
 import profileimage from '../../profile_image.png'
-import { withStyles } from '@material-ui/core';
+
 
 export const Signin = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
@@ -90,33 +90,54 @@ export const Signin = () => {
         )
     }
     return (
-        <div className={styles.box}> 
-            <GitHubLogin clientId="1bc89bcdb1f71159016b"
-            onSuccess={onSuccess}
-            onFailure={onFailure}
-            redirectUri="http://wafflow.com"
-            // buttonText={
-            //     <div className={styles.profile_box}>
-            //         <div className={styles.image_box}>
-            //             <img className={styles.image} src={profileimage}></img>
-            //         </div>
-            //         <div className={styles.text}>
-            //             Login with Github
-            //         </div>
-            //     </div>
+        <div>
+        <div className={styles.box12}> 
+            <div className={styles.board_all12}>
+            <div className={styles.box_top}>
+                <div classNam={styles.box}>
+                <div className={styles.top_sub1}>
+                        <GitHubLogin clientId="1bc89bcdb1f71159016b"
+                        onSuccess={onSuccess}
+                        onFailure={onFailure}
+                        redirectUri="http://wafflow.com"/>
+                    </div>
+                </div>
+            </div>
+            <div className={styles.box}>
             
-            // }
-            />
-            
-
             <div className={styles.board}>
-                <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
-                <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
-                <button className="login-button">Login</button>
-                <div className="warn" >{warn}</div>
+                <div className={styles.top}>
+
+                </div>
+                <div className={styles.body}>
+                    <div className={styles.body_sub}>
+                        
+    
+                    <div className={styles.title_box}>
+                    <div className={styles.top_sub}>Username</div>
+                    <div className={styles.input_box}>
+                        <input className={styles.input_title} value={username} onChange={(e)=>{usernameOnChange(e.target.value)}}/>
+    
+                    </div>
+                </div>
+                <div classNameName="qask-body-box">
+                    <div className={styles.top_sub}>Password</div>
+                    <input className={styles.input_title} value={password} onChange={(e)=>{passwordOnChange(e.target.value)}}/>
+                </div>                 
+                    </div>
+    
+                </div>
+                <div className="qask-body-left-buttonbox">
+                            <div onClick = {e => {signin(e)}} className={styles.btn} /*TODO: Review and Post are divided in the original site*/>
+                                Sign in
+                            </div>
+                        </div>
+            </div>
+           
             </div>
         </div>
-       
+        </div>
+</div>       
     )
 }
 

@@ -10,6 +10,16 @@
     margin-top: 0px;
 }
 
+.box12 {
+    width: 80%;
+    left: 40%;
+}
+
+.box13 {
+    font: 30px Arial;
+    font-weight:700;
+}
+
 .box_top {
     display: flex;
     flex-direction: row;
@@ -41,6 +51,13 @@
 
 .top_sub {
     font: 15px Arial;
+    font-weight: bolder;
+    color: #0C0D0E;
+    padding-top: 5px;
+}
+
+.top_sub1 {
+    font: 24px Arial;
     font-weight: bolder;
     color: #0C0D0E;
     padding-top: 5px;
