@@ -18,13 +18,13 @@ export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
   console.log(isLoggedin);
-  const token = useSelector(state => state.userInfoReducer.token)
+  const token = useSelector(state => state.userInfoReducer.user.token)
   console.log(token);
 
   console.log("Token " + token);
 
   const instance = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'https://www.wafflow.com/api/',
     headers: { 'Authorization' : 'Token ' + token },
   });
   console.log("Header: islogged?");

@@ -9,7 +9,7 @@ const ResponderProfile = (answer) => {
         if (Responder !== null) {
             return;
         }
-        getUser(Answer.id)
+        getUser(Answer.author.id)
         .then(res => {
             console.log(res);
             setResponder(res)

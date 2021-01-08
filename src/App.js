@@ -14,6 +14,8 @@ import Signup from './components/Auth/Signup';
 import User from './components/User/User';
 import Search from './components/SearchResult/Search';
 import styles from './AppStyles.module.scss'
+import QuestionEdit from './components/Questions/QuestionEdit'
+
 import Footer from './components/Banner/Footer'
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
           <Route exact path="/question/keywords" component={SearchResultKeywords}/>
           <Route exact path="/search" component={Search}/>
           <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
+          <Route exact path="/question/edit/:question_id" component={QuestionEdit}/>
           <Route exact path="/question/tagged" component={SearchResultTags}/>
           <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
           <Route path="/users/me" component={Me}/>

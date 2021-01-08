@@ -9,7 +9,9 @@ import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
-
+import styles from './Signin.module.scss'
+import profileimage from '../../profile_image.png'
+import { withStyles } from '@material-ui/core';
 
 export const Signin = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
@@ -39,7 +41,7 @@ export const Signin = () => {
             .then(user => {
                 console.log(user)
                 dispatch(setUserInfo(user))
-                dispatch(Login({token : user.token}))
+                dispatch(Login(user.token))
                 history.go(-1)
 
                 })
@@ -54,13 +56,13 @@ export const Signin = () => {
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://www.wafflow.com/api/"
+            redirect_uri: "http://wafflow.com"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('http://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
+            await axios.put('https://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
                 .then(res => {
 
                     dispatch(setUserInfo(res))
@@ -88,21 +90,21 @@ export const Signin = () => {
         )
     }
     return (
-        <> 
+        <div className={styles.box}> 
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://www.wafflow.com/api/"
+            redirectUri="http://www.wafflow.com/"
             buttonText="Login with Github"/>
             
 
-            <form onSubmit={e=>signin(e)} className="login-form" >
+            <div className={styles.board}>
                 <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
                 <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
                 <button className="login-button">Login</button>
                 <div className="warn" >{warn}</div>
-            </form>
-        </>
+            </div>
+        </div>
        
     )
 }

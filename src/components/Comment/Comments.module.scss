@@ -1,0 +1,46 @@
+.board {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    height: max-content;
+    border-bottom: 1px solid;
+    border-bottom-color: #EFEFEF;
+    padding: 5px 5px 3px 3px ;
+}
+
+.comment_vote_box {
+    visibility: visible;
+    &:hover {
+        visibility: visible;
+    }
+    font: 12px Arial;
+}
+
+.comment_votes {
+    font: 13px Arial;
+}
+
+
+.board:hover + .comment_vote_box {
+    visibility:visible;
+}
+
+.comment_content {
+    height: fit-content;
+    font: 13px Arial;
+    cursor: pointer;
+}
+
+.author {
+    color: #0077CC;
+    background-color: #E1ECF4;
+    padding: 3px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.date {
+    color: #9199A1;
+    margin-left: 6px;
+}
+
