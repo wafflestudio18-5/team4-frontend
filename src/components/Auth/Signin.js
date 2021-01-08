@@ -9,7 +9,8 @@ import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
-
+import styles from './Signin.module.scss'
+import profileimage from '../../profile_image.png'
 
 export const Signin = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
@@ -93,15 +94,15 @@ export const Signin = () => {
             onSuccess={onSuccess}
             onFailure={onFailure}
             redirectUri="http://localhost:8000/api/"
-            buttonText="Login with Github"/>
+            buttonText={<img src={profileimage}></img>}/>
             
 
-            <form onSubmit={e=>signin(e)} className="login-form" >
+            <div className={styles.board}>
                 <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
                 <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
                 <button className="login-button">Login</button>
                 <div className="warn" >{warn}</div>
-            </form>
+            </div>
         </>
        
     )
