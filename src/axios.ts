@@ -88,7 +88,7 @@ export const getQuestionsOfUser = (id: string, sorted_by: string, page = 1) =>
     }
 )
 
-export const getQuestionsWithTags = (tags: string[], sorted_by: string="newest", page: Number=1, filter_by?: string, user? : Number) => 
+export const getQuestionsWithTags = (tags: string[], sorted_by: string="newest", page=1, filter_by?: string, user? : Number) => 
     new Promise((resolve,reject) => {
         axios.get(`api/question/tagged/`,
                     {params:{ user, tags:tags.join(' '), filter_by, sorted_by, page}})
@@ -98,7 +98,7 @@ export const getQuestionsWithTags = (tags: string[], sorted_by: string="newest",
     }
 )
 
-export const getQuestionsWithKeywords = (keywords: string[], sorted_by: string, page: Number =1, filter_by?: string) => 
+export const getQuestionsWithKeywords = (keywords: string[], sorted_by: string, page=1, filter_by?: string) => 
     new Promise((resolve,reject) => {
         console.log(keywords, filter_by, sorted_by, page)
         axios.get(`api/question/search/keywords/`,
@@ -128,7 +128,7 @@ export const editQuestion = (id: number, question: QuestionEditInterface) =>
 
 //Answer APIs
 //GET answer
-export const getAnswersOfUser = (id: number, sorted_by: string, page: Number) => 
+export const getAnswersOfUser = (id: number, sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/answer/user/${id}/`, {params:{page, sorted_by}})
             .then(response => resolve(response.data.answers))
@@ -136,7 +136,7 @@ export const getAnswersOfUser = (id: number, sorted_by: string, page: Number) =>
     }
 )
 
-export const getAnswersOfQuestion = (id: number, sorted_by: string, page: Number) => 
+export const getAnswersOfQuestion = (id: number, sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/answer/question/${id}/`, {params:{page, sorted_by}})
             .then(response => resolve(response.data.answers))
@@ -201,14 +201,14 @@ export const getComment = (id: number) =>
             .catch(e=>reject(logError(e)))
     }
 )
-export const getCommentsOfAnswer = (id: number, page: Number) => 
+export const getCommentsOfAnswer = (id: number, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/comment/answer/${id}/?page=${page}`)
             .then(response => resolve(response))
             .catch(e=>reject(logError(e)))
     }
 )
-export const getCommentsOfQuestion = (id: number, page: Number) => 
+export const getCommentsOfQuestion = (id: number, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/comment/question/${id}`)
             .then(response => resolve(response.data.comments))
@@ -272,14 +272,14 @@ export const rateComment = (id: number, rating: number) =>
 
 //Bookmark APIs
 //GET bookmark
-export const getBookmarks = (sorted_by: string, page: Number) => 
+export const getBookmarks = (sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/bookmark/user/me/`, {params:{sorted_by, page}})
             .then(response => resolve(response.data.questions))
             .catch(e=>reject(logError(e)))
     }
 )
-export const getBookmarksOfUser = (id: number, sorted_by: string, page: Number) => 
+export const getBookmarksOfUser = (id: number, sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/bookmark/user/${id}/`, {params:{sorted_by, page}})
             .then(response => resolve(response.data.questions))
@@ -304,7 +304,7 @@ export const deleteBookmark = (id: number) =>
 )
 //Tag APIs
 //GET tag
-export const getTagsOfUser = (id: number, sorted_by: string, page : Number) => 
+export const getTagsOfUser = (id: number, sorted_by: string, page=1) => 
     new Promise((resolve,reject) => {
         axios.get(`api/tag/user/${id}/`, {params:{sorted_by, page}})
             .then(response => resolve(response.data.tags))
