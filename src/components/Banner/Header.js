@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 import './image.css'
 import axios from 'axios'
 import logo from '../../logo.png'
+import defaultPicture from '../../profile_image.png'
 
 import {Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
@@ -55,7 +56,7 @@ export const Header = () => {
         :
         <>
         <div className={styles.menus}>
-          <img className="profile-image" src={user.picture} alt="user" onClick={()=>{history.push("/users/me")}}/>
+          <img className="profile-image" src={user.picture? user.picture:defaultPicture} alt={user.username} onClick={()=>{history.push("/users/me")}}/>
           <p className={styles.menuItem}>{user.nickname}</p>
           <p className={styles.menuItem}>{user.reputation}</p>
         </div>

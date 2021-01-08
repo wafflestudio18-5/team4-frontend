@@ -41,7 +41,6 @@ export const postUser = (user: UserInterface, github_token: String) => new Promi
 })
 //PUT user
 export const editUserMe = (user: UserInterface) => new Promise((resolve,reject) => {
-    console.log(user)
     const data = user
     axios.put(`api/user/me/`, data, {headers: {'content-type': 'multipart/form-data'}})
         .then((response) => resolve(response.data))

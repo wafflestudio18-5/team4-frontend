@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import { getUsers } from '../../axios'
 import {useHistory} from 'react-router-dom'
+import defaultPicture from '../../profile_image.png'
 
 const UserCard = ({user}) => {
     const history = useHistory()
     return (
         <div onClick={()=>history.push(`/users/${user.id}`)}>
-            <img src={user.picture} alt={`user:${user.nickname}`}/>
+            <img src={user.picture? user.picture:defaultPicture} alt={`user:${user.nickname}`}/>
             <div>
                 <span>{user.nickname}</span>
                 <span>{user.reputation}</span>

@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
 import {setUserInfo} from '../../modules/AuthRedux'
-
+import defaultPicture from '../../profile_image.png'
 
 //PUT /user/me
 
@@ -14,7 +14,7 @@ const EditProfile = () => {
     const user = useSelector(state => state?.userInfoReducer?.user)
     const dispatch = useDispatch();
     axios.defaults.headers.common['Authorization'] = `Token ${token}`
-
+    console.log(defaultPicture)
     let history = useHistory();
     //default value -> user info
 
@@ -38,14 +38,12 @@ const EditProfile = () => {
         let formData = new FormData()
         let user = {picture, nickname, email, password, title, intro};
         for(let key in user) {
+            if(!user[key]) continue;
             if(key === 'picture') formData.append(key, user[key], user[key].name)
-            if(user[key]) formData.append(key, user[key])
+            else formData.append(key, user[key])
         }
-        console.log(formData)
-        //remove later
         editUserMe(formData)
             .then(response => {
-                console.log(response)
                 dispatch(setUserInfo({payload: response}))
                 alert("Change saved.")})
             .catch(e=>console.log(e))    
@@ -57,7 +55,7 @@ const EditProfile = () => {
     <h1>Edit your profile</h1>
     <hr/>
     <form onSubmit={e=>saveChange(e)} >
-        <div><img width="100px" src={user.picture} alt="user"/><div><label>Profile picture</label><input name="picture" type="file" accept="image/png, image/jpeg" onChange={e => setPicture(e.target.files[0])}/></div></div>
+        <div><img width="100px" src={user.picture? user.picture: defaultPicture} alt="user"/><div><label>Profile picture</label><input name="picture" type="file" accept="image/png, image/jpeg" onChange={e => setPicture(e.target.files[0])}/></div></div>
         <div>
         <div><label>Nickname</label><input name="nickname" type="text" value={nickname} maxLength="30" onChange={e => setNickname(e.target.value)}/></div>
         <div><label>Email</label><input name="location" type="email" value={email} maxLength="100" placeholder="이메일을 입력하세요." onChange={e => setEmail(e.target.value)}/></div>
