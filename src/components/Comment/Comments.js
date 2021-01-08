@@ -1,26 +1,62 @@
 import {Fragment, useState} from 'react'
+import styles from './Comments.module.scss'
+import {useSelector, useDispatch} from 'react-redux' 
+import axios from 'axios'
+
 
 export const CommentBox =  (comment) => {
+    const dispatch = useDispatch();
+    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+  
+    const token = useSelector(state => state.userInfoReducer.user.token)
+    const user = useSelector(state => state.userInfoReducer.user)
+
+    const instance = axios.create({
+        baseURL: 'https://www.wafflow.com/api/',
+        headers: { 'Authorization' : 'Token ' + token},
+      });
+
     console.log(comment);   
+    const upvote = () => {
+        instance.put(`rate/comment/${comment.comment.id}/`, {rating: 1})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
+
+    const downvote= () => {
+        instance.put(`rate/comment/${comment.comment.id}/`, {rating: 1})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
 
     return(
-       <Fragment className="comment-box">
-        <div className="comment-vote-box">
-            <button>UpVote</button>
-            <div className="comment-votes">
-                {comment.vote}
+       <div className={styles.board}>
+        <div className={styles.comment_vote_box}>
+            <div onClick={() => {upvote()}}>
+                UpVote
             </div>
-            <button>DownVote</button>
-        </div>
-        <div className="comment-content-box">
-            {comment.content}
-            {"by".concat(' ',comment.author.username)}
-            <div className="comment-content-date">
-                {comment.created_at}
+            <div onClick={() => {downvote()}}>
+                downVote
             </div>
         </div>
+        <span className={styles.comment_content}>
+            {comment.comment.content}
+            {' -- '} 
+            <span className={styles.author}>{comment.comment.author.nickname.toString()}</span>
+            <span className={styles.date}>
+                {comment.comment.created_at.substring(0,10)}
+            </span>
+        </span>
 
-       </Fragment> 
+       </div> 
     )
 }
 

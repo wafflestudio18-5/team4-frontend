@@ -10,19 +10,25 @@ import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux' 
 import styles from './QuestionDetailBox.module.scss'
 import MDEditor from '@uiw/react-md-editor';
+import LeftBanner from '../Banner/LeftBanner'
+import { getAllJSDocTagsOfKind } from 'typescript';
+import AuthorProfile from '../Profile/AuthorProfile'
 
 
 const QuestionDetailBox = (match) => {
-
+    const history = useHistory();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     console.log(isLoggedin);
-    const token = useSelector(state => state.userInfoReducer.token)
+    const token = useSelector(state => state.userInfoReducer.user.token)
+    console.log(token);
+    const user_id = useSelector(state => state.userInfoReducer.user.id)
+    console.log(user_id);
 
     console.log("renders!");
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api/',
+        baseURL: 'https://www.wafflow.com/api/',
 
-        Authorization: 'Token ' + token
+        headers: {Authorization: 'Token ' + token}
       });
 
     const id = match.match.params.question_id
@@ -33,9 +39,15 @@ const QuestionDetailBox = (match) => {
     const [answer_page, set_answer_page] = useState(1)
     const [question, setQuestion] = useState({})
     const [answers , setAnswers] = useState({})
-    const [comments, setComments] = useState({})
+    const [comments, setComments] = useState([])
     const [max_page, setMaxPage] = useState(1)
     const [max_comment, setMaxComment] = useState(1)
+    const [bookmarked, setBookmark] = useState(false)
+    const [is_author, setIsAuthor] = useState(false)
+    const [vote, setVote] = useState(0)
+    const [postComment, setPostCommment] = useState(false)
+
+    console.log(is_author);
 
     useEffect(() => {
         if (question.title === undefined) {
@@ -43,7 +55,13 @@ const QuestionDetailBox = (match) => {
             .then((res) => {
                 console.log(res);
                 setQuestion(res.data)
+                console.log(res.data.author);
                 setMaxPage(question.answer_count/30)
+                if (res.data.author.id === user_id) {
+                    setIsAuthor(true)
+                }
+                setBookmark(res.data.bookmark)
+                setVote(res.data.vote)
             })
             .catch((e) => {
                 console.log(e);
@@ -55,6 +73,7 @@ const QuestionDetailBox = (match) => {
 
                 setComments(res.data.comments)
                 setMaxComment(question.comment_count)
+                console.log(max_comment);
             })
             .catch((e) => {
                 console.log(e);
@@ -67,6 +86,20 @@ const QuestionDetailBox = (match) => {
             .catch((e) => {
                 console.log(e);
             })
+        var page_bookmark = 1;
+
+        // while (true) {
+        // instance.get(`bookmark/user/me/`, {params:{page: page_bookmark, sorted_by: newest}})
+        //     .then((res) => {
+        //         console.log(res);
+        //         setBookmark(bookmark_user.concat(res.questions.id))
+        //     })
+        //     .catch((e) => {
+        //         console.log(e);
+        //         break
+        //     })
+        //     page_bookmark += 1;
+        // }
         }
     }, [])
 
@@ -90,9 +123,13 @@ const QuestionDetailBox = (match) => {
             alert("You are not Logged in!")
         }
         else {
+            console.log(token);
+
         instance.put(`rate/question/${question.id}/`, {rating: 1})
             .then(res => {
                 console.log(res);
+                setVote(vote+1)
+
             })
             .catch(e => {
                 console.log(e);
@@ -108,22 +145,88 @@ const QuestionDetailBox = (match) => {
         instance.put(`rate/question/${question.id}/`, {rating: -1})
             .then(res => {
                 console.log(res);
+                setVote(vote-1)
             })
             .catch(e => {
                 console.log(e);
             })
     }
 
+    const bookmark_change = () => {
+        if (bookmarked) {
+            setBookmark(false)
+            instance.delete(`/bookmark/question/${id}/`)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+        else {
+            setBookmark(true)
+            instance.post(`/bookmark/question/${id}/`)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    console.log(e);
+        })
+    }
+}
+
+
+    const goEdit = () => {
+        history.push(`/question/edit/${question.id}`)
+    }
+
+    // const bookmark_change = () => {
+    //     if (isLoggedin) 
+    // }
+
+    const DeleteQuestion = () => {
+        instance.delete(`/question/${question.id}`)
+            .then(res => {
+                console.log(res);
+                history.go(-1);
+            })
+            .catch (e => {
+                console.log(e);
+            })
+    }
+
+    const goAsk = () => {
+        if (isLoggedin) {
+            history.push('/question/ask');
+        }
+        else {
+            history.push('/signin')
+        }
+    }
+
+    const goTags = (tag_name) => {
+        history.push(`/question/tagged/?tags=${tag_name}&page=1&sorted_by=newest`);
+    }
+
+    console.log(question.author.id);
+    console.log(user_id);
+
     return (
+        <div className={styles.board_all}>
+            <LeftBanner/>
         <div className={styles.board}>
             <div className={styles.box}>
+                <div className={styles.main_box}>
                 <div className={styles.qdetail_main_title_box}>
                     <div className={styles.qdetail_main_title}>
                         {question.title}
                     </div>
-                    <div className={styles.askq_btn}>
-                        <Link to = "question/ask">Ask a Question </Link> 
+                    <div className={styles.btn_box}>
+                        <div className={styles.askq_btn}>
+                            <div className={styles.askq} onClick={() => {goAsk()}}>Ask a Question</div>
+                        </div>
                     </div>
+                    
                 </div>
                 <div className={styles.qdetail_top_info_box}>
                     <div className={styles.qdetail_top_info}>
@@ -145,19 +248,35 @@ const QuestionDetailBox = (match) => {
                         </div>
                     </div>
                 </div>
+                </div>
                 <div className={styles.q_main_content_box}>
                 <div className = {styles.QdetailBoxLeft}>
                 <div className={styles.VoteBox}>
-                    <Button onClick = {e => {q_upvote()}}>UpVote</Button>
-                    <div className={styles.votes}>
-                        {question.vote}
+                    <div className={styles.arrowbox} onClick={() => {q_upvote()}}>
+                        <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
+                            <path d="M2 26h32L18 10 2 26z" className={styles.arrow}></path>
+                        </svg>
                     </div>
-                    <Button onClick={e => {q_downvote()}}>DownVote</Button>
+                
+                    <div className={styles.votes}>
+                        {vote}
+                    </div>
+                    <div className={styles.arrowbox} onClick={() => {q_downvote()}}>
+                        <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
+                        <path d="M2 10h32L18 26 2 10z" className={styles.arrow}></path>
+                        </svg>
+                    </div>
                 </div>
                 <div className={styles.bookmark_box}>
-                        <div className={styles.bookmark}>
-                            {question.bookmark_count}
+                        <div className={styles.bookmark} onClick={() => {bookmark_change()}}>
+                        <svg aria-hidden="true" class="svg-icon iconBookmark" width="18" height="18" viewBox="0 0 18 18">
+                        {bookmarked? <path d="M6 1a2 2 0 00-2 2v14l5-4 5 4V3a2 2 0 00-2-2H6zm3.9 3.83h2.9l-2.35 1.7.9 2.77L9 7.59l-2.35 1.7.9-2.76-2.35-1.7h2.9L9 2.06l.9 2.77z" className= {styles.bookmarkOn_svg}></path>
+                        :
+                        <path d="M6 1a2 2 0 00-2 2v14l5-4 5 4V3a2 2 0 00-2-2H6zm3.9 3.83h2.9l-2.35 1.7.9 2.77L9 7.59l-2.35 1.7.9-2.76-2.35-1.7h2.9L9 2.06l.9 2.77z" className= {styles.bookmark_svg}></path>
+                        }  
+                        </svg>
                         </div>
+                        {bookmarked? <div className={styles.bookmark_number}>1</div> : null}
                     </div>
                 </div> 
                 <div className={styles.QdetailBoxRight}>
@@ -166,42 +285,64 @@ const QuestionDetailBox = (match) => {
                         <MDEditor.Markdown source={question.content} /> 
                     </div>
                     <div className={styles.questionTags}>
-                        {question.tags.map((tag) => {return <div className={styles.tag_element}><Link to={`/question/tagged/?tags=${tag.name}&sorted_by=newest&page=1`} ><span className="tagInfo">{tag.name}</span></Link></div>})}
+                        {question.tags.map((tag) => {return  <div className={styles.tags} onClick={() => {goTags(tag.name)}}>{tag.name}</div>})}
                     </div>
                     <div className={styles.questionbottomBox}>
-                            <div className={styles.author_profile_bottom}>
-                                <div className={styles.author_pic}>
-                                    <img src={Author.picture===undefined? null : Author.picture} alt="Author's profile"></img>
-                                </div>
-                                <div className="author_info">
-                                    <div className="author_username">{Author.nickname===undefined? null : Author.nickname}</div>
-                                    <div className="author_reputation">reputation: {Author.reputation===undefined? null : Author.reputation}</div>
-                                </div>
+                        <div className={styles.editbox}>
+                            <div className={styles.edit_btn} onClick={() => {goEdit()}}>
+                                Edit
                             </div>
+                            <div className={styles.created_at_text}>
+                                {question.updated_at? `editted ${question.updated_at.substring(0,10)}` : null}
+                            </div>
+                        </div>
+                        <div className={styles.profile_box}>
+                            <AuthorProfile question={question}/>
+                        </div>
                     </div>
-                </div>   
-                </div>
-                <div className="q_main_comment_box">
-                        {/* <CommentList comments_all={comments}/> */}
+                    <div className="q_main_comment_box">
+                        <CommentList comments_all={comments}/>
 
-                    <div className="comments_page_btn">
-                            <Button onClick={() => {set_comment_page(comment_page+1 > max_comment? max_comment : comment_page+1)}} >next page</Button>
-                            <Button onClick={() => {set_comment_page(comment_page===1? 1 : comment_page - 1)}}>prev page</Button>
+                    <div className={styles.page_box}>
+                        {comment_page === 1? <div className={styles.page_click_no}>prev page</div> 
+                        :
+                        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page-1)}} >prev page</div> }
+                        <div className={styles.page}>
+                            {comment_page}
+                        </div>
+                        {comment_page > max_comment/30 + 1? <div className={styles.page_click_no} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> 
+                        :
+                        <div className={styles.page_click} onClick={() => {set_comment_page(comment_page > max_comment/30 + 1? max_comment : comment_page+1)}} >next page</div> }
                     </div>
                     <div className="comment_post_box_q">
-                        <CommentPostQuestion id={id}/>
+                        { postComment?
+                        <CommentPostQuestion id={id} func={setPostCommment(false)}/> : 
+                            <div className={styles.post_comment_msg} onClick={() => {setPostCommment(true)}}    >
+                                post a comment
+                            </div>
+                        }
+                        
                     </div>
                 </div>
-                <div className="ans_box">
-                    <div className="ans_box_head">
-                        {question.answer_count} Answers
+                </div>
+                </div>
+               
+                <div className={styles.ans_box}>
+                    <div className={styles.ans_head}>
+                        {question.answer_count} Answer
                     </div>
-                    <div className="sort_by_btn">
+                    <div className={styles.answer_container}>
+                        <div className="sort_by_btn">
                         <button onClick={() => {set_answer_sort("votes")}} >votes</button>
                         <button onClick={() => {set_answer_sort("activity")}}>activity</button>
                         <button onClick={() => {set_answer_sort("newest")}}>newest</button>
                     </div>
-                    <AnswerList Answers={answers} num = {question.answer_count}/>
+                    <div>
+                        <AnswerList Answers={answers} num = {question.answer_count} is_author = {is_author}/>
+                    </div>
+                    </div>
+                    
+                    
                     <div className="ans_page_btn">
                         <button onClick={() => {set_answer_page(answer_page+1 > max_page? max_page : answer_page+1)}} >next page</button>
                         <button onClick={() => {set_answer_page(answer_page===1? 1 : answer_page - 1)}}>prev page</button>
@@ -209,7 +350,9 @@ const QuestionDetailBox = (match) => {
                     <AnswerPost id={id}/>
                 </div>
             </div>
+           
         </div>
+    </div>
     )
 }
 

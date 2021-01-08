@@ -19,16 +19,15 @@ const store = createStore(enhancedReducer,  window.__REDUX_DEVTOOLS_EXTENSION__ 
 const persistor = persistStore(store);
 
 ReactDOM.render(
+  <BrowserRouter>
   <Provider store = {store}>
     <PersistGate persistor={persistor}>
-    <React.StrictMode>
-      <BrowserRouter>
+    <React.StrictMode> 
         <App />
-      </BrowserRouter>
     </React.StrictMode>
     </PersistGate>
-  </Provider>,
-
+  </Provider>
+</BrowserRouter>,
   document.getElementById('root')
 );
 

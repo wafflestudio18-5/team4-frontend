@@ -1,14 +1,14 @@
 import {useState, Fragment} from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
 
-export const CommentPostQuestion = (id_q) => {
+export const CommentPostQuestion = (id_q, func) => {
     const [content, setContent] = useState("")
     console.log(id_q.id);
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.token)
+    const token = useSelector(state => state.userInfoReducer.user.token)
 
     if (!isLoggedin) {
         return (<div>
@@ -18,67 +18,14 @@ export const CommentPostQuestion = (id_q) => {
     }
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
+      baseURL: 'https://www.wafflow.com/api/',
 
       Authorization : 'Token ' + token
     });
 
     const postCommentonQuestion = () => {
-        instance.post(`comment/question/${id_q.id}/`, {content: content})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(e=>{
-                console.log(e);
-            })
-    }
-
-    const handleKeypress = (e) => {
-        if (e.keyCode === 13) {
-            instance.post(`comment/question/${id_q.id}/`, {content: content})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(e=>{
-                console.log(e);
-            })
-          }
-        
-    }
-
-    return(
-        <Fragment>
-            <div className="comment-content">
-                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)} onKeyPress={() => {handleKeypress()}}/>
-            </div>
-        </Fragment>
-    )
-}
-
-export const CommentPostAnswer = (id_ans) => {
-
-    console.log(id_ans.id);
-    const [content, setContent] = useState("")
-
-    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.token)
-
-    if (!isLoggedin) {
-        return (<div>
-            Something to say about the Answer? Sign in to leave a Comment 
-            <Link to="/signin">Signin</Link>
-        </div>)
-    }
-
-    const instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
-
-      headers: { 'Authorization' : 'Token ' + token },
-    });
-
-    const postCommentonAnswer = () => {
         console.log(content);
-        instance.post(`comment/answer/${id_ans.id}/`, {content: content})
+        instance.post(`comment/question/${id_q.id}/`, {content: content})
             .then(res => {
                 console.log();
             })
@@ -87,9 +34,40 @@ export const CommentPostAnswer = (id_ans) => {
             })
     }
 
-    const handleKeypress = (e) => {
-        if (e.keyCode === 13) {
-            instance.post(`comment/answer/${id_ans.id}/`, {content: content})
+
+    return(
+        <Fragment>
+            <form onSubmit={() => {postCommentonQuestion()}}>
+            <div className="comment-content">   
+                <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
+            </div>
+                <button className="comment-submit-btn" type="submit">Submit</button>
+                <button onClick={() => {func()}}>cancel</button>
+            </form>
+        </Fragment>
+    )
+}
+
+
+export const CommentPostAnswer = (id_a) => {
+    const history = useHistory();
+    const [content, setContent] = useState("")
+    console.log(id_a.id);
+
+    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+    const token = useSelector(state => state.userInfoReducer.user.token)
+
+
+    const instance = axios.create({
+      baseURL: 'https://www.wafflow.com/api/',
+
+      Authorization : 'Token ' + token
+    });
+
+    const postCommentonQuestion = () => {
+        if (isLoggedin) {
+        console.log(content);
+        instance.post(`comment/answer/${id_a.id}/`, {content: content})
             .then(res => {
                 console.log();
             })
@@ -99,15 +77,16 @@ export const CommentPostAnswer = (id_ans) => {
         }
     }
 
+
     return(
         <Fragment>
+            <form onSubmit={() => {postCommentonQuestion()}}>
             <div className="comment-content">   
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
-            <button className="comment-submit-btn" onClick={() => {postCommentonAnswer()}}>
-
-                POST Comment to Answer
-            </button>
+                <button className="comment-submit-btn" type="submit">Submit</button>
+            </form>
         </Fragment>
     )
-    }
+}
+

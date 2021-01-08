@@ -1,5 +1,6 @@
 
-import {Fragment, useState, useHistory} from 'react'
+import {Fragment, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import React from 'react'
 import axios from 'axios'
 import QuestionAskGuide from './QuestionAskGuide'
@@ -10,12 +11,16 @@ import {useSelector, useDispatch} from 'react-redux'
 
 
 const QuestionAsk = () =>  {
-    const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
-    const token = useSelector(state => state.userInfoReducer.token) //redux 에서 islooedin. token 가져오기
+    const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
+    const token = useSelector(state => state.userInfoReducer.user.token) //redux 에서 islooedin. token 가져오기
+    console.log(isLoggedin);
+    console.log(token);
 
+
+    const history = useHistory();
 
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api/',
+        baseURL: 'https://www.wafflow.com/api/',
         headers: { 'Authorization' : 'Token ' + token},
       });
 
@@ -28,10 +33,11 @@ const QuestionAsk = () =>  {
     function submit() {
         console.log(title);
         console.log(body);
-        console.log(tags.replace(' ', '+'));
-        instance.post(`question/`, {title: title, content: body, tags: tags.replace(' ', '+')})
+        console.log(tags.replace('+','%2b').replace(' ', '+'));
+        instance.post("question/", {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
             .then(res => {
                 console.log(res);
+                history.go(-1)
             })
             .catch(e => {
                 console.log(e);
