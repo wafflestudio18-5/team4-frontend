@@ -16,6 +16,7 @@ import Search from './components/SearchResult/Search';
 import styles from './AppStyles.module.scss'
 import QuestionEdit from './components/Questions/QuestionEdit'
 
+import Footer from './components/Banner/Footer'
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/users/:id" component={User}/>
           <Route exact path="/users" component={Users}/>
       </Switch>
+      <Footer/>
     </div>
   );
 }

@@ -50,7 +50,7 @@ const Signup = () => {
                 console.log(res);
                 console.log("token");
                 console.log(res.token);
-                dispatch(setUserInfo({payload: res}))
+                dispatch(setUserInfo(res))
                 dispatch(Login({token : res.token}))
                 console.log("Successfully Logged in ");
             })
@@ -74,7 +74,7 @@ const Signup = () => {
             await axios.post('https://www.wafflow.com/api/user/', {'github_token' : token})
                 .then(res => {
 
-                    dispatch(setUserInfo({payload: res}))
+                    dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
 
                 })

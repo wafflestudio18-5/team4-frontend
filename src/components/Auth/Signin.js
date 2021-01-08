@@ -65,7 +65,7 @@ export const Signin = () => {
             await axios.put('https://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
                 .then(res => {
 
-                    dispatch(setUserInfo({payload: res}))
+                    dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
 
                 })
@@ -94,19 +94,8 @@ export const Signin = () => {
             <GitHubLogin clientId="1bc89bcdb1f71159016b"
             onSuccess={onSuccess}
             onFailure={onFailure}
-            redirectUri="http://wafflow.com"
-            // buttonText={
-            //     <div className={styles.profile_box}>
-            //         <div className={styles.image_box}>
-            //             <img className={styles.image} src={profileimage}></img>
-            //         </div>
-            //         <div className={styles.text}>
-            //             Login with Github
-            //         </div>
-            //     </div>
-            
-            // }
-            />
+            redirectUri="http://www.wafflow.com/"
+            buttonText="Login with Github"/>
             
 
             <div className={styles.board}>
