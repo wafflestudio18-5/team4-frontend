@@ -34,7 +34,7 @@ const Search = ({location}) => {
     console.log(query)
     return(
         <div style={{display:'flex', flexDirection:'column'}}>
-            <Typography variant="h5" component='h3'>
+            {/* <Typography variant="h5" component='h3'>
                 Search result {
                     query.user? query.tags.length? <>with tags [{query.tags.toString()}] by User {query.user} </>
                     :<>by User {query.user}</>
@@ -44,9 +44,9 @@ const Search = ({location}) => {
                 }
             </Typography>
             <div style={{display:'flex', alignItems:'flex-start'}}>
-            <LeftBanner/>
+            <LeftBanner/> */}
             <SearchResult query={query}/>
-            </div>
+            {/* </div> */}
         </div>
     )
 }

@@ -22,7 +22,7 @@ export const CommentPostQuestion = (id_q, func) => {
     const instance = axios.create({
       baseURL: 'https://www.wafflow.com/api/',
 
-      headers: {Authorization : 'Token ' + token}
+      headers: {'Accept' : "application/json",Authorization : 'Token ' + token}
     });
 
     const postCommentonQuestion = () => {
@@ -66,7 +66,7 @@ export const CommentPostAnswer = (id_a) => {
     const instance = axios.create({
       baseURL: 'https://www.wafflow.com/api/',
 
-      headers: {Authorization : 'Token ' + token}
+      headers: {'Accept' : "application/json",Authorization : 'Token ' + token}
     });
 
     const postCommentonAnswer = () => {

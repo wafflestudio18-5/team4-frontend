@@ -25,7 +25,7 @@ export const Header = () => {
 
   const instance = axios.create({
     baseURL: 'https://www.wafflow.com/api/',
-    headers: { 'Authorization' : 'Token ' + token },
+    headers: { 'Accept' : "application/json",'Authorization' : 'Token ' + token },
   });
   console.log("Header: islogged?");
   console.log(isLoggedin);

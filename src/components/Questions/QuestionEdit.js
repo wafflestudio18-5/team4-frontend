@@ -22,7 +22,7 @@ const QuestionEdit = (match) => {
 
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
-        headers: { 'Authorization' : 'Token ' + token},
+        headers: { 'Accept' : "application/json", 'Authorization' : 'Token ' + token},
       });
 
     useEffect( () => {

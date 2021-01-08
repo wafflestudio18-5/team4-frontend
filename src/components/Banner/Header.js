@@ -15,7 +15,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
 
-  const token = useSelector(state => state.isLoggedReducer.token)
+  const token = useSelector(state => state.userInfoReducer.user.token)
   const user = useSelector(state => state.userInfoReducer.user)
     let history = useHistory();
     const [command, setCommand] = useState('');

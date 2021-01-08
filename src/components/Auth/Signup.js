@@ -12,13 +12,14 @@ import styles from '../Questions/QuestionAsk.module.scss'
 
 const Signup = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const token = useSelector(state => state.userInfoReducer.user.token)
     const dispatch = useDispatch();
 
     const history = useHistory();
 
     const token_instance = axios.create({
         baseURL: 'https://github.com/',
-        headers: { 'Accept': 'application/json' },
+        headers: { 'Accept': 'application/json', Authorzation: 'Token ' + token },
       });
 
     const [username, setUsername] = useState("")

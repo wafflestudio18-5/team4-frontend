@@ -29,7 +29,7 @@ const QuestionDetailBox = (match) => {
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
 
-        headers: {Authorization: 'Token ' + token}
+        headers: {'Accept' : "application/json",Authorization: 'Token ' + token}
       });
 
     const id = match.match.params.question_id

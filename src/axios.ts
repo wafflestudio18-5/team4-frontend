@@ -62,10 +62,11 @@ export const login = (username: string, password: string, github_token: string) 
 })
 //logout
 export const logout = (token: string) => new Promise((resolve,reject) => {
+    console.log(token);
+    
     axios.defaults.headers.common['Authorization'] = token
     axios.post(`api/user/logout/`)
         .then((response) => {
-            axios.defaults.headers.common['Authorization'] = "";
             resolve(response.data)})
         .catch(e=>reject(logError(e)))//response.data.message?
 })
