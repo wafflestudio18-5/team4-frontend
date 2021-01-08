@@ -53,6 +53,8 @@
     width: 100%;
     font-family: Arial, Helvetica, sans-serif;
     flex-direction: column;
+    border-bottom: 1px solid;
+    border-color: #EFEFEF;
 }
 
 .main_box {
@@ -225,6 +227,7 @@
     font: 15px sans-serif;
     color: #242729;
     padding-top: 10px;
+    padding-bottom: 15px;
 }
 
 .questionTags {
@@ -237,6 +240,7 @@
     font: 13px Helvetica;
     color: white;
     text-decoration: none;
+    padding-bottom: 15px;
 }
 
 .tag_element {
@@ -298,7 +302,6 @@
     width: fit-content;
     height: fit-content;
     border-radius: 2px;
-    background-color: #E1ECF4;
     margin-bottom: 7px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -338,7 +341,19 @@ padding: 5px;
     vertical-align: middle;
 }
 
-.post_comment_msg {
-    font: 14px Arial;
-    color: #848D95;
+.AnswerList {
+    display: flex;
+    height: fit-content;
+    padding: 10px;
+    flex-direction: column;
+}
+
+.ans_box {
+    display: flex;
+    flex-direction: column;
+}
+
+.answer_container {
+    display: flex;
+    flex-direction: column;
 }

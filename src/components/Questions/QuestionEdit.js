@@ -1,22 +1,22 @@
-
-import {Fragment, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import React from 'react'
+import {useSelector} from 'react-redux'
 import axios from 'axios'
-import QuestionAskGuide from './QuestionAskGuide'
-import {postQuestion} from '../../axios.ts'
+import {useHistory} from 'react-router-dom'
+import {useState, useEffect} from 'react'
 import MDEditor from '@uiw/react-md-editor'
-import TagEditor from 'react-tageditor'
-import {useSelector, useDispatch} from 'react-redux'
 
 
-const QuestionAsk = () =>  {
+const QuestionEdit = (match) => {
+    const question_id = match.match.params.question_id
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.userInfoReducer.user.token) //redux 에서 islooedin. token 가져오기
+    const user_id = useSelector(state => state.userInfoReducer.user.id)
     console.log(isLoggedin);
     console.log(token);
-
-
+    //const history = useHistory();
+    const [title, setTitle] = useState("")
+    const [body, setBody] = useState("")
+    const [tags, setTags] = useState("")
+    const [permit, setPermit] = useState(false)
     const history = useHistory();
 
     const instance = axios.create({
@@ -24,17 +24,44 @@ const QuestionAsk = () =>  {
         headers: { 'Authorization' : 'Token ' + token},
       });
 
-    //const history = useHistory();
-    const [title, setTitle] = useState("")
-    const [body, setBody] = useState("")
-    const [tags, setTags] = useState("")
-
+    useEffect( () => {
+        if (!isLoggedin) {
+            setPermit(false)
+            history.go(-1);
+        }
+        if (body === "") {
+            instance.get(`question/${question_id}`)
+                .then(res => {
+                    console.log(res);
+                    const question = res.data
+                    if (question.author.id !== user_id) {
+                        setPermit(false)
+                        history.go(-1)
+                    }
+                    else {
+                        setBody(question.content)
+                        setTitle(question.title)
+                        var tags = ""
+                        question.tags.forEach(tag => {
+                            tags += (tag.name + " ")
+                        })
+                        console.log(tags);
+                        setTags(tags)
+                        setPermit(true)
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                    history.go(-1)
+                })
+        }
+    })
 
     function submit() {
         console.log(title);
         console.log(body);
         console.log(tags.replace('+','%2b').replace(' ', '+'));
-        instance.post("question/", {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
+        instance.put(`question/${question_id}/`, {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
             .then(res => {
                 console.log(res);
                 history.go(-1)
@@ -44,8 +71,19 @@ const QuestionAsk = () =>  {
             })
     }
 
+    function cancel() {
+        history.go(-1);
+    }
+
     return (
-        <Fragment>
+        <div>
+            {!(permit)? 
+            <div>
+                You Have No Permission
+            </div>    
+            
+            :
+        <div>
             <div className="qask-banner-top">
                 <div className="qask-banner-top-title">
                     Ask a public question
@@ -70,7 +108,6 @@ const QuestionAsk = () =>  {
                 value={body}
                 onChange={(e) => {console.log(e); setBody(e)}}
                 />
-                <MDEditor.Markdown source={body} />
             </div>
 
           <div className="qask-tags-box">
@@ -83,14 +120,20 @@ const QuestionAsk = () =>  {
 
                     <div className="qask-body-left-buttonbox">
                         <button onClick = {submit} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
-                            Post Your Question
+                            Save your Edit
+                        </button>
+                        <button onClick = {cancel} class="qask-btn-submit" /*TODO: Review and Post are divided in the original site*/>
+                            Cancel
                         </button>
                     </div>
                 </div>
-                <QuestionAskGuide/>
             </div>
-        </Fragment>
-    )
+        </div>
     }
+    </div>
+    )
+    
+      
+}
 
-export default QuestionAsk
+export default QuestionEdit
