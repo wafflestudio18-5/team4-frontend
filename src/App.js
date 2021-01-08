@@ -41,7 +41,7 @@ function App() {
           <Route path="/users/:id" component={User}/>
           <Route exact path="/users" component={Users}/>
       </Switch>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }

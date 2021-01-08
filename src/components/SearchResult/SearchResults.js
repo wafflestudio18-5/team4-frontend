@@ -44,7 +44,8 @@ export const SearchResultTags = ({query}) => {
     }
     
     return (
-        <div className={styles.banner}>            
+        <div className={styles.banner}>     
+        <LeftBanner/>       
         <div className={styles.board}>
             <div className={styles.search_result_head}>
                 <div className="search_result_top">              
@@ -161,7 +162,8 @@ export const  SearchResultKeywords = ({query}) => {
         )
     }
     return (
-        <div className={styles.banner}>            
+        <div className={styles.banner}>   
+        <LeftBanner/>         
         <div className={styles.board}>
             <div className={styles.search_result_head}>
                 <div className="search_result_top">              
@@ -275,6 +277,9 @@ export const SearchResultUser = ({query}) => {
     }
     return (
         !result.length? <></>:
+
+        <div className={styles.banner}>
+            <LeftBanner/>
         <div className={styles.board}>
             <div className={styles.search_result_head}>
                 <div className="search_result_top">              
@@ -331,6 +336,7 @@ export const SearchResultUser = ({query}) => {
             </div>
            
         </div>
+    </div>
         
     )
     
