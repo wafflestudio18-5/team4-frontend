@@ -166,7 +166,7 @@ export const SearchResultTags = ({location}) => {
                                 <Button title="next page" onClick = {() => {changePage(page===max_page? max_page : page+1)}}/>
                             </div>
                             </div>
-                        </div>
+                    </div>
             </div>
            
         </div>

@@ -10,6 +10,8 @@ import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux' 
 import styles from './QuestionDetailBox.module.scss'
 import MDEditor from '@uiw/react-md-editor';
+import LeftBanner from '../Banner/LeftBanner'
+import { getAllJSDocTagsOfKind } from 'typescript';
 
 
 const QuestionDetailBox = (match) => {
@@ -159,20 +161,34 @@ const QuestionDetailBox = (match) => {
             })
     }
 
+    const goAsk = () => {
+        if (isLoggedin) {
+            history.push('/question/ask');
+        }
+        else {
+            history.push('/signin')
+        }
+    }
+
     console.log(question.author.id);
     console.log(user_id);
 
     return (
         <div className={styles.board_all}>
+            <LeftBanner/>
         <div className={styles.board}>
             <div className={styles.box}>
+                <div className={styles.main_box}>
                 <div className={styles.qdetail_main_title_box}>
                     <div className={styles.qdetail_main_title}>
                         {question.title}
                     </div>
-                    <div className={styles.askq_btn}>
-                        <Link to = "question/ask">Ask a Question </Link> 
+                    <div className={styles.btn_box}>
+                        <div className={styles.askq_btn}>
+                            <div className={styles.askq} onClick={() => {goAsk()}}>Ask a Question</div>
+                        </div>
                     </div>
+                    
                 </div>
                 <div className={styles.qdetail_top_info_box}>
                     <div className={styles.qdetail_top_info}>
@@ -193,6 +209,7 @@ const QuestionDetailBox = (match) => {
                             times
                         </div>
                     </div>
+                </div>
                 </div>
                 <div className={styles.q_main_content_box}>
                 <div className = {styles.QdetailBoxLeft}>
