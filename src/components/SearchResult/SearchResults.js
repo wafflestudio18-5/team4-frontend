@@ -16,8 +16,8 @@ export const SearchResultTags = ({location}) => {
     console.log(query);
     console.log(query);
     const [result, setResult] = useState(null)
-    const [sort, setSort] = useState(query.hasOwnProperty("filter_by")? query.sorted_by : "newest")
-    const [page, setPage] = useState(query.hasOwnProperty("filter_by")? parseInt(query.page) : 1)
+    const [sort, setSort] = useState(query.hasOwnProperty("sorted_by")? query.sorted_by : "newest")
+    const [page, setPage] = useState(query.hasOwnProperty("psge")? parseInt(query.page) : 1)
     const [filter_by, setFilter] = useState(query.hasOwnProperty("filter_by")? query.filter_by : null)   
     const tags_form = query.tags.replace('+','%2b').replace(' ', '+')
     console.log(query.tags);

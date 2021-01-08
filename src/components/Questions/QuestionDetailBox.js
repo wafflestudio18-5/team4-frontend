@@ -163,6 +163,7 @@ const QuestionDetailBox = (match) => {
     console.log(user_id);
 
     return (
+        <div className={styles.board_all}>
         <div className={styles.board}>
             <div className={styles.box}>
                 <div className={styles.qdetail_main_title_box}>
@@ -259,6 +260,7 @@ const QuestionDetailBox = (match) => {
                 </div>
             </div>
         </div>
+    </div>
     )
 }
 
