@@ -76,7 +76,7 @@ const Signup = () => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.post('http://localhost:8000/api/user/', {'github_token' : token})
+            await axios.post('https://www.wafflow.com/api/user/', {'github_token' : token})
                 .then(res => {
 
                     dispatch(setUserInfo({payload: res}))

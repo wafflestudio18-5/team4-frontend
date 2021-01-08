@@ -11,7 +11,7 @@ const logError = (error: any) => {
     console.log(`${log?.config?.method} ${log?.config?.url}`)
     return log?.data
 }
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://www.wafflow.com/";
 
 
 //User APIs

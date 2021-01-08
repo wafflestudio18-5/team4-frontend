@@ -26,7 +26,7 @@ const AnswerBox = (Ans) => {
     const [max_comment, set_comment_page] = useState(0)
 
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api/',
+        baseURL: 'https://www.wafflow.com/api/',
 
         headers: {Authorization: 'Token ' + token}
       });

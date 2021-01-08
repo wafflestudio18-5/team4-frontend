@@ -12,7 +12,7 @@ export const CommentBox =  (comment) => {
     const user = useSelector(state => state.userInfoReducer.user)
 
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api/',
+        baseURL: 'https://www.wafflow.com/api/',
         headers: { 'Authorization' : 'Token ' + token},
       });
 

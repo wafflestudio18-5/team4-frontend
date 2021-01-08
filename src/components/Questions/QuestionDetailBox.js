@@ -26,7 +26,7 @@ const QuestionDetailBox = (match) => {
 
     console.log("renders!");
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api/',
+        baseURL: 'https://www.wafflow.com/api/',
 
         headers: {Authorization: 'Token ' + token}
       });

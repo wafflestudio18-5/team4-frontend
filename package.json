@@ -2,6 +2,7 @@
   "name": "wafflow",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://www.wafflow.com",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.8",

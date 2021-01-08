@@ -3,7 +3,7 @@ import axios from 'axios'
 import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
 
-export const CommentPostQuestion = (id_q) => {
+export const CommentPostQuestion = (id_q, func) => {
     const [content, setContent] = useState("")
     console.log(id_q.id);
 
@@ -18,7 +18,7 @@ export const CommentPostQuestion = (id_q) => {
     }
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
+      baseURL: 'https://www.wafflow.com/api/',
 
       Authorization : 'Token ' + token
     });
@@ -42,6 +42,7 @@ export const CommentPostQuestion = (id_q) => {
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
                 <button className="comment-submit-btn" type="submit">Submit</button>
+                <button onClick={() => {func()}}>cancel</button>
             </form>
         </Fragment>
     )
@@ -58,7 +59,7 @@ export const CommentPostAnswer = (id_a) => {
 
 
     const instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
+      baseURL: 'https://www.wafflow.com/api/',
 
       Authorization : 'Token ' + token
     });
