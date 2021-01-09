@@ -7,10 +7,9 @@ import {useHistory} from 'react-router-dom'
 
 //get id of question
 const AnswerPost = (id) => {   
-    console.log(id);
     const history = useHistory();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.user.token)
+    const token = useSelector(state => state.isLoggedReducer.token)
     const [Content, setContent] = useState("")
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',

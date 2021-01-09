@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Pagination from '@material-ui/lab/Pagination';
-
+import Grid from '@material-ui/core/Grid'
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -79,15 +79,17 @@ const Users = () => {
             .catch(console.log)
     },[loading])
     return (
-        <>
+        <div style={{padding:'2rem', margin: 'auto', width:'1190px', maxWidth:'100%'}}>
         {loading? 
             <></>:
-            users.map(user=> <UserCard key={user.id} user={user}/>
-        )}
+            <Grid container spacing={3}>
+            {users.map(user=> (<Grid item xs={4}><UserCard key={user.id} user={user}/></Grid>))}
+            </Grid>
+        }
         <div style={{display:'flex', justifyContent:'center', padding:'0.5rem'}}>
         <Pagination count={pageCount} showFirstButton showLastButton />
         </div>
-        </>
+        </div>
     )
 }
 export default Users;

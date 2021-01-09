@@ -14,15 +14,8 @@ import User from './components/User/User';
 import Search from './components/SearchResult/Search';
 import QuestionEdit from './components/Questions/QuestionEdit'
 
-import Footer from './components/Banner/Footer'
-
 function App() {
-
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-
-  console.log("isLogged?");
-  console.log(isLoggedin);
-
   return (
     <div>
       <Header/>

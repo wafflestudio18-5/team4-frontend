@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { ObjectFlags, resolveModuleName } from 'typescript';
 import { UserInterface, UserEditInterface, LoginInfoInterface, QuestionInterface, QuestionEditInterface } from './Formats'
 
 //TODO: baseUrl, token needs to be updated to an exact value

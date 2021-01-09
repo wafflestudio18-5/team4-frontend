@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'
 import defaultPicture from '../../profile_image.png'
-
+import axios from 'axios'
 import {Logout, removeUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux' 
 
@@ -15,13 +15,14 @@ export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
 
-  const token = useSelector(state => state.userInfoReducer.user.token)
+  const token = useSelector(state => state.isLoggedReducer.token)
   const user = useSelector(state => state.userInfoReducer.user)
     let history = useHistory();
     const [command, setCommand] = useState('');
   const signout = () => {
     logout(`Token ${token}`)
       .then(() => {
+        axios.defaults.headers.common['Authorization'] = ''
         dispatch(Logout());
         dispatch(removeUserInfo())
         history.go(-1)

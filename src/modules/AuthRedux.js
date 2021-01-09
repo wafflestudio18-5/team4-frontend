@@ -1,9 +1,10 @@
 /* eslint-disable default-case */
 // Login 관련 Actions
-export const Login = (payload) => {
+export const Login = (token) => {
+    console.log(token)
     return {
         type: "LOGIN",
-        token: payload
+        token
     }
 }
 
@@ -32,8 +33,8 @@ export const isLoggedReducer = (state={loggedin: false, token: null}, action) =>
     switch(action.type) {
         case "LOGIN":
             console.log("login token");
-            console.log(action.token.token);
-            return {loggedin: true, token: action.token.token}
+            console.log(action);
+            return {loggedin: true, token: action.token}
         case "LOGOUT":
             console.log("logout!");
             return {loggedin : false, token: null}

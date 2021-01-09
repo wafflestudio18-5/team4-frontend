@@ -7,19 +7,18 @@ import {postUser} from '../../axios'
 import * as config from '../../config'
 import {Login, setUserInfo, } from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
-
+import styles from '../Questions/QuestionAsk.module.scss'
 
 
 const Signup = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
-    const token = useSelector(state => state.userInfoReducer.user.token)
     const dispatch = useDispatch();
 
     const history = useHistory();
 
     const token_instance = axios.create({
         baseURL: 'https://github.com/',
-        headers: { 'Accept': 'application/json', Authorzation: 'Token ' + token },
+        headers: { 'Accept': 'application/json' },
       });
 
     const [username, setUsername] = useState("")
@@ -27,6 +26,7 @@ const Signup = () => {
     const [email, setEmail] = useState("")
     const [nickname, setNickname] = useState("")
     const [warn, setWarn] = useState("")
+
     const onChangeUsername = (username) => {
         setWarn("")
         setUsername(()=>username)
@@ -52,8 +52,9 @@ const Signup = () => {
                 console.log("token");
                 console.log(res.token);
                 dispatch(setUserInfo(res))
-                dispatch(Login({token : res.token}))
+                dispatch(Login(res.token))
                 console.log("Successfully Logged in ");
+                history.push('/')
             })
             .catch(error => {
                 console.log(error);
@@ -61,38 +62,7 @@ const Signup = () => {
             })
     }
 
-    const onSuccess = async({code}) => {
-        await axios.post("https://github.com/login/oauth/access_token/", {params:{
-            client_username: config.GITHUB_CLIENT_USERNAME,
-            client_secret: config.GITHUB_CLIENT_SECRET,
-            code: code,
-            redirect_uri: "https://wafflow.com"
-        }})
-        .then(async res => {
-            const token = res.access_token.substring(0,40)
-            //redux에 토큰 저장
-            console.log("github token acquired");
-            await axios.post('https://www.wafflow.com/api/user/', {'github_token' : token})
-                .then(res => {
 
-                    dispatch(setUserInfo(res))
-                    dispatch(Login({token : res.token}))
-
-                })
-                .catch(e => {
-                    console.log(e);
-                    setWarn("Authentication failed")
-                })
-        })
-        .catch(e => {
-            console.log(e);
-            alert("Failed to acquire Token from Github")
-        })
-    }
-
-    const onFailure = (e) => {
-        console.log(e);
-    }
     if(isLoggedin) {
         return (
             <Fragment>
@@ -101,22 +71,56 @@ const Signup = () => {
         )
     }
     return (
-        <> 
-            <GitHubLogin clientId="1bc89bcdb1f71159016b"
-            onSuccess={onSuccess}
-            onFailure={onFailure}
-            redirectUri="https://wafflow.com/"
-            buttonText="Login with Github"/>
-
-            <form className="signup-form" style={{display:'flex', flexDirection:'column'}}  onSubmit={e=>signup(e)}>
-                <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>onChangeUsername(e.target.value)}/>
-                <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>onChangePassword(e.target.value)}/> 
-                <label>Nickname</label><input required type="text" className="nickname-input" value={nickname} onChange={(e)=>onChangeNickname(e.target.value)}/> 
-                <label>Email</label><input required type="text" className="email-input"  value={email} onChange={(e)=>onChangeEmail(e.target.value)}/>
-                <button className="signup-btn">Sign Up</button>
-                <div className="warn">{warn}</div>
-            </form>
-        </>
+        <div>
+        <div className={styles.box12}> 
+            <div className={styles.eboard_all12}>
+            <div className={styles.box_top}>
+                <div className={styles.box13}>
+                    SignUp
+                </div>
+            </div>
+            <div className={styles.box}>
+            
+            <div className={styles.board}>
+                <div className={styles.top}>
+                </div>
+                <div className={styles.body}>
+                    <div className={styles.body_sub}>
+                        
+    
+                    <div className={styles.title_box}>
+                    <div className={styles.top_sub}>Username</div>
+                    <div className={styles.input_box}>
+                        <input className={styles.input_title} value={username} onChange={e=>{onChangeUsername(e.target.value)}}/>
+    
+                    </div>
+                </div>
+                <div classNameName="qask-body-box">
+                    <div className={styles.top_sub}>Nickname</div>
+                    <input className={styles.input_title} value={nickname} onChange={e=>{onChangeNickname(e.target.value)}}/>
+                </div>  
+                <div classNameName="qask-body-box">
+                    <div className={styles.top_sub}>Password</div>
+                    <input type="password" className={styles.input_title} value={password} onChange={e=>{onChangePassword(e.target.value)}}/>
+                </div>      
+                <div classNameName="qask-body-box">
+                    <div className={styles.top_sub}>Email</div>
+                    <input type="email" className={styles.input_title} value={email} onChange={e=>{onChangeEmail(e.target.value)}}/>
+                </div>                     
+                    </div>
+    
+                </div>
+                <div className="qask-body-left-buttonbox">
+                            <div onClick = {() => {signup()}} className={styles.btn} /*TODO: Review and Post are divided in the original site*/>
+                                Sign up
+                            </div>
+                        </div>
+            </div>
+           
+            </div>
+        </div>
+        </div>
+</div>       
        
     )
 }
