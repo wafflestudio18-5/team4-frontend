@@ -28,7 +28,7 @@ const AnswerBox = (Ans) => {
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
 
-        headers: {'Accept' : "application/json",Authorization: 'Token ' + token}
+        headers: {'Accept' : "application/json",Authorization: isLoggedin? `Token ${token}`:''}
       });
 
     useEffect(() => {
@@ -65,7 +65,6 @@ const AnswerBox = (Ans) => {
         instance.delete(`/answer/${Answer.id}/`)
             .then(res => {
                 console.log(res);
-                history.go(0);
             })
             .catch (e => {
                 console.log(e);
