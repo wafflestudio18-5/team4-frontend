@@ -3,7 +3,7 @@ import axios from 'axios'
 import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
 
-export const CommentPostQuestion = (id_q, func) => {
+export const CommentPostQuestion = (id_q) => {
     const [content, setContent] = useState("")
     console.log(id_q.id);
 
@@ -44,7 +44,6 @@ export const CommentPostQuestion = (id_q, func) => {
                 <input className="content-input" value={content} onChange={({target:{value}})=>setContent(value)}/>
             </div>
                 <button className="comment-submit-btn" type="submit">Submit</button>
-                <button onClick={() => {func()}}>cancel</button>
             </form>
         </Fragment>
     )

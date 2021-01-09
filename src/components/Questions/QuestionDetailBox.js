@@ -316,7 +316,7 @@ const QuestionDetailBox = (match) => {
                     </div>
                     <div className="comment_post_box_q">
                         { postComment?
-                        <CommentPostQuestion id={id} func={setPostCommment(false)}/> : 
+                        <CommentPostQuestion id={id}/> : 
                             <div className={styles.post_comment_msg} onClick={() => {setPostCommment(true)}}    >
                                 post a comment
                             </div>

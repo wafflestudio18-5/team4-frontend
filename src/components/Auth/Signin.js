@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {useHistory, Redirect} from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {useHistory, Redirect, Link} from 'react-router-dom'
 
 import GitHubLogin from 'react-github-login';
 import axios from 'axios'
@@ -34,6 +34,19 @@ export const Signin = () => {
         setPassword(password)
     }
 
+    useEffect(() => {
+        // After requesting Github access, Github redirects back to your app with a code parameter
+        const url = window.location.href;
+        const hasCode = url.includes("?code=");
+    
+        // If Github API returns the code parameter
+        if (hasCode) {
+            const newUrl = url.split("?code=");
+            const code = newUrl[1]
+            onSuccess(code)
+          };
+    })
+
     const signin = async (e) => {
         e.preventDefault()
         axios.defaults.headers.common['Authorization'] = ''
@@ -50,8 +63,13 @@ export const Signin = () => {
                 setWarn("Authentication failed")
             })
     }
+
+    const goGit = () => {
+        window.open(`https://github.com/login/oauth/authorize?scope=user&client_id=1bc89bcdb1f71159016b&redirect_uri=https://www.wafflow.com/signin/`)
+    }
     
-    const onSuccess = async({code}) => {
+    const onSuccess = async(code) => {
+        console.log(code);
         console.log(code);
         await token_instance.post("https://github.com/login/oauth/access_token/", {params:{
             client_username: config.GITHUB_CLIENT_USERNAME,
@@ -65,9 +83,11 @@ export const Signin = () => {
             console.log("github token acquired");
             await axios.put('https://www.wafflow.com/api/user/login/', {params:{'github_token' : token}})
                 .then(res => {
+                    console.log(res);
                     alert("Login success");
                     dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
+                    history.go(0)
 
                 })
                 .catch(e => {
@@ -87,7 +107,6 @@ export const Signin = () => {
     if(isLoggedin) {
         return (
             <Redirect to='/'/>
-
         )
     }
     return (
@@ -98,10 +117,12 @@ export const Signin = () => {
             <div className={styles.box_top}>
                 <div className={styles.box}>
                 <div className={styles.top_sub1}>
-                        <GitHubLogin clientId="1bc89bcdb1f71159016b"
-                        onSuccess={() => {onSuccess()}}
-                        onFailure={() => {onFailure()}}
-                        redirectUri="http://wafflow.com"/>
+                    
+                    {/* <link href={`https://github.com/login/oauth/authorize?scope=user&client_id=1bc89bcdb1f71159016b&redirect_uri=https://www.wafflow.com/signin/`}>Login with Github</link> */}
+                 
+                    <div onClick={() => {goGit()}}>
+                        Login with Github
+                    </div>
                     </div>
                 </div>
             </div>
@@ -142,6 +163,7 @@ export const Signin = () => {
         </div>
 </div>       
     )
-}
 
-export default Signin;
+    }
+
+export default Signin
