@@ -8,7 +8,7 @@ export const CommentBox =  (comment) => {
     const dispatch = useDispatch();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
   
-    const token = useSelector(state => state.userInfoReducer.user.token)
+    const token = useSelector(state => state.isLoggedReducer.token)
     const user = useSelector(state => state.userInfoReducer.user)
 
     const instance = axios.create({

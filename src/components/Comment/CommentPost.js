@@ -8,7 +8,7 @@ export const CommentPostQuestion = (id_q, func) => {
     console.log(id_q.id);
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.user.token)
+    const token = useSelector(state => state.isLoggedReducer.token)
 
     if (!isLoggedin) {
         return (<div>
@@ -57,7 +57,7 @@ export const CommentPostAnswer = (id_a) => {
     console.log(id_a.id);
 
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.user.token)
+    const token = useSelector(state => state.isLoggedReducer.token)
 
 
     const instance = axios.create({

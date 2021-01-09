@@ -8,7 +8,7 @@ import MDEditor from '@uiw/react-md-editor'
 const QuestionEdit = (match) => {
     const question_id = match.match.params.question_id
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.user.token) //redux 에서 islooedin. token 가져오기
+    const token = useSelector(state => state.isLoggedReducer.token) //redux 에서 islooedin. token 가져오기
     const user_id = useSelector(state => state.userInfoReducer.user.id)
     console.log(isLoggedin);
     console.log(token);
