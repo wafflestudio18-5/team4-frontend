@@ -13,7 +13,7 @@ const AnswerPost = (id) => {
     const [Content, setContent] = useState("")
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
-        headers: { 'Accept' : "application/json",'Authorization' : 'Token ' + token},
+        headers: { 'Accept' : "application/json",'Authorization' : isLoggedin? `Token ${token}`:''},
       });
     const postAns = (content) => {
         console.log(Content);
@@ -22,7 +22,6 @@ const AnswerPost = (id) => {
                 .then(res => {
                     setContent("")
                     console.log(res);
-                    history.go(0);
                 })
                 .catch(e => {
                     console.log(e);
