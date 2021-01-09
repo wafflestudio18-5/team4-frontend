@@ -19,7 +19,7 @@ const QuestionDetailBox = (match) => {
     const history = useHistory();
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     console.log(isLoggedin);
-    const token = useSelector(state => state.userInfoReducer.user.token)
+    const token = useSelector(state => state.isLoggedReducer.token)
     console.log(token);
     const user_id = useSelector(state => state.userInfoReducer.user.id)
     console.log(user_id);
@@ -104,10 +104,10 @@ const QuestionDetailBox = (match) => {
     }, [])
 
     if (!id instanceof Number) {
-        return  (<Fragment>Wrong Question Id!</Fragment>)
+        return  (<Fragment></Fragment>)
     }
     if (question.title === undefined) {
-        return (<Fragment>Wrong Question Id!</Fragment>)
+        return (<Fragment></Fragment>)
     }
 
 
@@ -205,7 +205,7 @@ const QuestionDetailBox = (match) => {
     }
 
     const goTags = (tag_name) => {
-        history.push(`/question/tagged/?tags=${tag_name}&page=1&sorted_by=newest`);
+        history.push(`/search?q=[${tag_name}]`);
     }
 
     console.log(question.author.id);

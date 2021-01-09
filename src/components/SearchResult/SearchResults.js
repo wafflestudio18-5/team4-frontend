@@ -52,7 +52,7 @@ export const SearchResultTags = ({query}) => {
                 </div>
                 <div className={styles.divider15}/>
                 <div className="result_head_sub">
-                    Results for tags {query.tags}
+                    Results for tags {query.tags.join(', ')}
                 </div>
             </div>
             <div className={styles.search_result_body}>
@@ -170,7 +170,7 @@ export const  SearchResultKeywords = ({query}) => {
                 </div>
                 <div className={styles.divider15}/>
                 <div className="result_head_sub">
-                    Results for keywords {query.keywords}
+                    Results for keywords {query.keywords.join(', ')}
                 </div>
             </div>
             <div className={styles.search_result_body}>

@@ -28,7 +28,7 @@ const QuestionItem= (Question) => {
     }
 
     const goTags = (tag_name) => {
-        history.push(`/question/tagged/?tags=${tag_name}&page=1&sorted_by=newest/`);
+        history.push(`/search?q=[${tag_name}]`);
     }
 
 
@@ -72,7 +72,7 @@ const QuestionItem= (Question) => {
                     </div>
                     <div className={styles.infobox}>
                         <div className={styles.tags_list}>
-                            {Question_info.tags.map((tag) => {return  <div className={styles.tags} onClick={() => {goTags(tag.name)}}>{tag.name}</div>})}
+                            {Question_info.tags.map((tag) => {return  <div key={tag.id} className={styles.tags} onClick={() => {goTags(tag.name)}}>{tag.name}</div>})}
                         </div>
                         <AuthorProfile question={Question_info}/>
                     </div>

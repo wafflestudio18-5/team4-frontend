@@ -36,6 +36,7 @@ export const Signin = () => {
 
     const signin = async (e) => {
         e.preventDefault()
+        axios.defaults.headers.common['Authorization'] = ''
         login(username, password)
             .then(user => {
                 console.log(user)
@@ -95,7 +96,7 @@ export const Signin = () => {
         <div className={styles.box12}> 
             <div className={styles.board_all12}>
             <div className={styles.box_top}>
-                <div classNam={styles.box}>
+                <div className={styles.box}>
                 <div className={styles.top_sub1}>
                         <GitHubLogin clientId="1bc89bcdb1f71159016b"
                         onSuccess={() => {onSuccess()}}
@@ -121,9 +122,9 @@ export const Signin = () => {
     
                     </div>
                 </div>
-                <div classNameName="qask-body-box">
+                <div className="qask-body-box">
                     <div className={styles.top_sub}>Password</div>
-                    <input className={styles.input_title} value={password} onChange={(e)=>{passwordOnChange(e.target.value)}}/>
+                    <input type='password' className={styles.input_title} value={password} onChange={(e)=>{passwordOnChange(e.target.value)}}/>
                 </div>                 
                     </div>
     

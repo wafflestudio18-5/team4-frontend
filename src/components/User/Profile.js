@@ -30,7 +30,6 @@ const useCardStyles = makeStyles({
 
 function UserCard({user}) {
   const classes = useCardStyles();
-    console.log(defaultPicture)
   return (
     <Card className={classes.root}>
       <CardActionArea style={{display:'flex', flexFlow: 'row nowrap', justifyContent:'flex-start', alignContent:'flex-start'}}>

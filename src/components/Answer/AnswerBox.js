@@ -19,7 +19,7 @@ const AnswerBox = (Ans) => {
     console.log(Answer);
     const [comment, setComment] = useState([])
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-    const token = useSelector(state => state.userInfoReducer.user.token)
+    const token = useSelector(state => state.isLoggedReducer.token)
     const user_id = useSelector(state => state.userInfoReducer.user.id)
     const [comment_page, setCommentPage] = useState(1)
     const [vote, setVote] = useState(Answer.vote)
