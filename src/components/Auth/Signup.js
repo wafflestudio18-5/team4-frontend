@@ -12,13 +12,14 @@ import {useSelector, useDispatch} from 'react-redux'
 
 const Signup = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
+    const token = useSelector(state => state.userInfoReducer.user.token)
     const dispatch = useDispatch();
 
     const history = useHistory();
 
     const token_instance = axios.create({
         baseURL: 'https://github.com/',
-        headers: { 'Accept': 'application/json' },
+        headers: { 'Accept': 'application/json', Authorzation: 'Token ' + token },
       });
 
     const [username, setUsername] = useState("")
@@ -71,7 +72,7 @@ const Signup = () => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.post('http://localhost:8000/api/user/', {'github_token' : token})
+            await axios.post('https://www.wafflow.com/api/user/', {'github_token' : token})
                 .then(res => {
 
                     dispatch(setUserInfo(res))

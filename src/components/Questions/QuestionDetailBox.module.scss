@@ -22,6 +22,11 @@
     height: 5px;
 }
 
+.board_all {
+    display: flex;
+    flex-direction: row;
+}
+
 
 .board {
     /* Frame 16 */
@@ -37,7 +42,7 @@
     position: absolute;
     width: 50%;
     height: max-content;
-    left: 210px;
+    left: 350px;
     top: 53px;
 
 }
@@ -50,26 +55,62 @@
     flex-direction: column;
 }
 
-.qdetail_main_title_box {
+.main_box {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: fit-content;
+    border-bottom: 1px solid;
+    border-bottom-color: #EFEFEF;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.qdetail_main_title_box {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     margin: 3px 2px;
     height: max-content;
+    justify-content: space-between;
 }
 
 .qdetail_main_title {
-    font:25px Arial;
+    font:27px Arial;
+    color: #3C4146;
+
+}
+
+.btn_box {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
 }
 
 .askq_btn {
     align-items:center;
+    align-self: flex-end;
     text-align: end;
     //FIXME: 
 }
 
+.askq {
+    background-color: #0095FF;
+    color: #FFFFFF;
+    width: 100px;
+    height: 25px;
+    text-align: center;
+    font: 13px Arial;
+    vertical-align:center;
+    padding-top: 9px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
 .qdetail_top_info_box {
-    font: 15px sans-serif;
+    font: 13px sans-serif;
 }
 
 .qdetail_top_info {
@@ -83,20 +124,22 @@
 }
 
 .asked_at {
-    color: #919191;
+    color: #6A737C;
     margin: 0px 0px;
 }
 
 .answered_number {
     margin: 0px 4px;
+    color: #242729;
 }
 
 .view_number {
-    margin: 0px 4px
+    margin: 0px 4px;
+    color: #242729;
 }
 
 .view_count {
-    color: #919191;
+    color: #6A737C;
     margin: 0px px;
 }
 
@@ -116,9 +159,19 @@
 .QdetailBoxLeft {
     display: flex;
     flex-direction: column;
+    width: fit-content;
     flex: 16%;
     padding: 5px;
     margin: 5px 8px;
+}
+
+.arrow {
+    fill: #BCC0C4;
+    cursor: pointer;
+}
+
+.arrowbox {
+    cursor: pointer;
 }
 
 .VoteBox {
@@ -126,16 +179,26 @@
     font-family: Arial, Helvetica, sans-serif;
     flex-direction: column;
     text-align: center;
+    padding: 0px;
 }
 
 .votes {
     padding: 3px;
-    margin: 6px 0px;
+    margin: 0px 0px;
+    font: 21px Arial;
+}
+
+.vote {
+    color: #6A737C;
 }
 
 .bookmark_box {
-    margin: 30px 0px;
+    margin: 10px 0px;
     text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 
@@ -143,8 +206,25 @@
 
 }
 
+.bookmark_number {
+    color: #cea51b;
+    font: 13px Arial;
+}
+
+.bookmark_svg {
+    fill: #BCC0C4;
+    cursor: pointer;
+}
+
+.bookmarkOn_svg {
+    fill: #cea51b;
+    cursor: pointer;
+}
+
 .questionContent {
-    font: 19px sans-serif;
+    font: 15px sans-serif;
+    color: #242729;
+    padding-top: 10px;
 }
 
 .questionTags {
@@ -169,7 +249,96 @@
 
 .questionbottomBox {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: space-between;
     border: 2px black;
 }
 
+.edit_btn {
+    color: #848D95;
+    font: 13px Arial;
+    padding-right: 15%;
+}
+
+.editbox {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+
+.created_at_text {
+    font: 12px Arial;
+    color: #0077CC;
+    width: 300px;
+    padding-left: 10%;
+}
+
+.tags {
+    color: #39739D;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-right: 4px;
+    background-color: #E1ECF4;
+    font: 12px Arial;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.tags_list {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+
+}
+
+.profile_box {
+    width: fit-content;
+    height: fit-content;
+    border-radius: 2px;
+    background-color: #E1ECF4;
+    margin-bottom: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.page_click_no {
+    width: fit-content;
+    height: fit-content;
+    padding: 2px 2px 6px 6px;
+    color: #3C4146;
+    border: 1px solid;
+    border-color: #D7D9E2;
+    border-radius: 3px;
+}
+
+.page_click {
+    width: fit-content;
+    height: fit-content;
+    font: 13px Arial;
+    padding: 3px 3px 7px 7px;
+    color: #FFFFFF;
+    background-color: #F48024;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.page_box {
+display: flex;
+flex-direction: row;
+font: 14px Arial;
+padding: 5px;
+}
+
+.page {
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: middle;
+}
+
+.post_comment_msg {
+    font: 14px Arial;
+    color: #848D95;
+}

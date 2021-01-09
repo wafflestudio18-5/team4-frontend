@@ -6,20 +6,19 @@ import Main from './components/Main'
 import QuestionDetailBox from './components/Questions/QuestionDetailBox'
 import {SearchResultUser, SearchResultTags, SearchResultKeywords} from './components/SearchResult/SearchResults'
 import Header from './components/Banner/Header';
-import LeftBanner from './components/Banner/LeftBanner'
-import {useSelector, useDispatch} from 'react-redux' 
+import {useSelector} from 'react-redux' 
 import {Signin} from './components/Auth/Signin'
 import QuestionAsk from './components/Questions/QuestionAsk'
 import Signup from './components/Auth/Signup';
 import User from './components/User/User';
 import Search from './components/SearchResult/Search';
-import styles from './AppStyles.module.scss'
+import QuestionEdit from './components/Questions/QuestionEdit'
+
 import Footer from './components/Banner/Footer'
 
 function App() {
 
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
-  const token = useSelector(state => state.isLoggedReducer.token)
 
   console.log("isLogged?");
   console.log(isLoggedin);
@@ -35,13 +34,14 @@ function App() {
           <Route exact path="/question/keywords" component={SearchResultKeywords}/>
           <Route exact path="/search" component={Search}/>
           <Route exact path="/question/user/:user_id" component={SearchResultUser}/>
+          <Route exact path="/question/edit/:question_id" component={QuestionEdit}/>
           <Route exact path="/question/tagged" component={SearchResultTags}/>
           <Route exact path="/question/:question_id" component={QuestionDetailBox}/>
           <Route path="/users/me" component={Me}/>
           <Route path="/users/:id" component={User}/>
           <Route exact path="/users" component={Users}/>
       </Switch>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }

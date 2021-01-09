@@ -2,6 +2,7 @@
   "name": "wafflow",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://www.wafflow.com",
   "dependencies": {
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
     "@fontsource/roboto": "^4.1.0",
@@ -13,6 +14,7 @@
     "@uiw/react-md-editor": "^2.0.3",
     "axios": "^0.21.1",
     "babel-preset-es2015": "^6.24.1",
+    "material-ui": "^0.20.2",
     "node-sass": "4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

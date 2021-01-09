@@ -1,0 +1,40 @@
+
+.box {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 37px;
+    border-radius: 4px;
+    padding: 14px;
+    text-align: center;
+    padding-left: 40%;
+    padding-top: 300px;
+    padding-bottom: 20px;
+}
+
+.image_box {
+    height: 18px;
+    width: 18px;
+    object-fit: cover;
+}
+
+.image {
+    object-fit: cover;
+}
+
+.text {
+    font: 13px Arial;
+    color: #FFFFFF;
+}
+
+.board {
+    padding-top: 30px;
+    width: 283px;
+    height: 237px;
+    display: flex;
+    flex-direction: column;
+}
+
+.username_box {
+    
+}

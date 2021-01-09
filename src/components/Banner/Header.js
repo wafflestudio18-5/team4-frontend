@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import {logout} from '../../axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
-import axios from 'axios'
 import logo from '../../logo.png'
 import defaultPicture from '../../profile_image.png'
 
@@ -16,7 +15,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
 
-  const token = useSelector(state => state.isLoggedReducer.token)
+  const token = useSelector(state => state.userInfoReducer.user.token)
   const user = useSelector(state => state.userInfoReducer.user)
     let history = useHistory();
     const [command, setCommand] = useState('');

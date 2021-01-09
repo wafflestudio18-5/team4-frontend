@@ -1,6 +1,4 @@
 import React, {useState} from 'react'
-import {useAuth} from '../../context/auth'
-
 import {useHistory, Redirect} from 'react-router-dom'
 
 import GitHubLogin from 'react-github-login';
@@ -9,6 +7,9 @@ import {login} from '../../axios'
 import * as config from '../../config'
 import {Login, setUserInfo} from '../../modules/AuthRedux'
 import {useSelector, useDispatch} from 'react-redux'
+
+import styles from '../Questions/QuestionAsk.module.scss'
+import profileimage from '../../profile_image.png'
 
 
 export const Signin = () => {
@@ -39,7 +40,7 @@ export const Signin = () => {
             .then(user => {
                 console.log(user)
                 dispatch(setUserInfo(user))
-                dispatch(Login({token : user.token}))
+                dispatch(Login(user.token))
                 history.go(-1)
 
                 })
@@ -50,19 +51,20 @@ export const Signin = () => {
     }
     
     const onSuccess = async({code}) => {
+        console.log(code);
         await token_instance.post("https://github.com/login/oauth/access_token/", {params:{
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://www.wafflow.com/api/"
+            redirect_uri: "https://wafflow.com"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('http://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
+            await axios.put('https://www.wafflow.com/api/user/login/', {params:{'github_token' : token}})
                 .then(res => {
-
+                    alert("Login success");
                     dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
 
@@ -88,22 +90,56 @@ export const Signin = () => {
         )
     }
     return (
-        <> 
-            <GitHubLogin clientId="1bc89bcdb1f71159016b"
-            onSuccess={onSuccess}
-            onFailure={onFailure}
-            redirectUri="http://www.wafflow.com/api/"
-            buttonText="Login with Github"/>
-            
 
-            <form onSubmit={e=>signin(e)} className="login-form" >
-                <label>Username</label><input required type="text" className="id-input"  value={username} onChange={(e)=>usernameOnChange(e.target.value)}/>
-                <label>Password</label><input required type="password" className="password-input" value={password} onChange={(e)=>passwordOnChange(e.target.value)}/> 
-                <button className="login-button">Login</button>
-                <div className="warn" >{warn}</div>
-            </form>
-        </>
-       
+        <div>
+        <div className={styles.box12}> 
+            <div className={styles.board_all12}>
+            <div className={styles.box_top}>
+                <div classNam={styles.box}>
+                <div className={styles.top_sub1}>
+                        <GitHubLogin clientId="1bc89bcdb1f71159016b"
+                        onSuccess={() => {onSuccess()}}
+                        onFailure={() => {onFailure()}}
+                        redirectUri="http://wafflow.com"/>
+                    </div>
+                </div>
+            </div>
+            <div className={styles.box}>
+            
+            <div className={styles.board}>
+                <div className={styles.top}>
+
+                </div>
+                <div className={styles.body}>
+                    <div className={styles.body_sub}>
+                        
+    
+                    <div className={styles.title_box}>
+                    <div className={styles.top_sub}>Username</div>
+                    <div className={styles.input_box}>
+                        <input className={styles.input_title} value={username} onChange={(e)=>{usernameOnChange(e.target.value)}}/>
+    
+                    </div>
+                </div>
+                <div classNameName="qask-body-box">
+                    <div className={styles.top_sub}>Password</div>
+                    <input className={styles.input_title} value={password} onChange={(e)=>{passwordOnChange(e.target.value)}}/>
+                </div>                 
+                    </div>
+    
+                </div>
+                <div className="qask-body-left-buttonbox">
+                            <div onClick = {e => {signin(e)}} className={styles.btn} /*TODO: Review and Post are divided in the original site*/>
+                                Sign in
+                            </div>
+                        </div>
+            </div>
+           
+            </div>
+        </div>
+
+        </div>
+</div>       
     )
 }
 
