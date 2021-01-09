@@ -51,6 +51,7 @@ export const Signin = () => {
     }
     
     const onSuccess = async({code}) => {
+        console.log(code);
         await token_instance.post("https://github.com/login/oauth/access_token/", {params:{
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
@@ -97,8 +98,8 @@ export const Signin = () => {
                 <div classNam={styles.box}>
                 <div className={styles.top_sub1}>
                         <GitHubLogin clientId="1bc89bcdb1f71159016b"
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}
+                        onSuccess={() => {onSuccess()}}
+                        onFailure={() => {onFailure()}}
                         redirectUri="http://wafflow.com"/>
                     </div>
                 </div>
