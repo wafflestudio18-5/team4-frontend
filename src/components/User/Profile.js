@@ -76,7 +76,8 @@ const useListStyles = makeStyles((theme) => ({
     },
   }));
   
-  function ItemList({activity, items}) {
+  function ItemList({activity, user, items}) {
+    const history = useHistory()
     const classes = useListStyles();
     return (
       <div className={classes.root}>
@@ -88,14 +89,14 @@ const useListStyles = makeStyles((theme) => ({
                       </ListItem>:
                   activity==='Tags'?
                       items.map(item => 
-                          <ListItem key={item.id}>
+                          <ListItem key={item.id} onClick={()=>history.push(`/search?q=user:${user.id}+[${item.name}]`)}>
                           <Button style={{height:'1.5rem', fontSize:'1rem', color:'#5eba7d', borderColor:'#5eba7d'}} disabled variant="outlined" size='small' component='label'>{item.score}</Button>
                               <ListItemText style={{paddingLeft:'1rem'}} primary={item.name}/>
                               <ListItemText style={{paddingLeft:'1rem', textAlign:'right'}} primary={`${item.posts} posts`}/>
                           </ListItem>
                       ):
                       items.map(item => 
-                          <ListItem key={item.id}>
+                          <ListItem key={item.id} onClick={()=>history.push(`/question/${item.id}`)}>
                               <Button style={{height:'1.5rem', fontSize:'1rem', color:'#5eba7d', borderColor:'#5eba7d'}} disabled variant="outlined" size='small' component='label'>{item.vote}</Button>
                               <ListItemText style={{paddingLeft:'1rem'}} primary={item.title}/>
                               <ListItemText style={{paddingLeft:'1rem', textAlign:'right'}} primary={item.created_at.substring(0,10)}/>
@@ -156,7 +157,7 @@ const Profile = ({user}) => {
         <div style={{padding:'1rem 0 0.5rem 0.5rem', display:'flex', flexFlow:'row wrap', alignItems:'center', alignContent:'space-between', justifyContent:'space-between'}}>
             <Button component='label' style={{height:'1rem', marginBottom:'0.5rem', textTransform:'initial'}} size='large' color="primary">{`Top Tags`}</Button>
         </div>
-        <ItemList activity='Tags' items={topTags}/>
+        <ItemList activity='Tags' user={user} items={topTags}/>
         </div>
 
         <div className="user-top-posts">
@@ -173,7 +174,7 @@ const Profile = ({user}) => {
             </ButtonGroup>
             </div>
         </div>
-        <ItemList activity={category} items={topPosts}/>
+        <ItemList activity={category} user={user} items={topPosts}/>
         </div>
 
         </div>

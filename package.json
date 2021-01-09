@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "https://www.wafflow.com",
   "dependencies": {
+    "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
     "@fontsource/roboto": "^4.1.0",
     "@material-ui/core": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
