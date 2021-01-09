@@ -56,15 +56,15 @@ export const Signin = () => {
             client_username: config.GITHUB_CLIENT_USERNAME,
             client_secret: config.GITHUB_CLIENT_SECRET,
             code: code,
-            redirect_uri: "http://wafflow.com"
+            redirect_uri: "https://wafflow.com"
         }})
         .then(async res => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('https://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
+            await axios.put('https://www.wafflow.com/api/user/login/', {params:{'github_token' : token}})
                 .then(res => {
-
+                    alert("Login success");
                     dispatch(setUserInfo(res))
                     dispatch(Login({token : res.token}))
 
