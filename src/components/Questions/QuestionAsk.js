@@ -42,6 +42,7 @@ const QuestionAsk = () =>  {
         instance.post("question/", {title: title, content: body, tags: tags.split(' ')})
             .then(res => {
                 console.log(res);
+                history.push('/')
             })
             .catch(e => {
                 console.log(e);
