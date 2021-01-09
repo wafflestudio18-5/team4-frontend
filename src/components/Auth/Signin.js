@@ -12,7 +12,7 @@ import styles from '../Questions/QuestionAsk.module.scss'
 import profileimage from '../../profile_image.png'
 
 
-export const Signin = () => {
+export const Signin = (match) => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
     const history = useHistory();
@@ -33,6 +33,11 @@ export const Signin = () => {
         setWarn("")
         setPassword(password)
     }
+
+    if (match.params.code !== undefined) {
+        onSuccess(match.params.code)
+    }
+    
 
     useEffect(() => {
         // After requesting Github access, Github redirects back to your app with a code parameter
