@@ -28,9 +28,9 @@ const QuestionItem= (Question) => {
     }
 
     const goTags = (tag_name) => {
-        history.push(`/search/q=[${tag_name}]`);
+        history.push(`/search/?q=[${tag_name}]`);
     }
-
+ 
 
     return(
     <div className={styles.box}>

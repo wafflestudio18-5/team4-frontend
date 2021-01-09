@@ -29,6 +29,7 @@ export const SearchResultTags = ({query}) => {
     useEffect(()=>{
         getQuestionsWithTags(query.tags, sortedBy, page, filterBy?filterBy:null, query.user)
             .then(questions => {
+                console.log(questions);
                 setResult(()=>questions)
                 setMaxPage(()=>!questions.length? 1: Math.ceil(questions.length/30))
             })

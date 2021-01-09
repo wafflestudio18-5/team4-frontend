@@ -21,7 +21,7 @@ const QuestionEdit = (match) => {
     const history = useHistory();
 
     const instance = axios.create({
-        baseURL: 'https://www.wafflow.com/api/',
+        baseURL: 'http://localhost:8000/api/',
         headers: { 'Authorization' : 'Token ' + token},
       });
 

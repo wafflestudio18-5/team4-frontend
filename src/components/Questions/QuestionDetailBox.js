@@ -27,7 +27,7 @@ const QuestionDetailBox = (match) => {
     console.log("renders!");
 
     const instance = axios.create({
-        baseURL: 'https://www.wafflow.com/api/',
+        baseURL: 'http://localhost:8000/api/',
 
         headers: {Authorization: 'Token ' + token}
       });
@@ -206,7 +206,7 @@ const QuestionDetailBox = (match) => {
     }
 
     const goTags = (tag_name) => {
-        history.push(`/search/q=[${tag_name}]`);
+        history.push(`/search/?q=[${tag_name}]`);
     }
 
     console.log(question.author.id);

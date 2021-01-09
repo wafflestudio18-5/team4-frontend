@@ -61,7 +61,7 @@ export const Signin = () => {
             const token = res.access_token.substring(0,40)
             //redux에 토큰 저장
             console.log("github token acquired");
-            await axios.put('https://www.wafflow.com/api/user/login', {params:{'github_token' : token}})
+            await axios.put('http://localhost:8000/api/user/login', {params:{'github_token' : token}})
                 .then(res => {
 
                     dispatch(setUserInfo(res))
@@ -121,8 +121,8 @@ export const Signin = () => {
                     </div>
                 </div>
                 <div classNameName="qask-body-box">
-                    <div className={styles.top_sub}>Password</div>
-                    <input className={styles.input_title} value={password} onChange={(e)=>{passwordOnChange(e.target.value)}}/>
+                    <div className={styles.top_sub} >Password</div>
+                    <input className={styles.input_title} value={password} type="password" onChange={(e)=>{passwordOnChange(e.target.value)}}/>
                 </div>                 
                     </div>
     
