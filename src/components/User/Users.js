@@ -83,7 +83,7 @@ const Users = () => {
         {loading? 
             <></>:
             <Grid container spacing={3}>
-            {users.map(user=> (<Grid item xs={4}><UserCard key={user.id} user={user}/></Grid>))}
+            {users.map(user=> (<Grid key={user.id} item xs={4}><UserCard key={user.id} user={user}/></Grid>))}
             </Grid>
         }
         <div style={{display:'flex', justifyContent:'center', padding:'0.5rem'}}>

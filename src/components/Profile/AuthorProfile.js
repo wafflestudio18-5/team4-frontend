@@ -11,7 +11,7 @@ const AuthorProfile = (data) => {
     const history = useHistory()
     useEffect(() => {
         if (Author === null) {
-        getUser(data.question.id)
+        getUser(data.question.author.id)
         .then(res => {
             setAuthor(res)
             console.log(Author.picture);

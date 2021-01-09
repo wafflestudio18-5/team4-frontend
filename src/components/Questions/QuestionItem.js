@@ -24,7 +24,6 @@ const QuestionItem= (Question) => {
 
     const goQuestion = () => {
         history.push(`/question/${Question_info.id}/`);
-        history.go(0);
     }
 
     const goTags = (tag_name) => {

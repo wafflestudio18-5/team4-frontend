@@ -13,7 +13,7 @@ export const CommentBox =  (comment) => {
 
     const instance = axios.create({
         baseURL: 'https://www.wafflow.com/api/',
-        headers: { 'Accept' : "application/json",'Authorization' : 'Token ' + token},
+        headers: { 'Accept' : "application/json",'Authorization' : isLoggedin? `Token ${token}`:''},
       });
 
     console.log(comment);   
