@@ -120,7 +120,7 @@ export const Signin = () => {
                     
                     {/* <link href={`https://github.com/login/oauth/authorize?scope=user&client_id=1bc89bcdb1f71159016b&redirect_uri=https://www.wafflow.com/signin/`}>Login with Github</link> */}
                  
-                    <div onClick={() => {goGit()}}>
+                    <div onClick={() => {goGit()}} className={styles.gitbtn}>
                         Login with Github
                     </div>
                     </div>
