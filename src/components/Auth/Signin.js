@@ -12,7 +12,7 @@ import styles from '../Questions/QuestionAsk.module.scss'
 import profileimage from '../../profile_image.png'
 
 
-export const Signin = (match) => {
+export const Signin = () => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.isloggedin)
     const dispatch = useDispatch();
     const history = useHistory();
@@ -32,10 +32,6 @@ export const Signin = (match) => {
     const passwordOnChange = (password) => {
         setWarn("")
         setPassword(password)
-    }
-
-    if (match.params.code !== undefined) {
-        onSuccess(match.params.code)
     }
     
 
