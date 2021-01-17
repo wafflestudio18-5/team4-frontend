@@ -1,0 +1,3 @@
+const replaceMe = () => {};
+
+export { replaceMe };
