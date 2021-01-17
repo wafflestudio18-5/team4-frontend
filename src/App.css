@@ -51,3 +51,8 @@ code {
     monospace;
 }
 
+.banners {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
