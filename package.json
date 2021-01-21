@@ -2,7 +2,6 @@
   "name": "wafflow",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://www.wafflow.com",
   "dependencies": {
     "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
     "@fontsource/roboto": "^4.1.0",
