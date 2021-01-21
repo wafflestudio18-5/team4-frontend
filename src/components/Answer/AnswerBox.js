@@ -1,7 +1,7 @@
 import {Fragment, useEffect, useState} from 'react'
 import MDEditor from '@uiw/react-md-editor';
 import ResponderProfile from '../Profile/ResponderProfile'
-import {getCommentsOfAnswer} from '../../axios.ts'
+import {getCommentsOfAnswer} from '../../Api/axios.ts'
 import {CommentList} from '../Comment/Comments'
 import {CommentPostAnswer} from '../Comment/CommentPost'
 import {useSelector} from 'react-redux'
