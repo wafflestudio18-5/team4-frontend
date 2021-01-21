@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {logout} from '../../axios'
+import {logout} from '../../Api/axios'
 import {useHistory} from 'react-router-dom'
 import './image.css'
 import logo from '../../logo.png'

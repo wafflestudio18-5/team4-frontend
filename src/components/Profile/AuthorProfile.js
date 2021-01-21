@@ -1,5 +1,5 @@
 import {useState, Fragment, useEffect} from 'react'
-import {getUser} from '../../axios.ts'
+import {getUser} from '../../Api/axios.ts'
 import styles from './AuthorProfile.module.scss'
 import defaultPicture from '../../profile_image.png'
 import {useHistory} from 'react-router-dom'

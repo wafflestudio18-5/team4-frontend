@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getUser} from '../../axios';
+import {getUser} from '../../Api/axios';
 import {useHistory,useParams} from 'react-router-dom';
 import {
     Switch,

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom'
-import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser, getBookmarksOfUser} from '../../axios'
+import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser, getBookmarksOfUser} from '../../Api/axios'
 import { Button, ButtonGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';

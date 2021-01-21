@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import defaultPicture from '../../profile_image.png'
-import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser} from '../../axios'
+import {getAnswersOfUser, getQuestionsOfUser, getTagsOfUser} from '../../Api/axios'
 import {useHistory} from 'react-router-dom'
 import { Button, ButtonGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { getUsers } from '../../axios'
+import { getUsers } from '../../Api/axios'
 import {useHistory} from 'react-router-dom'
 import defaultPicture from '../../profile_image.png'
 import { makeStyles} from '@material-ui/core/styles';
