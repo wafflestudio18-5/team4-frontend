@@ -13,7 +13,7 @@ import MDEditor from '@uiw/react-md-editor';
 import LeftBanner from '../Banner/LeftBanner'
 import { getAllJSDocTagsOfKind } from 'typescript';
 import AuthorProfile from '../Profile/AuthorProfile'
-import { addBookmark, deleteBookmark, getAnswersOfQuestion, getCommentsOfQuestion, getQuestion } from '../../axios';
+import { addBookmark, deleteBookmark, getAnswersOfQuestion, getCommentsOfQuestion, getQuestion, rateQuestion } from '../../axios';
 
 
 const QuestionDetailBox = (match) => {
@@ -119,7 +119,6 @@ const QuestionDetailBox = (match) => {
         }
         else {
             console.log(token);
-
         rateQuestion(question.id, 1)
             .then(res => {
                 console.log(res);

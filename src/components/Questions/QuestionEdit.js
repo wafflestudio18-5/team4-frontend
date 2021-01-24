@@ -3,7 +3,7 @@ import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import MDEditor from '@uiw/react-md-editor'
-import { editQuestion } from '../../axios'
+import { editQuestion, getQuestion } from '../../axios'
 
 
 const QuestionEdit = (match) => {
