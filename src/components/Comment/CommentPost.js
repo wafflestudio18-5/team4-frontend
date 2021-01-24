@@ -2,6 +2,7 @@ import {useState, Fragment} from 'react'
 import axios from 'axios'
 import {Link, useHistory} from 'react-router-dom'
 import {useSelector} from 'react-redux' 
+import { commentOnAnswer, commentOnQuestion } from '../../axios'
 
 export const CommentPostQuestion = (id_q) => {
     const [content, setContent] = useState("")
@@ -17,23 +18,11 @@ export const CommentPostQuestion = (id_q) => {
         </div>)
     }
 
-    const instance = axios.create({
-      baseURL: 'https://www.wafflow.com/api/',
-
-
-      headers: {'Accept' : "application/json",Authorization : isLoggedin? `Token ${token}`:''}
-
-    });
-
     const postCommentonQuestion = () => {
         console.log(content);
-        instance.post(`comment/question/${id_q.id}/`, {content: content})
-            .then(res => {
-                console.log();
-            })
-            .catch(e =>{
-                console.log(e);
-            })
+        commentOnQuestion.post(id_q.id, content)
+            .then(console.log)
+            .catch(console.log)
     }
 
 
@@ -58,24 +47,12 @@ export const CommentPostAnswer = (id_a) => {
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.isLoggedReducer.token)
 
-
-    const instance = axios.create({
-      baseURL: 'https://www.wafflow.com/api/',
-
-      headers: {'Accept' : "application/json",Authorization : isLoggedin? `Token ${token}`:''}
-
-    });
-
     const postCommentonQuestion = () => {
         if (isLoggedin) {
         console.log(content);
-        instance.post(`comment/answer/${id_a.id}/`, {content: content})
-            .then(res => {
-                console.log();
-            })
-            .catch(e =>{
-                console.log(e);
-            })
+        commentOnAnswer.post(id_a.id, content)
+            .then(console.log)
+            .catch(console.log)
         }
     }
 

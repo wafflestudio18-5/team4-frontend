@@ -2,6 +2,7 @@ import {Fragment, useState} from 'react'
 import styles from './Comments.module.scss'
 import {useSelector, useDispatch} from 'react-redux' 
 import axios from 'axios'
+import { rateComment } from '../../axios'
 
 
 export const CommentBox =  (comment) => {
@@ -11,30 +12,17 @@ export const CommentBox =  (comment) => {
     const token = useSelector(state => state.isLoggedReducer.token)
     const user = useSelector(state => state.userInfoReducer.user)
 
-    const instance = axios.create({
-        baseURL: 'https://www.wafflow.com/api/',
-        headers: { 'Accept' : "application/json",'Authorization' : isLoggedin? `Token ${token}`:''},
-      });
-
     console.log(comment);   
     const upvote = () => {
-        instance.put(`rate/comment/${comment.comment.id}/`, {rating: 1})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(e => {
-                console.log(e);
-            })
+        rateComment.put(comment.comment.id, 1)
+            .then(console.log)
+            .catch(console.log)
     }
 
     const downvote= () => {
-        instance.put(`rate/comment/${comment.comment.id}/`, {rating: 1})
-            .then(res => {
-                console.log(res);
-            })
-            .catch(e => {
-                console.log(e);
-            })
+        rateComment.put(comment.comment.id, -1)
+            .then(console.log)
+            .catch(console.log)
     }
 
     return(

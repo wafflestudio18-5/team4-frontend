@@ -10,6 +10,7 @@ import {useHistory} from 'react-router-dom'
 import styles from './AnswerBox.module.scss'
 import AuthorProfile from '../Profile/AuthorProfile'
 import {CommentPostQuestion} from '../Comment/CommentPost'
+import { rateAnswer } from '../../axios';
 
 const AnswerBox = (Ans) => {
     const history = useHistory();
@@ -24,12 +25,6 @@ const AnswerBox = (Ans) => {
     const [comment_page, setCommentPage] = useState(1)
     const [vote, setVote] = useState(Answer.vote)
     const [max_comment, set_comment_page] = useState(0)
-
-    const instance = axios.create({
-        baseURL: 'https://www.wafflow.com/api/',
-
-        headers: {'Accept' : "application/json",Authorization: isLoggedin? `Token ${token}`:''}
-      });
 
     useEffect(() => {
         if (comment !== null) {
@@ -50,10 +45,10 @@ const AnswerBox = (Ans) => {
 
     const upVote = () => {
         if (isLoggedin) {
-            instance.put(`/rate/answer/${Answer.id}/`, {rating: 1})
+            rateAnswer(Answer.id, 1)
                 .then(res => {
                     console.log(res);
-                    setVote(vote+1)
+                    setVote(vote + 1)
                 })
                 .catch(e => {
                     console.log(e);
@@ -61,22 +56,12 @@ const AnswerBox = (Ans) => {
         }
     }
 
-    const deleteAnswer = () => {
-        instance.delete(`/answer/${Answer.id}/`)
-            .then(res => {
-                console.log(res);
-            })
-            .catch (e => {
-                console.log(e);
-            })
-    }
-
     const downVote = () => {
         if (isLoggedin) {
-            instance.put(`/rate/answer/${Answer.id}/`, {rating: -1})
+            rateAnswer(Answer.id, -1)
                 .then(res => {
                     console.log(res);
-                    setVote(vote-1)
+                    setVote(vote - 1)
                 })
                 .catch(e => {
                     console.log(e);

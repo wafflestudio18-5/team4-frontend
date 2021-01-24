@@ -15,18 +15,8 @@ import styles from './QuestionAsk.module.scss'
 const QuestionAsk = () =>  {
     const isLoggedin = useSelector(state => state.isLoggedReducer.loggedin)
     const token = useSelector(state => state.isLoggedReducer.token) //redux 에서 islooedin. token 가져오기
-    console.log(isLoggedin);
-    console.log(token);
-
 
     const history = useHistory();
-
-    const instance = axios.create({
-        baseURL: 'https://www.wafflow.com/api/',
-        headers: {'Accept' : "application/json", 'Authorization' : isLoggedin? `Token ${token}`:''},
-      });
-
-    //const history = useHistory();
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [tags, setTags] = useState("")
@@ -39,14 +29,12 @@ const QuestionAsk = () =>  {
             alert("content too short")
         }
         console.log(tags.replace(' ', '+'));
-        instance.post("question/", {title: title, content: body, tags: tags.split(' ')})
+        postQuestion.post({title: title, content: body, tags: tags.split(' ')})
             .then(res => {
                 console.log(res);
                 history.push('/')
             })
-            .catch(e => {
-                console.log(e);
-            })
+            .catch(console.log)
     }
 
     return (

@@ -13,6 +13,7 @@ import MDEditor from '@uiw/react-md-editor';
 import LeftBanner from '../Banner/LeftBanner'
 import { getAllJSDocTagsOfKind } from 'typescript';
 import AuthorProfile from '../Profile/AuthorProfile'
+import { addBookmark, deleteBookmark, getAnswersOfQuestion, getCommentsOfQuestion, getQuestion } from '../../axios';
 
 
 const QuestionDetailBox = (match) => {
@@ -51,43 +52,37 @@ const QuestionDetailBox = (match) => {
 
     useEffect(() => {
         if (question.title === undefined) {
-        instance.get(`question/${id}/`)
+        getQuestion(id)
             .then((res) => {
-                console.log(res);
-                setQuestion(res.data)
-                console.log(res.data.author);
+                setQuestion(res)
+                console.log(res.author);
                 setMaxPage(question.answer_count/30)
-                if (res.data.author.id === user_id) {
+                if (res.author.id === user_id) {
                     setIsAuthor(true)
                 }
-                setBookmark(res.data.bookmark)
-                setVote(res.data.vote)
+                setBookmark(res.bookmark)
+                setVote(res.vote)
             })
             .catch((e) => {
                 console.log(e);
                 alert(e.message)
             })
-        instance.get(`comment/question/${id}/?page=${comment_page}`)
+        getCommentsOfQuestion(id, comment_page)
             .then((res) => {
-                console.log(res);
-
-                setComments(res.data.comments)
+                setComments(res)
                 setMaxComment(question.comment_count)
                 console.log(max_comment);
             })
             .catch((e) => {
                 console.log(e);
             })
-        instance.get(`answer/question/${id}/`, {params:{page: answer_page, sorted_by: answer_sort}})
+        getAnswersOfQuestion(id, answer_sort, answer_page)
             .then((res) => {
-                console.log(res);
-                setAnswers(res.data.answers)
+                setAnswers(res)
             })
             .catch((e) => {
                 console.log(e);
             })
-        var page_bookmark = 1;
-
         // while (true) {
         // instance.get(`bookmark/user/me/`, {params:{page: page_bookmark, sorted_by: newest}})
         //     .then((res) => {
@@ -125,7 +120,7 @@ const QuestionDetailBox = (match) => {
         else {
             console.log(token);
 
-        instance.put(`rate/question/${question.id}/`, {rating: 1})
+        rateQuestion(question.id, 1)
             .then(res => {
                 console.log(res);
                 setVote(vote+1)
@@ -142,7 +137,7 @@ const QuestionDetailBox = (match) => {
             alert("You are not Logged in!")
             return;
         }
-        instance.put(`rate/question/${question.id}/`, {rating: -1})
+        rateQuestion(question.id, -1)
             .then(res => {
                 console.log(res);
                 setVote(vote-1)
@@ -155,23 +150,15 @@ const QuestionDetailBox = (match) => {
     const bookmark_change = () => {
         if (bookmarked) {
             setBookmark(false)
-            instance.delete(`/bookmark/question/${id}/`)
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch(e => {
-                    console.log(e);
-                })
+            deleteBookmark(id)
+                .then(console.log)
+                .catch(console.log)
         }
         else {
             setBookmark(true)
-            instance.post(`/bookmark/question/${id}/`)
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch(e => {
-                    console.log(e);
-        })
+            addBookmark(id)
+                .then(console.log)
+                .catch(console.log)
     }
 }
 
@@ -183,17 +170,6 @@ const QuestionDetailBox = (match) => {
     // const bookmark_change = () => {
     //     if (isLoggedin) 
     // }
-
-    const DeleteQuestion = () => {
-        instance.delete(`/question/${question.id}`)
-            .then(res => {
-                console.log(res);
-                history.go(-1);
-            })
-            .catch (e => {
-                console.log(e);
-            })
-    }
 
     const goAsk = () => {
         if (isLoggedin) {

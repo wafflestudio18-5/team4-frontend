@@ -11,7 +11,7 @@ const logError = (error: any) => {
     return log?.data
 }
 axios.defaults.headers["Accept"] = "application/json";
-axios.defaults.baseURL = "https://www.wafflow.com/";
+axios.defaults.baseURL = "http://localhost:8000/";
 //User APIs
 //GET user
 export const getUserMe = () => new Promise((resolve, reject) => {
@@ -62,7 +62,6 @@ export const login = (username: string, password: string, github_token: string) 
 //logout
 export const logout = (token: string) => new Promise((resolve,reject) => {
     console.log(token);
-    
     axios.defaults.headers.common['Authorization'] = token
     axios.post(`api/user/logout/`)
         .then((response) => {
@@ -111,7 +110,7 @@ export const getQuestionsWithKeywords = (keywords: string[], sorted_by: string, 
 //POST question
 export const postQuestion = (question: QuestionInterface) => 
     new Promise((resolve,reject) => {
-        axios.post(`api/question/`, {data:question})
+        axios.post(`api/question/`, question)
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
@@ -120,7 +119,7 @@ export const postQuestion = (question: QuestionInterface) =>
 //PUT question
 export const editQuestion = (id: number, question: QuestionEditInterface) => 
     new Promise((resolve,reject) => {
-        axios.put(`api/question/${id}/`, {data:{question}})
+        axios.put(`api/question/${id}/`, question)
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))//FIXME: how to handle status code 301?
     }
@@ -154,7 +153,7 @@ export const getAnswer = (id: number) =>
 //POST answer
 export const postAnswer = (id: number, content: string) => 
     new Promise((resolve,reject) => {
-        axios.post(`api/answer/question/${id}/`, {content:content})
+        axios.post(`api/answer/question/${id}/`, {content})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
@@ -210,7 +209,7 @@ export const getCommentsOfAnswer = (id: number, page=1) =>
 )
 export const getCommentsOfQuestion = (id: number, page=1) => 
     new Promise((resolve,reject) => {
-        axios.get(`api/comment/question/${id}`)
+        axios.get(`api/comment/question/${id}/?page=${page}`)
             .then(response => resolve(response.data.comments))
             .catch(e=>reject(logError(e)))
     }
@@ -218,7 +217,7 @@ export const getCommentsOfQuestion = (id: number, page=1) =>
 //POST comment
 export const commentOnQuestion = (question_id: number, content: String) => 
     new Promise((resolve,reject) => {
-        axios.post(`api/comment/question/${question_id}/`, {data:{content}})
+        axios.post(`api/comment/question/${question_id}/`, {content})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
@@ -250,21 +249,21 @@ export const deleteComment = (id: number) =>
 //PUT rate
 export const rateQuestion = (id: number, rating: number) => 
     new Promise((resolve,reject) => {
-        axios.put(`api/rate/question/${id}/`, {data:{rating}})
+        axios.put(`api/rate/question/${id}/`, {rating})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
 )
 export const rateAnswer = (id: number, rating: number) => 
     new Promise((resolve,reject) => {
-        axios.put(`api/rate/answer/${id}/`, {data:{rating}})
+        axios.put(`api/rate/answer/${id}/`, {rating})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }
 )
 export const rateComment = (id: number, rating: number) => 
     new Promise((resolve,reject) => {
-        axios.put(`api/rate/comment/${id}/`, {data:{rating}})
+        axios.put(`api/rate/comment/${id}/`, {rating})
             .then(response => resolve(response.data))
             .catch(e=>reject(logError(e)))
     }

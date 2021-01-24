@@ -3,6 +3,7 @@ import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import MDEditor from '@uiw/react-md-editor'
+import { editQuestion } from '../../axios'
 
 
 const QuestionEdit = (match) => {
@@ -30,10 +31,10 @@ const QuestionEdit = (match) => {
             history.go(-1);
         }
         if (body === "") {
-            instance.get(`question/${question_id}`)
+            getQuestion(question_id)
                 .then(res => {
                     console.log(res);
-                    const question = res.data
+                    const question = res
                     if (question.author.id !== user_id) {
                         setPermit(false)
                         history.go(-1)
@@ -61,7 +62,7 @@ const QuestionEdit = (match) => {
         console.log(title);
         console.log(body);
         console.log(tags.replace('+','%2b').replace(' ', '+'));
-        instance.put(`question/${question_id}/`, {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
+        editQuestion(question_id, {title: title, content: body, tags: tags.replace('+','%2b').replace(' ', '+')})
             .then(res => {
                 console.log(res);
                 history.go(-1)
