@@ -1,5 +1,5 @@
 import {useState, Fragment, useEffect} from 'react'
-import {getUser} from '../../axios.ts'
+import {getUser} from '../../Api/axios.ts'
 
 
 const ResponderProfile = (answer) => {

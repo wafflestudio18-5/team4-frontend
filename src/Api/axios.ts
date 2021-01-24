@@ -17,7 +17,7 @@ const logError = (error: any) => {
   return log?.data;
 };
 axios.defaults.headers["Accept"] = "application/json";
-axios.defaults.baseURL = "https://www.wafflow.com/";
+// axios.defaults.baseURL = "https://www.wafflow.com/";
 //User APIs
 //GET user
 export const getUserMe = () =>

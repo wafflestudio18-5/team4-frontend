@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {getQuestionsWithTags, getQuestionsWithKeywords, getQuestionsOfUser} from '../../axios.ts'
+import {getQuestionsWithTags, getQuestionsWithKeywords, getQuestionsOfUser} from '../../Api/axios.ts'
 
 import QuestionList from '../Questions/QuestionList'
 import Button from '../Button_search'
